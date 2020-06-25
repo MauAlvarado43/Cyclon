@@ -1,0 +1,27 @@
+{
+    "locale": "en-mx",
+    "inputs":{
+        "email":            "Correo electrónico",
+        "password":         "Contraseña",
+        "confirmp":         "Confirmar contraseña",
+        "name":             "Nombre",
+        "lastname":         "Apellidos"
+    },
+    "buttons": {
+        "login" :           "Iniciar sesión",
+        "register" :        "Registrate",
+        "login_google":     "Iniciar sesión con Google",
+        "login_facebook":   "Iniciar sesión con Facebook"
+    },
+    "errors":{
+        "404":              "404 Ruta no encontrada",
+        "500":              "500 Error en el servidor",
+        "BAD_LOCATION":     "No se ha podido localizar su dirección ip",
+        "BAD_INPUT":        "Los datos recibidos no son válidos",
+        "BAD_NAME":         "El nombre ingresado no es válido",
+        "BAD_LASTNAME":     "El apellido ingresado no es válido",
+        "BAD_EMAIL":        "El correo electrónico ingresado no es válido",
+        "BAD_PASSWORD":     "La contraseña ingresada no es válida"
+    },
+    "SIGNUP_SUCCESS":"Inicio de sesión correcto"
+}

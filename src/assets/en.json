@@ -1,0 +1,9 @@
+{
+    "locale": "en-us",
+    "buttons": {
+        "login": "Log in",
+        "register": "Create Account"
+    },
+    "404": "Error: 404 Page Not Found",
+    "500": "Error: 500 Internal Error"
+}
