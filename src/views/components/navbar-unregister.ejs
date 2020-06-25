@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="/images/cyclon114.png" width="50" height="50" class="d-inline-block align-middle" alt="">
+        <span class="ml-3" style="font-size: 1.5rem;"> 
+            Cyclon
+        </span>
+      </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item h-100">
+                <a class="nav-link">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                        <%= assets.buttons.login %>
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item h-100">
+                <a class="nav-link"><%= assets.buttons.register %></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
