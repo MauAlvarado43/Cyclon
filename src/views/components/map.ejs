@@ -1,0 +1,82 @@
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+<script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+
+<div class="container">
+    <div id="windy" style="width: 70%; height: 30rem;" class="mx-auto"></div>
+    <p>
+        <br>
+        <center>
+            <table>
+                <tr>
+                    <td>
+                        <center>
+                            <div id="real" style="width: 4rem; height: 0.2rem;"></div>
+                        </center>
+                    </td>
+                    <td>
+                        <center>
+                            <div id="predicted" style="width: 4rem; height: 0.2rem;"></div>
+                        </center>
+                    </td>
+                    <td>
+                        <center>
+                            <div id="circle" style="width: 1rem; height: 1rem;"></div>
+                        </center>
+                    </td>
+                    <td>
+                        <center> <img src="/images/cyclone.png" width="20"></center>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Real</td>
+                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Predicha</td>
+                    <td class="simbology" style="color: black; text-align: center;">Zona de Riesgo</td>
+                    <td class="simbology" style="color: black; text-align: center;">Fenómeno Meteorológico</td>
+                </tr>
+            </table>
+        </center>
+    </p>
+</div>
+
+<script>
+    let map_const;
+
+    let latUser = 19
+    let lngUser = -99
+
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+
+            latUser = position.coords.latitude
+            lngUser = position.coords.longitude
+
+            loadMap()
+
+        }, (e) => { }, { enableHighAccuracy: true, timeout: 2000, maximumAge: 0 });
+    }
+
+    const loadMap = () => {
+        windyInit({
+            key: 'c02HANLNCaQ4PjmWnj0pSauI4mbWZLHf',
+            verbose: false,
+            lat: latUser,
+            lon: lngUser,
+            zoom: 1,
+        }, windyAPI => {
+
+            const { map, store, utils, broadcast } = windyAPI;
+
+            map_const = map;
+
+            map_const.doubleClickZoom.disable();
+
+            store.set("particlesAnim", "on");
+
+            broadcast.once('redrawFinished', () => {
+
+            });
+
+        });
+    }
+
+</script>

@@ -45,19 +45,19 @@ router.get('/auth/google/callback', (req, res, next) => {
     })(req, res, next)
 })
 
-router.post('/api/register', (req, res, next) => {
+router.post('/auth/register', (req, res, next) => {
     passport.authenticate('local-signup', function(err, user, info) {
         if (err){
-            return res.json({code:200,"msg":err})
+            return res.json({code:401,"msg":err})
         }
         if (!user){ 
-            return res.json({code:200,"msg":["BAD_INPUT"]})
+            return res.json({code:401,"msg":["BAD_INPUT"]})
         }
         return res.json({code:200,"msg":["SIGNUP_SUCCESS"]})
     })(req, res, next)
 })
 
-router.post('/api/login', (req,res,next) => {
+router.post('/auth/login', (req,res,next) => {
     passport.authenticate('local-signin', function(err, user, info) {
         if (err)  return next(err)
         if (!user) { return res.json({code:401,"msg":"BAD"}) }
