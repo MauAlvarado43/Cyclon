@@ -1,5 +1,5 @@
 import passport from 'passport'
-import {OAuth2Strategy as GoogleStrategy  } from 'passport-google-oauth'
+import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth'
 import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
 
@@ -16,42 +16,37 @@ passport.use('google-auth',new GoogleStrategy({
 
             if(docs.length==0){
                 const newUser = new User()
-                const userValidation = newUser.validateUser(profile.name.givenName, profile.name.familyName, profile.emails[0].value, profile.id)
-        
-                if(userValidation.length==0){
 
-                    let geo = geoip.lookup(req.ip)
+                let geo = geoip.lookup(req.ip)
 
-                    if(geo){
-                        
-                        let userObject = newUser.encryptUser(
-                            profile.emails[0].value,
-                            geo.ll[0],
-                            geo.ll[1],
-                            profile.id
-                        )
+                console.log(geo.ll)
+
+                if(geo){
                     
-                        newUser.name = profile.name.givenName
-                        newUser.lastName = profile.name.familyName
-                        newUser.email = userObject.email
-                        newUser.lat = userObject.lat
-                        newUser.lng = userObject.lng
-                        newUser.password = userObject.password
-                        newUser.type = 0
-    
-                        console.log(newUser)
-                    
-                        newUser.save()
-                        done(null, newUser)
-                    }
-                    else{
-                        return done(["BAD_LOCATION"], false)
-                    }     
+                    let userObject = newUser.encryptUser(
+                        profile.emails[0].value,
+                        geo.ll[0],
+                        geo.ll[1],
+                        profile.id
+                    )
+                
+                    newUser.name = profile.name.givenName
+                    newUser.lastName = profile.name.familyName
+                    newUser.email = userObject.email
+                    newUser.lat = userObject.lat
+                    newUser.lng = userObject.lng
+                    newUser.password = userObject.password
+                    newUser.type = 0
 
+                    console.log(newUser)
+                
+                    //newUser.save()
+                    done(null, newUser)
                 }
                 else{
-                    return done(userValidation, false)
-                }
+                    return done(["BAD_LOCATION"], false)
+                }  
+
             }
             else{
                 done(null, docs[0])
