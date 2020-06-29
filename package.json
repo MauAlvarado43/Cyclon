@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "node bin/production",
-    "build": "npm run clean && mkdir dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && babel src -s -d dist && babel-node dist/test/minify.js",
+    "build": "npm run clean && mkdir dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && babel src -s -d dist && node dist/test/minify.js",
     "clean": "rm -rf dist/",
     "test": "nodemon --exec mocha src/test/ --reporter spec --require babel-register",
     "production": "npm run build && node bin/production"
