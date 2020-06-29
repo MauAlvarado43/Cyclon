@@ -33,7 +33,6 @@
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "session-memory-store": "^1.0.0",
-    "minify-all ": "^1.2.2",
     "uglify-js": "^3.10.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
@@ -48,6 +47,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
     "faker": "^4.1.0",
+    "minify-all": "^1.2.2",
     "mocha": "^8.0.1",
     "nodemon": "^2.0.4"
   }
