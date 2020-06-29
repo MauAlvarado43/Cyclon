@@ -1,42 +1,45 @@
 import minifyAll from 'minify-all'
+import path from 'path'
 
-minifyAll("../config", { silent: false }, function(err){
+console.log("DIRECTORY: "+ __dirname)
+
+minifyAll(path.join(__dirname,"../config"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../controller", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../controller"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../models", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../models"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../passport", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../passport"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../routes", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../routes"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../utils", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../utils"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
 });
 
-minifyAll("../views", { silent: false }, function(err){
+minifyAll(path.join(__dirname,"../views"), { silent: true }, function(err){
     if(err){
         console.log(err);
     }
