@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "node bin/production",
-    "build": "npm run clean && mkdir dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && babel src -s -d dist && minify-all dist",
+    "build": "npm run clean && mkdir dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && babel src -s -d dist",
     "clean": "rm -rf dist/",
     "test": "nodemon --exec mocha src/test/ --reporter spec --require babel-register",
-    "production": "node bin/production"
+    "production": "npm run build && node bin/production"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +33,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "session-memory-store": "^1.0.0",
+    "minify-all ": "^1.2.2",
     "uglify-js": "^3.10.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
