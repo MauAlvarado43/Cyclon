@@ -1,0 +1,57 @@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="loginModalLabel"> <%= assets.buttons.login %> </h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<form>
+
+					<div class="form-group">
+						<label for="emailLogin"><%= assets.inputs.email %></label>
+						<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email">
+					</div>
+
+					<div class="form-group">
+						<label for="passwordLogin"><%= assets.inputs.password %></label>
+						<input type="password" class="form-control" id="passwordLogin" placeholder="********" v-model="password">
+					</div>
+
+					<% errors.forEach(element => { %>
+
+					<label style="color: red; width: 100%;" class="text-center"> <%= assets.errors[element] %> </label>
+
+					<% }); %>
+
+
+					<button type="button" class="btn btn-success mb-3 btn-block" @click="login"><%= assets.buttons.login %></button>
+
+					<hr>
+
+					<div class="form-group">
+						<a class="btn btn-outline-dark btn-block" href="/auth/google" role="button">
+							<img width="20px" src="/images/google.png" />
+							<%= assets.buttons.login_google %>
+						</a>
+					</div>
+
+					<div class="form-group">
+						<a class="btn btn-block" href="/auth/facebook" role="button"
+							style="background-color: #1977f3; color: white;"
+							onMouseOver="this.style.background='#236bc9'" onMouseOut="this.style.background='#1977f3'">
+							<img width="20px" src="/images/facebook_reverse.png" />
+							<%= assets.buttons.login_facebook %>
+						</a>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

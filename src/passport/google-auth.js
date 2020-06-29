@@ -14,6 +14,8 @@ passport.use('google-auth',new GoogleStrategy({
 
             console.log(docs)
 
+            console.log(req.ip)
+
             if(docs.length==0){
                 const newUser = new User()
 
