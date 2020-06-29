@@ -1,8 +1,6 @@
 import minifyAll from 'minify-all'
 import path from 'path'
 
-console.log("DIRECTORY: "+ __dirname)
-
 minifyAll(path.join(__dirname,"../config"), { silent: true }, function(err){
     if(err){
         console.log(err);
