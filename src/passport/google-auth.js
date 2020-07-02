@@ -1,6 +1,7 @@
 import passport from 'passport'
 import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth'
 import {UserModel as User} from '../models/UserModel'
+import {encryptAES} from '../utils/cipher'
 import geoip from 'geoip-lite'
 
 passport.use('google-auth',new GoogleStrategy({
@@ -10,18 +11,12 @@ passport.use('google-auth',new GoogleStrategy({
         passReqToCallback: true
     }, async (req, accessToken, refreshToken, profile, done) => {
 
-        User.find({email: profile.emails[0].value}, (err,docs) => {
-
-            console.log(docs)
-
-            console.log(req.ip)
+        User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
 
             if(docs.length==0){
                 const newUser = new User()
 
                 let geo = geoip.lookup(req.ip)
-
-                console.log(geo.ll)
 
                 if(geo){
                     
@@ -39,10 +34,8 @@ passport.use('google-auth',new GoogleStrategy({
                     newUser.lng = userObject.lng
                     newUser.password = userObject.password
                     newUser.type = 0
-
-                    console.log(newUser)
                 
-                    //newUser.save()
+                    newUser.save()
                     done(null, newUser)
                 }
                 else{
