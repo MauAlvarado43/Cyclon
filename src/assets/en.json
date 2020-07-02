@@ -7,3 +7,36 @@
     "404": "Error: 404 Page Not Found",
     "500": "Error: 500 Internal Error"
 }
+
+{
+    "locale": "en-us",
+    "inputs":{
+        "email":                "Email",
+        "password":             "Password",
+        "confirmp":             "Confirm password",
+        "name":                 "Name",
+        "lastname":             "Last name"
+    },
+    "buttons": {
+        "login" :               "Login",
+        "register" :            "Signup",
+        "login_google":         "Login with Google",
+        "login_facebook":       "Login with Facebook"
+    },
+    "errors":{
+        "404":                  "404 Page not found",
+        "500":                  "500 Internal error",
+        "BAD_LOCATION":         "Your IP address cannot be located",
+        "BAD_INPUT":            "The data received is not valid",
+        "BAD_NAME":             "The name entered is not valid",
+        "BAD_LASTNAME":         "The last name entered is not valid",
+        "BAD_EMAIL":            "The email entered is not valid",
+        "BAD_PASSWORD":         "The password entered is not valid",
+        "SHORT_PASSWORD":       "Password must be more than 8 characters",
+        "PASSWORD_NOT_MATCH":   "Passwords do not match",
+        "ONLY_LETTERS_NAME":    "The name can only have letters and / or spaces",
+        "FORMAT_EMAIL":         "Email format is invalid",
+        "MAX_LENGTH":           "The data cannot have more than 50 characters"
+    },
+    "SIGNUP_SUCCESS":"Login..."
+}

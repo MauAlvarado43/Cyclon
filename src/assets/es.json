@@ -28,5 +28,5 @@
         "FORMAT_EMAIL":         "El formato del correo electrónico es inválido",
         "MAX_LENGTH":           "El dato no puede tener más de 50 caracteres"
     },
-    "SIGNUP_SUCCESS":"Inicio de sesión correcto"
+    "SIGNUP_SUCCESS":"Iniciando sesión..."
 }

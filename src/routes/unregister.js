@@ -40,7 +40,7 @@ router.get('/auth/google/callback', (req, res, next) => {
             req.flash('error', ["BAD_INPUT"]) 
             return res.redirect("/?action=login") 
         }
-        req.flash('error', []) 
+        req.flash('error', [""]) 
         return res.redirect("/") 
     })(req, res, next)
 })
