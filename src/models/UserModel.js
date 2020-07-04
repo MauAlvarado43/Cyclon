@@ -20,8 +20,10 @@ const UserSchema = new Schema({
     name: String,
     lastName: String,
     email: String,
-    lat: String,
-    lng: String,
+    location:{
+        lat: String,
+        lng: String
+    },
     password: String,
     type: Number
 })

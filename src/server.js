@@ -11,6 +11,8 @@ import passport from 'passport'
 import morgan from 'morgan'
 import flash from 'connect-flash'
 import path from 'path'
+import graphqlHTTP from 'express-graphql'
+import schema from './config/schema'
 import {errorLog, infoLog} from './utils/logger'
 
 // Initialzing packages
@@ -50,8 +52,16 @@ app.use(morgan("combined", { "stream": infoLog.stream }))
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
-app.set('view engine','ejs');
-app.set('views','src/views');
+app.use('/graphql', (req,res,next) => { 
+    graphqlHTTP({
+            graphiql: false,
+            schema: schema,
+            context: req.session
+        })(req, res, next)
+    }
+)
+app.set('view engine','ejs')
+app.set('views','src/views')
 
 //Routes
 app.use(require('./routes/unregister'))
