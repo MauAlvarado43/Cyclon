@@ -30,8 +30,8 @@ passport.use('google-auth',new GoogleStrategy({
                     newUser.name = profile.name.givenName
                     newUser.lastName = profile.name.familyName
                     newUser.email = userObject.email
-                    newUser.lat = userObject.lat
-                    newUser.lng = userObject.lng
+                    newUser.location.lat = userObject.lat
+                    newUser.location.lng = userObject.lng
                     newUser.password = userObject.password
                     newUser.type = 0
                 

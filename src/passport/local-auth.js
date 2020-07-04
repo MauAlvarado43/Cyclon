@@ -42,8 +42,8 @@ passport.use('local-signup', new LocalStrategy({
             newUser.name = req.body.name
             newUser.lastName = req.body.lastName
             newUser.email = userObject.email
-            newUser.lat = userObject.lat
-            newUser.lng = userObject.lng
+            newUser.location.lat = userObject.lat
+            newUser.location.lng = userObject.lng
             newUser.password = userObject.password
             newUser.type = 0
         
