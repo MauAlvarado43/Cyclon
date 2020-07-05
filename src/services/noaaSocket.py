@@ -1,3 +1,4 @@
+from Models.ModelTrajectory import TrajectoriesModel as TM
 import time
 import requests
 import json
@@ -8,6 +9,8 @@ import asyncio
 import pymongo
 
 class NoaaSocket: 
+
+    TrajectoriesModel = TM.TrajectoriesModel()
 
     url = "https://www.nhc.noaa.gov/CurrentStorms.json"
     mongoURL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"

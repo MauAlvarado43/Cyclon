@@ -26,7 +26,8 @@
         "PASSWORD_NOT_MATCH":   "Las contraseñas no coinciden",
         "ONLY_LETTERS_NAME":    "El nombre solo puede tener letras y/o espacios",
         "FORMAT_EMAIL":         "El formato del correo electrónico es inválido",
-        "MAX_LENGTH":           "El dato no puede tener más de 50 caracteres"
+        "MAX_LENGTH":           "El dato no puede tener más de 50 caracteres",
+        "EMAIL_TAKEN":          "El correo electrónico ingresado ya está registrado"
     },
     "SIGNUP_SUCCESS":"Iniciando sesión..."
 }

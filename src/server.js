@@ -39,6 +39,15 @@ app.use(session({
     })
 }))
 
+app.use('/graphql', (req,res,next) => { 
+    graphqlHTTP({
+            graphiql: false,
+            schema: schema,
+            context: req.session
+        })(req, res, next)
+    }
+)
+
 // Settings
 app.set('port', process.env.PORT || 3000)
 app.use(helmet())
@@ -52,14 +61,6 @@ app.use(morgan("combined", { "stream": infoLog.stream }))
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
-app.use('/graphql', (req,res,next) => { 
-    graphqlHTTP({
-            graphiql: false,
-            schema: schema,
-            context: req.session
-        })(req, res, next)
-    }
-)
 app.set('view engine','ejs')
 app.set('views','src/views')
 
