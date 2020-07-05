@@ -1,15 +1,5 @@
 {
     "locale": "en-us",
-    "buttons": {
-        "login": "Log in",
-        "register": "Create Account"
-    },
-    "404": "Error: 404 Page Not Found",
-    "500": "Error: 500 Internal Error"
-}
-
-{
-    "locale": "en-us",
     "inputs":{
         "email":                "Email",
         "password":             "Password",
@@ -36,7 +26,8 @@
         "PASSWORD_NOT_MATCH":   "Passwords do not match",
         "ONLY_LETTERS_NAME":    "The name can only have letters and / or spaces",
         "FORMAT_EMAIL":         "Email format is invalid",
-        "MAX_LENGTH":           "The data cannot have more than 50 characters"
+        "MAX_LENGTH":           "The data cannot have more than 50 characters",
+        "EMAIL_TAKEN":          "The email entered is already registered"
     },
     "SIGNUP_SUCCESS":"Login..."
 }
