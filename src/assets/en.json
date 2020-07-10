@@ -29,5 +29,12 @@
         "MAX_LENGTH":           "The data cannot have more than 50 characters",
         "EMAIL_TAKEN":          "The email entered is already registered"
     },
-    "SIGNUP_SUCCESS":"Login..."
+    "SIGNUP_SUCCESS":           "Login...",
+    "privacy":                  "Privacy policies",
+    "terms":                    "Terms and Conditions",
+    "description":              "Cyclon descripcion",
+    "about":                    "About",
+    "contact":                  "Contact",
+    "faq":                      "Faq",
+    "rights":                   "All Rights Reserved",
 }

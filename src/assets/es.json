@@ -29,5 +29,12 @@
         "MAX_LENGTH":           "El dato no puede tener más de 50 caracteres",
         "EMAIL_TAKEN":          "El correo electrónico ingresado ya está registrado"
     },
-    "SIGNUP_SUCCESS":"Iniciando sesión..."
+    "SIGNUP_SUCCESS":           "Iniciando sesión...",
+    "privacy":                  "Políticas de privacidad",
+    "terms":                    "Términos y condiciones",
+    "description":              "Cyclon es un proyecto que busca alertar a la población oportunamente acerca de la aparición de huracanes cercanos a su localidad",
+    "about":                    "Acerca de",
+    "contact":                  "Contacto",
+    "faq":                      "Preguntas frecuentes",
+    "rights":                   "Todos los derechos reservados"
 }
