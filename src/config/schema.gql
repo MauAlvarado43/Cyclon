@@ -8,6 +8,7 @@ type User{
 }
 
 type Cyclone{
+	name: String
 	appearance: String
 	lastUpdate: String
 	origin: Geolocation
@@ -33,4 +34,5 @@ type Geolocation{
 
 type Query {
     activeCyclones: [Cyclone]
+	allCyclones: [Cyclone]
 }
