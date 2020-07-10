@@ -31,4 +31,4 @@ const CycloneSchema = new Schema({
 
 const CycloneModel = mongoose.model("Hurricaine", CycloneSchema)
 
-export {CycloneModel, Trajectory}
+export {CycloneModel}
