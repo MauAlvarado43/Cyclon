@@ -55,3 +55,8 @@
     margin-right: auto !important;
     width: 70% !important;
 }
+
+footer{
+    background-color: rgb(41, 44, 47);
+    color: #fff;
+}

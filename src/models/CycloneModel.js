@@ -16,6 +16,7 @@ const { Schema } = mongoose
 
 const CycloneSchema = new Schema({
     id: String,
+    name: String,
     appearance:Date,
     lastUpdate: Date,
     origin: {
@@ -30,4 +31,4 @@ const CycloneSchema = new Schema({
 
 const CycloneModel = mongoose.model("Hurricaine", CycloneSchema)
 
-export {CycloneModel}
+export {CycloneModel, Trajectory}

@@ -5,6 +5,10 @@ export const resolvers = {
         async activeCyclones(root, args, context, info){
             console.log(context)
             return await CycloneModel.find({active: true})
+        },
+        async allCyclones(root, args, context, info){
+            console.log(context)
+            return await CycloneModel.find()
         }
     }
 }

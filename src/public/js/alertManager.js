@@ -1,29 +1,29 @@
 const query = `
 {
     activeCyclones {
-      active
-      realTrajectory {
-        position {
-          lat
-          lng
+        active
+        realTrajectory {
+            position {
+                lat
+                lng
+            }
+            windSpeed
+            hurrSpeed
+            temperature
+            pressure
+            date
         }
-        windSpeed
-        hurrSpeed
-        temperature
-        pressure
-        date
-      }
-      predictedTrajectory {
-        position {
-          lat
-          lng
+        predictedTrajectory {
+            position {
+                lat
+                lng
+            }
+            windSpeed
+            hurrSpeed
+            temperature
+            pressure
+            date
         }
-        windSpeed
-        hurrSpeed
-        temperature
-        pressure
-        date
-      }
     }
 }
 `

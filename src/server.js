@@ -23,7 +23,8 @@ const corsOptions = {
     origin: '*'
 }
 
-require("./config/database")
+require('dotenv').config()
+require('./config/database')
 require('./passport/local-auth')
 require('./passport/google-auth')
 require('./passport/facebook-auth')
