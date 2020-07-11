@@ -1,5 +1,5 @@
 {
-    "locale": "en",
+    "locale":                   "en",
     "inputs":{
         "email":                "Email",
         "password":             "Password",
