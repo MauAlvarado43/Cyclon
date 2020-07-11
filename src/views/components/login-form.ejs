@@ -3,12 +3,12 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="loginModalLabel"> <%= assets.buttons.login %> </h5>
+				<h5 class="modal-title" id="loginModalLabel" style="color: black;"> <%= assets.buttons.login %> </h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="color: black;">
 
 				<form>
 
@@ -34,16 +34,14 @@
 					<hr>
 
 					<div class="form-group">
-						<a class="btn btn-outline-dark btn-block" href="/auth/google" role="button">
+						<a class="btn btn-outline-dark btn-block" href="/auth/google" role="button" style="text-decoration: none;">
 							<img width="20px" src="/images/google.png" />
 							<%= assets.buttons.login_google %>
 						</a>
 					</div>
 
 					<div class="form-group">
-						<a class="btn btn-block" href="/auth/facebook" role="button"
-							style="background-color: #1977f3; color: white;"
-							onMouseOver="this.style.background='#236bc9'" onMouseOut="this.style.background='#1977f3'">
+						<a class="btn btn-block" href="/auth/facebook" role="button" style="background-color: #1977f3; color: white; text-decoration: none;" onMouseOver="this.style.background='#236bc9'" onMouseOut="this.style.background='#1977f3'">
 							<img width="20px" src="/images/facebook_reverse.png" />
 							<%= assets.buttons.login_facebook %>
 						</a>

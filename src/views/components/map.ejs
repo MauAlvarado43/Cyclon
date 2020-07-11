@@ -1,41 +1,48 @@
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
-<script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+<script src="/js/leaflet.js"></script>
+<script src="/js/libBoot.js"></script>
 
-<div class="container">
-    <div id="windy" style="width: 70%; height: 30rem;" class="mx-auto"></div>
-    <p>
-        <br>
-        <center>
-            <table>
-                <tr>
-                    <td>
-                        <center>
-                            <div id="real" style="width: 4rem; height: 0.2rem;"></div>
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            <div id="predicted" style="width: 4rem; height: 0.2rem;"></div>
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            <div id="circle" style="width: 1rem; height: 1rem;"></div>
-                        </center>
-                    </td>
-                    <td>
-                        <center> <img src="/images/cyclone.png" width="20"></center>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Real</td>
-                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Predicha</td>
-                    <td class="simbology" style="color: black; text-align: center;">Zona de Riesgo</td>
-                    <td class="simbology" style="color: black; text-align: center;">Fenómeno Meteorológico</td>
-                </tr>
-            </table>
-        </center>
-    </p>
+<div class="slider-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <center><h2><%= (assets.alerts).toUpperCase() %></h2></center>
+                <div id="windy" style="width: 70%; height: 30rem;" class="mx-auto"></div>
+                <p>
+                    <br>
+                    <center>
+                        <table>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <div id="real" style="width: 4rem; height: 0.2rem;"></div>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <div id="predicted" style="width: 4rem; height: 0.2rem;"></div>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <div id="circle" style="width: 1rem; height: 1rem;"></div>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center> <img src="/images/cyclone.png" width="20"></center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="simbology" style="color: white; text-align: center;"><%= assets.simbology.real %></td>
+                                <td class="simbology" style="color: white; text-align: center;"><%= assets.simbology.predicted %></td>
+                                <td class="simbology" style="color: white; text-align: center;"><%= assets.simbology.risk_zone %></td>
+                                <td class="simbology" style="color: white; text-align: center;"><%= assets.simbology.hurricaine %></td>
+                            </tr>
+                        </table>
+                    </center>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

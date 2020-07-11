@@ -1,17 +1,57 @@
 {
-    "locale": "en-mx",
+    "locale": "es",
     "inputs":{
         "email":                "Correo electrónico",
         "password":             "Contraseña",
         "confirmp":             "Confirmar contraseña",
-        "name":                 "Nombre",
-        "lastname":             "Apellidos"
+        "name":                 "Nombre (s)",
+        "lastname":             "Apellidos",
+        "subject":              "Asunto",
+        "message":              "Mensaje"
     },
     "buttons": {
-        "login" :               "Iniciar sesión",
+        "login" :               "Iniciar Sesión",
         "register" :            "Registrate",
         "login_google":         "Iniciar sesión con Google",
-        "login_facebook":       "Iniciar sesión con Facebook"
+        "login_facebook":       "Iniciar sesión con Facebook",
+        "send_message":         "Enviar correo",
+        "home":                 "Inicio",
+        "details":              "Detalles"
+    },
+    "simbology":{
+        "real":                 "Trayectoria Real",
+        "predicted":            "Trayectoria Predicha",
+        "risk_zone":            "Zona de Riesgo",
+        "hurricaine":           "Fenómeno Meteorológico"
+    },
+    "features":{
+        "title":                "Características",
+        "description":          "Cyclon fue desarrollado en base a las deficiencias en los sistemas de alertas de fenónemos meteorológicos, ofrece: ",
+        "titles":{
+            "alerts":           "Alertas",
+            "history":          "Historial",
+            "prediction":       "Zonas de Riesgo",
+            "filter":           "Filtro",
+            "analysis":         "Gráficos",
+            "places":           "Ubicación"
+        },
+        "texts":{
+            "alerts":           "Recibe alertas en tiempo real",
+            "history":          "Consulta nuestro registro de depresiones tropicales, tormentas tropicales y huracanes",
+            "prediction":       "Visualiza zonas de riesgo donde pueden aparecer depresiones tropicales",
+            "filter":           "Personaliza las alertas para recibir solamente las que estén cerca de ti",
+            "analysis":         "Analiza gráficamente los datos registrados",
+            "places":           "Lleva Cyclon a todos lados",
+            "track_hurricaine": "Después de configurar la aplicación y establecer tu ubicación, puedes visualizar información en tiempo real y planificar tus acciones ante un huracán.",
+            "monitoring_hurr":  "Nuestros servidores están siempre activos recopilando datos de la NOAA para notificarte oportunamente."
+        },
+        "labels":{
+            "configuring":      "Configuración",
+            "geolocation":      "Geolocalización",
+            "monitoring":       "Monitoreo",
+            "track_hurricaine": "Seguimiento de Huracanes",
+            "monitoring_hurr":  "Monitoreo de Huracanes"
+        }
     },
     "errors":{
         "404":                  "404 Ruta no encontrada",
@@ -32,9 +72,18 @@
     "SIGNUP_SUCCESS":           "Iniciando sesión...",
     "privacy":                  "Políticas de privacidad",
     "terms":                    "Términos y condiciones",
+    "read":                     "He leído y acepto las condiciones declaradas de Cyclon en",
+    "and":                      "y",
     "description":              "Cyclon es un proyecto que busca alertar a la población oportunamente acerca de la aparición de huracanes cercanos a su localidad",
     "about":                    "Acerca de",
     "contact":                  "Contacto",
+    "contact_label":            "Use el siguiente formulario de contacto",
     "faq":                      "Preguntas frecuentes",
-    "rights":                   "Todos los derechos reservados"
+    "rights":                   "Todos los derechos reservados",
+    "importantLinks":           "Enlaces Importantes",
+    "social":                   "Redes Sociales",
+    "alerts":                   "Alertas",
+    "tweets":                   "Últimos Tweets",
+    "tweets_description":       "Revisa las últimas publicaciones de Cyclon en Twitter",
+    "download":                 "¡Descárgala ya!"
 }

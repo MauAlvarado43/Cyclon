@@ -1,40 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Free cyclone's alerts">
+    <meta name="author" content="Cyclon">
     <title> <%= title %> </title>
-    <link rel="shortcut icon" href="/images/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Hind&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/fontawesome-all.css" rel="stylesheet">
+    <link href="/css/swiper.css" rel="stylesheet">
+	<link href="/css/magnific-popup.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+
+    <link rel="icon" href="/images/favicon.ico">
+    
 </head>
-<body>
-    <%- include("./components/navbar-unregister") %> 
+<body data-spy="scroll" data-target=".fixed-top">
+
+    <%- include("./components/loader") %>
+
+    <%- include("./components/navbar-unregister",{assets: assets}) %> 
 
     <div id="app">    
         <%- include('./components/login-form',{assets: assets, errors: errors}) %>
         <%- include('./components/register-form',{assets: assets, errors: errors}) %>
-    </div>
+    </div>  
 
-    <center>
-
-        <section class="section section-md text-center mt-5 mb-5 mx-auto">
-            <div>
-                <h4>Alertas actuales</h4>
-            </div>
-            <%- include("./components/map") %> 
-        </section>
-
-        <div class="container">
-            <div>
-                <h4>Tweets de Cyclon</h4>
-                <%- include("./components/twitter-history") %> 
-            </div>
-        </section>
-
-    </center>
-
+    <%- include("./components/header",{assets: assets}) %> 
+    <%- include("./components/features",{assets: assets}) %> 
+    <%- include("./components/map",{assets: assets}) %> 
+    <%- include("./components/twitter-history",{assets: assets}) %> 
+    <%- include("./components/contact",{assets: assets}) %> 
     <%- include("./components/footer",{assets: assets}) %> 
 
 </body>
@@ -42,10 +41,20 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/swiper.min.js"></script>
+<script src="/js/jquery.magnific-popup.js"></script>
+<script src="/js/morphext.min.js"></script>
+<script src="/js/validator.min.js"></script>
+<script src="/js/scripts.js"></script>
 <script src="/js/vue.js"></script>
 <script src="/js/regex.js"></script>
 <script src="/js/index.js"></script>
 <script src="/js/alertManager.js"></script>
+<script src="/js/client.js"></script>
+<script src="/js/platform.js" async defer></script>
+<script src="/js/base64.min.js"></script>
+<script src="/js/gmail.js"></script>
 
 <script>
     $(document).ready(()=>{
