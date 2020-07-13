@@ -3,9 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
     <meta name="description" content="Free cyclone's alerts">
     <meta name="author" content="Cyclon">
+
     <title> <%= title %> </title>
+
+    <meta property="og:site_name" content="Cyclon" />
+	<meta property="og:site" content="http://cyclon.com.mx/"/>
+	<meta property="og:title" content="<%= title %>"/>
+	<meta property="og:description" content="Main page" />
+	<meta property="og:image" content="/images/favicon.ico"/>
+	<meta property="og:url" content="http://cyclon.com.mx/"/>
+	<meta property="og:type" content="article" />
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
@@ -57,6 +67,18 @@
 <script src="/js/gmail.js"></script>
 
 <script>
+
+    document.getElementById("loginButton").setAttribute("data-toggle","modal");
+    document.getElementById("loginButton").setAttribute("data-target","#loginModal");
+    document.getElementById("registerButton").setAttribute("data-toggle","modal");
+    document.getElementById("registerButton").setAttribute("data-target","#registerModal");
+    document.getElementById("contactButton").setAttribute("href","#contact");
+    document.getElementById("homeButton").setAttribute("href","#header");
+    document.getElementById("homeImageButton").setAttribute("href","#header");
+    document.getElementById("privacyButton").setAttribute("href","/privacy");
+    document.getElementById("termsButton").setAttribute("href","/terms");
+
+
     $(document).ready(()=>{
         var searchParams = new URLSearchParams(window.location.search);
         if(searchParams.get("action")=="register"){
@@ -69,6 +91,7 @@
             $('#newPassword').modal('show');
         }
     });
+
 </script>
 
 </html>

@@ -1,13 +1,31 @@
-.navbar-brand {
-    padding: 0;
+::-webkit-scrollbar {
+	z-index: 9999;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
   }
   
-.navbar-nav .nav-link {
-    padding-top: 0;
-    padding-bottom: 0;
-    height: 50px;
-    line-height: 50px;
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: rgb(69, 117, 219);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: rgb(39, 62, 163);
+  }
+
+.navbar-custom{
+	padding-right: 5rem !important;
 }
+
+.modal-open[style] {
+	padding-right: 0px !important;
+	position: relative;
+	overflow-y: scroll;
+ }
 
 #real{
     background: linear-gradient(90deg,#00bc79 0%, #887c73 35%,#a9136c 100%);
@@ -24,12 +42,6 @@
     width: 100px;
     height: 100px;
 }
-
-.simbology{
-    padding-left: 10;
-    padding-right: 10px;
-    color:white;
-} 
 
 #windy {
     margin: 0;
@@ -49,6 +61,13 @@
 #progress-bar{
     visibility: hidden;
 }
+
+.simbology{
+    padding-left: 10;
+    padding-right: 10px;
+    color:white;
+} 
+
 
 .twitter-timeline {
     margin-left: auto !important;
@@ -1258,6 +1277,11 @@ a:hover.back-to-top {
 	}
 }
 
+@media (max-width: 600px){
+	.navbar-custom{
+		padding-right: 1rem !important;
+	}
+}
 
 @media (min-width: 992px) {
 	
@@ -1561,4 +1585,15 @@ a:hover.back-to-top {
 
 .basic-1 {
 	position: relative;
+}
+
+.navbar-brand {
+    padding: 0;
+}
+  
+.navbar-nav .nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 50px;
+    line-height: 50px;
 }

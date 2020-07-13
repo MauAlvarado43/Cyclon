@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top" >
 
-    <a class="navbar-brand logo-image" href="#">
-        <img src="/images/CyclonHeader.png" alt="Cyclon" style="width: 208px; height: 100px;">
+    <a class="navbar-brand logo-image page-scroll" id="homeImageButton">
+        <img src="/images/CyclonHeader.png" alt="Cyclon" style="width: 150px; height: 65px;">
     </a> 
     
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,26 +12,16 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link page-scroll" href="#header"><%= (assets.buttons.home).toUpperCase() %> <span class="sr-only">(current)</span></a>
+                <a class="nav-link page-scroll" id="homeButton"><%= (assets.buttons.home).toUpperCase() %></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link page-scroll" data-toggle="modal" data-target="#loginModal" style="cursor: pointer;"><%= (assets.buttons.login).toUpperCase() %></a>
+                <a class="nav-link page-scroll" style="cursor: pointer;" id="loginButton"><%= (assets.buttons.login).toUpperCase() %></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link page-scroll" data-toggle="modal" data-target="#registerModal" style="cursor: pointer;"><%= (assets.buttons.register).toUpperCase() %></a>
+                <a class="nav-link page-scroll" style="cursor: pointer;" id="registerButton"><%= (assets.buttons.register).toUpperCase() %></a>
             </li>
-        
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.details).toUpperCase() %></a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="terms-conditions.html"><span class="item-text"><%= (assets.terms).toUpperCase() %></span></a>
-                    <div class="dropdown-items-divide-hr"></div>
-                    <a class="dropdown-item" href="privacy-policy.html"><span class="item-text"><%= (assets.privacy).toUpperCase() %></span></a>
-                </div>
-            </li>
-
             <li class="nav-item">
-                <a class="nav-link page-scroll" href="#contact"><%= (assets.contact).toUpperCase() %></a>
+                <a class="nav-link page-scroll"  id="contactButton"><%= (assets.contact).toUpperCase() %></a>
             </li>
         </ul>
         <span class="nav-item social-icons">
@@ -42,7 +32,7 @@
                 </a>
             </span>
             <span class="fa-stack">
-                <a href="#your-link">
+                <a href="https://twitter.com/HyperSoftCode1">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-twitter fa-stack-1x"></i>
                 </a>
