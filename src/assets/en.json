@@ -1,5 +1,10 @@
 {
     "locale":                   "en",
+    "titles":{
+        "index":                "Index",
+        "terms":                "Terms & Conditions",
+        "privacy":              "Privacy policies"
+    },
     "inputs":{
         "email":                "Email",
         "password":             "Password",
@@ -16,7 +21,8 @@
         "login_facebook":       "Login with Facebook",
         "send_message":         "Submit Message",
         "home":                 "Home",
-        "details":              "Details"
+        "details":              "Details",
+        "back":                 "Volver"
     },
     "simbology":{
         "real":                 "Real Trajectory",

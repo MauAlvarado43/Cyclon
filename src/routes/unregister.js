@@ -8,7 +8,38 @@ const router = Router()
 router.get('/', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
     if (!language) language = "en" 
-    res.render('index', {title: 'Cyclon', assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')), errors: req.flash('error')})
+
+    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+
+    res.render('index', {
+        title: `Cyclon - ${assets.titles.index}`,
+        assets: assets, 
+        errors: req.flash('error')
+    })
+})
+
+router.get('/privacy', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = "en" 
+
+    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+
+    res.render('privacy', {
+        title: `Cyclon - ${assets.titles.privacy}`, 
+        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+    })
+})
+
+router.get('/terms', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = "en" 
+
+    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+
+    res.render('terms', {
+        title: `Cyclon - ${assets.titles.terms}`, 
+        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+    })
 })
 
 router.get('/auth/facebook', passport.authenticate('facebook-auth', { authType: 'rerequest', scope:['email']}))

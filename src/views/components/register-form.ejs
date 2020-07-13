@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel" style="color: black;"> <%= assets.buttons.login %> </h5>
+                <h5 class="modal-title" id="registerModalLabel" style="color: black;"> <%= assets.buttons.register %> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -42,8 +42,7 @@
                             v-model="confirmPassword">
                     </div>
 
-                    <button type="button" class="btn btn-success mb-3 btn-block"
-                        @click="register"><%= assets.buttons.login %></button>
+                    <button type="button" class="btn mb-3 btn-block" @click="register" style=" background-color: #5260ff; color: white;" onmouseover="this.style.background = '#4d57c5'" onmouseout="this.style.background = '#5260ff'"><%= assets.buttons.register %></button>
 
                 </form>
 

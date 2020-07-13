@@ -1,5 +1,10 @@
 {
     "locale":                   "es",
+    "titles":{
+        "index":                "Inicio",
+        "terms":                "Términos y condiciones",
+        "privacy":              "Políticas de privacidad" 
+    },
     "inputs":{
         "email":                "Correo electrónico",
         "password":             "Contraseña",
@@ -16,7 +21,8 @@
         "login_facebook":       "Iniciar sesión con Facebook",
         "send_message":         "Enviar correo",
         "home":                 "Inicio",
-        "details":              "Detalles"
+        "details":              "Detalles",
+        "back":                 "Volver"
     },
     "simbology":{
         "real":                 "Trayectoria Real",
