@@ -22,7 +22,10 @@
         "send_message":         "Enviar correo",
         "home":                 "Inicio",
         "details":              "Detalles",
-        "back":                 "Volver"
+        "back":                 "Volver",
+        "config":               "Configuración",
+        "update":               "Actualizar",
+        "cyclone_history":      "Registros"
     },
     "simbology":{
         "real":                 "Trayectoria Real",

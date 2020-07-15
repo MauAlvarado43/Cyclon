@@ -2,20 +2,17 @@
 	z-index: 9999;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track{
 	background: #f1f1f1;
-  }
+}
   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	background: rgb(69, 117, 219);
-  }
+}
   
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
 	background: rgb(39, 62, 163);
-  }
+ }
 
 .navbar-custom{
 	padding-right: 5rem !important;

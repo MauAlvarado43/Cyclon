@@ -1,9 +1,15 @@
 import {Router} from 'express'
 import passport from 'passport'
+import {UserModel as User} from '../models/UserModel'
+import geoip from 'geoip-lite'
 import path from 'path'
 import fs from 'fs'
 
 const router = Router()
+
+/***************************************
+                Rendering
+***************************************/
 
 router.get('/', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
@@ -42,6 +48,11 @@ router.get('/terms', (req,res) => {
     })
 })
 
+
+/***************************************
+          API Auth Navigator
+***************************************/
+
 router.get('/auth/facebook', passport.authenticate('facebook-auth', { authType: 'rerequest', scope:['email']}))
 
 router.get('/auth/facebook/callback', (req, res, next) => {
@@ -76,6 +87,102 @@ router.get('/auth/google/callback', (req, res, next) => {
     })(req, res, next)
 })
 
+/***************************************
+     API Auth Navigator & Mobile
+***************************************/
+
+router.post('/auth/mobile/facebook', (req,res) => {
+
+    User.find({email: req.body.email}, (err,docs) => {
+
+        console.log(docs)
+
+		if(docs.length==0){
+			const newUser = new User()
+
+			let geo = geoip.lookup(req.ip)
+			
+			if(geo){
+
+				let userObject = newUser.encryptUser(
+					req.body.email,
+					geo.ll[0],
+					geo.ll[1],
+					req.body.id
+				)
+			
+				newUser.name = req.body.givenName
+				newUser.lastName = req.body.familyName
+				newUser.email = userObject.email
+				newUser.location.lat = userObject.lat
+				newUser.location.lng = userObject.lng
+				newUser.password = userObject.password
+				newUser.type = 0
+
+				console.log(newUser)
+			
+				newUser.save()
+				done(null, newUser)
+			}
+			else{
+				return done(["BAD_LOCATION"], false)
+			}     		
+		}
+		else{
+			done(null, docs[0])
+		}
+
+	})
+
+})
+
+router.post('/auth/mobile/google', (req,res) => {
+
+    User.find({email: req.body.email}, (err,docs) => {
+
+        console.log(docs)
+
+		if(docs.length==0){
+			const newUser = new User()
+
+			let geo = geoip.lookup(req.ip)
+			
+			if(geo){
+
+				let userObject = newUser.encryptUser(
+					req.body.email,
+					geo.ll[0],
+					geo.ll[1],
+					req.body.id
+				)
+			
+				newUser.name = req.body.givenName
+				newUser.lastName = req.body.familyName
+				newUser.email = userObject.email
+				newUser.location.lat = userObject.lat
+				newUser.location.lng = userObject.lng
+				newUser.password = userObject.password
+				newUser.type = 0
+
+				console.log(newUser)
+			
+				newUser.save()
+                
+                res.json({code:200,"msg":["ACCOUNT_CREATED"]})
+                
+			}
+			else{
+				res.json({code:200,"msg":["BAD_LOCATION"]})
+			}     		
+		}
+		else{
+			res.json({code:200,"msg":["LOGIN_SUCCESS"]})
+		}
+
+	})
+
+})
+
 router.post('/auth/register', (req, res, next) => {
     passport.authenticate('local-signup', function(err, user, info) {
         if (err){
@@ -84,7 +191,10 @@ router.post('/auth/register', (req, res, next) => {
         if (!user){ 
             return res.json({code:401,"msg":["BAD_INPUT"]})
         }
-        return res.json({code:200,"msg":["SIGNUP_SUCCESS"]})
+        req.logIn(user, function(err) {
+            if (err) return next(err)
+            return res.json({code:200,"msg":"SIGNUP_SUCCESS"})
+          })
     })(req, res, next)
 })
 

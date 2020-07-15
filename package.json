@@ -1,6 +1,6 @@
 {
-  "name": "Cyclon",
-  "version": "0.0.2",
+  "name": "cyclon",
+  "version": "1.0.3",
   "description": "A platform that alerts about the world's current Cyclones within Latin America in near real-time.",
   "private": true,
   "license": "GPL-3.0-or-later",
@@ -16,7 +16,6 @@
   },
   "keywords": [],
   "author": "Mauricio Alvarado López - Ángel Gabriel Rodríguez Rodríguez",
-  "license": "ISC",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
