@@ -22,7 +22,10 @@
         "send_message":         "Submit Message",
         "home":                 "Home",
         "details":              "Details",
-        "back":                 "Volver"
+        "back":                 "Back",
+        "config":               "Settings",
+        "update":               "Update",
+        "cyclone_history":      "Records"
     },
     "simbology":{
         "real":                 "Real Trajectory",
@@ -39,7 +42,8 @@
             "prediction":       "Risk Areas",
             "filter":           "Filter",
             "analysis":         "Graphs",
-            "places":           "Location"
+            "places":           "Location",
+            
         },
         "texts":{
             "alerts":           "Receive alerts in real time",

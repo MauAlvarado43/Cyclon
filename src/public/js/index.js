@@ -4,20 +4,51 @@ const app = new Vue({
         email:"",
         password:"",
         name:"",
-        lastname:"",
+        lastName:"",
         confirmPassword:""
     },
     methods: {
-        login(){
-            console.log(this.email)
-            console.log(this.password)
+        async login(){
+
+            let config = {
+                method: 'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: this.email,
+                    password: this.password
+                })
+            }
+
+            let response = await fetch("/auth/login", config)
+            let res = await response.json()
+
+            console.log(res)
         },
-        register(){
-            console.log(this.email)
-            console.log(this.password)
-            console.log(this.name)
-            console.log(this.lastname)
-            console.log(this.confirmPassword)
+        async register(){
+
+            let config = {
+                method: 'POST',
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: this.email,
+                    password: this.password,
+                    name: this.name,
+                    lastName: this.lastName
+                })
+            }
+
+            console.log(config)
+
+            let response = await fetch("/auth/register", config)
+            let res = await response.json()
+
+            console.log(res)
         }
     },
 })

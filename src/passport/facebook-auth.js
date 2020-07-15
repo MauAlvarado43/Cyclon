@@ -6,7 +6,7 @@ import geoip from 'geoip-lite'
 passport.use('facebook-auth',new FacebookStrategy({
     clientID: '3170951326462560',
     clientSecret: 'e201c5704c07e7b3bcdc9f79a890feb2',
-    callbackURL: 'http://localhost:3000/auth/facebook/callback',
+    callbackURL: process.env.URL + '/auth/facebook/callback',
     passReqToCallback: true,
     profileFields: ["id", "email", "first_name", "last_name"]
   },async (req, accessToken, refreshToken, profile, done) => {

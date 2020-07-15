@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top" >
+
+    <a class="navbar-brand logo-image page-scroll" id="homeImageButton">
+        <img src="/images/CyclonHeader.png" alt="Cyclon" style="width: 150px; height: 65px;">
+    </a> 
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-awesome fas fa-bars"></span>
+        <span class="navbar-toggler-awesome fas fa-times"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link page-scroll" id="homeButton"><%= (assets.buttons.home).toUpperCase() %></a>
+            </li>
+
+            <% if(context.level==0){ %>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" style="cursor: pointer;" href="/config"><%= (assets.buttons.config).toUpperCase() %></a>
+                </li>
+            <%}%>
+
+            <% else if(context.level==1){ %>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" style="cursor: pointer;" href="/records"><%= (assets.buttons.records).toUpperCase() %></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" style="cursor: pointer;" href="/config"><%= (assets.buttons.config).toUpperCase() %></a>
+                </li>
+            <%}%>
+
+            <% else if(context.level==2){ %>
+                
+            <%}%>
+
+            <% else { %>
+                <script>
+                    window.location.href = "/";
+                </script>
+            <%}%>
+
+
+        </ul>
+    </div>
+</nav>
