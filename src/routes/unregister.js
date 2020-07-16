@@ -12,16 +12,26 @@ const router = Router()
 ***************************************/
 
 router.get('/', (req,res) => {
+
+    if(!req.session.error)
+        req.session.error = []
+
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en" 
+    if (!language) language = "en"
+    
+    if(req.session.passport && req.session.passport.user)
+        res.redirect('/home')
+    else{
 
-    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+        let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
 
-    res.render('index', {
-        title: `Cyclon - ${assets.titles.index}`,
-        assets: assets, 
-        errors: req.flash('error')
-    })
+        res.render('index', {
+            title: `Cyclon - ${assets.titles.index}`,
+            assets: assets, 
+            errors: req.session.error
+        })
+    }
+    
 })
 
 router.get('/privacy', (req,res) => {
@@ -32,7 +42,7 @@ router.get('/privacy', (req,res) => {
 
     res.render('privacy', {
         title: `Cyclon - ${assets.titles.privacy}`, 
-        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+        assets: assets
     })
 })
 
@@ -44,10 +54,19 @@ router.get('/terms', (req,res) => {
 
     res.render('terms', {
         title: `Cyclon - ${assets.titles.terms}`, 
-        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+        assets: assets
     })
 })
 
+/***************************************
+                    API
+***************************************/
+
+router.get('/assets', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = "en" 
+    res.send(JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')))
+})
 
 /***************************************
           API Auth Navigator
@@ -57,16 +76,24 @@ router.get('/auth/facebook', passport.authenticate('facebook-auth', { authType: 
 
 router.get('/auth/facebook/callback', (req, res, next) => {
     passport.authenticate('facebook-auth', function(err, user, info) {
+
         if (err){
-            req.flash('error', err) 
+            req.session.error = err 
             return res.redirect("/?action=login")
         }
         if (!user){ 
-            req.flash('error', ["BAD_INPUT"]) 
+            req.session.error = ["BAD_INPUT"]
             return res.redirect("/?action=login") 
         }
-        req.flash('error', []) 
-        return res.redirect("/") 
+
+        req.session.level = user.type 
+
+        req.logIn(user, function(err) {
+            if (err) return next({code:401,"msg":err})
+            req.session.error = []
+            return res.redirect("/home") 
+        })
+        
     })(req, res, next)
 })
 
@@ -75,15 +102,22 @@ router.get('/auth/google',passport.authenticate('google-auth', { scope: ['https:
 router.get('/auth/google/callback', (req, res, next) => {
     passport.authenticate('google-auth', function(err, user, info) {
         if (err){
-            req.flash('error', err) 
+            req.session.error = err 
             return res.redirect("/?action=login")
         }
         if (!user){ 
-            req.flash('error', ["BAD_INPUT"]) 
+            req.session.error = ["BAD_INPUT"]
             return res.redirect("/?action=login") 
         }
-        req.flash('error', [""]) 
-        return res.redirect("/") 
+
+        req.session.level = user.type 
+
+        req.logIn(user, function(err) {
+            if (err) return next({code:401,"msg":err})
+            req.session.error = []
+            return res.redirect("/home") 
+        })
+        
     })(req, res, next)
 })
 
@@ -94,8 +128,6 @@ router.get('/auth/google/callback', (req, res, next) => {
 router.post('/auth/mobile/facebook', (req,res) => {
 
     User.find({email: req.body.email}, (err,docs) => {
-
-        console.log(docs)
 
 		if(docs.length==0){
 			const newUser = new User()
@@ -118,8 +150,6 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
 				newUser.type = 0
-
-				console.log(newUser)
 			
 				newUser.save()
 				done(null, newUser)
@@ -140,8 +170,6 @@ router.post('/auth/mobile/google', (req,res) => {
 
     User.find({email: req.body.email}, (err,docs) => {
 
-        console.log(docs)
-
 		if(docs.length==0){
 			const newUser = new User()
 
@@ -163,8 +191,6 @@ router.post('/auth/mobile/google', (req,res) => {
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
 				newUser.type = 0
-
-				console.log(newUser)
 			
 				newUser.save()
                 
@@ -191,20 +217,28 @@ router.post('/auth/register', (req, res, next) => {
         if (!user){ 
             return res.json({code:401,"msg":["BAD_INPUT"]})
         }
+
+        req.session.level = user.type 
+
         req.logIn(user, function(err) {
             if (err) return next(err)
             return res.json({code:200,"msg":"SIGNUP_SUCCESS"})
           })
+
+
     })(req, res, next)
 })
 
 router.post('/auth/login', (req,res,next) => {
     passport.authenticate('local-signin', function(err, user, info) {
-        if (err)  return next(err)
-        if (!user) { return res.json({code:401,"msg":"BAD"}) }
+        if (err)  return res.send({code:401,"msg":err})
+        if (!user) { return res.json({code:401,"msg":["BAD_INPUT"]}) }
+
+        req.session.level = user.type 
+
         req.logIn(user, function(err) {
-          if (err) return next(err)
-          return res.json({code:200,"msg":"LOGIN_SUCCESS"})
+          if (err) return next({code:401,"msg":err})
+          return res.json({code:200,"msg":["LOGIN_SUCCESS"]})
         })
     })(req, res, next)
 })
@@ -213,6 +247,6 @@ router.get('/logout', function(req, res){
     req.session.destroy()
     req.logout()
     res.redirect('/')
-});
+})
 
 module.exports = router

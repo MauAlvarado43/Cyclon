@@ -23,7 +23,7 @@ passport.use('local-signup', new LocalStrategy({
     const user = await User.findOne({'email': encryptAES(email)})
 
     if(user){
-        return done('EMAIL_TAKEN', false)
+        return done(['EMAIL_TAKEN'], false)
     }
     else{
 
@@ -33,9 +33,6 @@ passport.use('local-signup', new LocalStrategy({
         if(userValidation.length==0){
 
             let geo = geoip.lookup(req.ip)
-            geo = {
-                ll: [19,-99]
-            }
 
             if(geo){
 
@@ -74,12 +71,17 @@ passport.use('local-signin', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, async (req, email, password, done) => {
-    const user = await User.findOne({email: email});
-    if(!user) {
-        return done(null, false, req.flash('signinMessage', 'No User Found'));
+
+    const user = await User.findOne({email: encryptAES(email)})
+
+    if(!user){
+        return done(["USER_NOT_EXIST"], false)
     }
-    if(!user.comparePassword(password)) {
-        return done(null, false, req.flash('signinMessage', 'Incorrect Password'));
+    
+    if(!user.comparePassword(encryptAES(password), user.password)) {
+        return done(["INCORRECT_PASSWORD"], false)
     }
-    return done(null, user);
+
+    return done(null, user)
+
 }))
