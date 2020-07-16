@@ -13,8 +13,6 @@ passport.use('facebook-auth',new FacebookStrategy({
 
     User.find({email: profile.emails[0].value}, (err,docs) => {
 
-        console.log(docs)
-
 		if(docs.length==0){
 			const newUser = new User()
 
@@ -36,9 +34,7 @@ passport.use('facebook-auth',new FacebookStrategy({
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
 				newUser.type = 0
-
-				console.log(newUser)
-			
+							
 				newUser.save()
 				done(null, newUser)
 			}

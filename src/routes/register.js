@@ -26,10 +26,10 @@ router.get('/home', (req,res) => {
 
     let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
 
-    res.render('terms', {
-        title: `Cyclon - ${assets.titles.terms}`, 
+    res.render('home', {
+        title: `Cyclon - ${assets.titles.home}`, 
         assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')),
-        context: {}
+        context: req.session
     })
 })
 

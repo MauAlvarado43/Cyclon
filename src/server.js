@@ -49,6 +49,11 @@ app.use('/graphql', (req,res,next) => {
     }
 )
 
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+})
+
 // Settings
 app.set('port', process.env.PORT || 3000)
 app.use(helmet())
