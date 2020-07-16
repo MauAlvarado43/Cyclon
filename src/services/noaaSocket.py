@@ -27,7 +27,7 @@ class NoaaSocket:
 
     def insertData(self, json):
 
-        try:
+        try: 
             #TODO Request to OpenWeather for getting this moment cyclone's information
             #response = requests.get(self.url,headers={"Content-type":"application/json"})
         
