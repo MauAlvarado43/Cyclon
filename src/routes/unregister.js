@@ -10,13 +10,14 @@ const router = Router()
 /***************************************
                 Rendering
 ***************************************/
-
 router.get('/', (req,res) => {
-
+    
+    console.log("Entra a router inciial")
     if(!req.session.error)
         req.session.error = []
 
     let language = req.acceptsLanguages('es', 'en')
+    console.log("Lenguaje" + language)
     if (!language) language = "en"
     
     if(req.session.passport && req.session.passport.user)

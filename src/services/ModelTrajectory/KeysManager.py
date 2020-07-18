@@ -39,8 +39,5 @@ class KeysManager():
       except OSError:
          return self._get_Available_Key()
 
-   def _get_nose(self):
-      while True:
-         print(self._get_Available_Key())
          
 

@@ -5,45 +5,67 @@ import json
 
 class Petition():
 
-    def __init__(self,  url = 'https://api.openweathermap.org/data/2.5/onecall'):
-        self._url = url
-        super().__init__()
+   def __init__(self,  url = 'https://api.openweathermap.org/data/2.5/onecall'):
+      self._url = url
+      self._path = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/utils/keys.json")
     
-    def getPetition(self, lat, lng):
-        params = {
-            'lat':lat,
-            'lon':lng,
-            'exclude':'current,daily,minutely',
-            'appid':self._api_key,
-            'lang':'es',
-            'units':'metric'
-        }
+   def getPetition(self, lat, lng):
+      params = {
+         'lat':lat,
+         'lon':lng,
+         'exclude':'current,daily,minutely',
+         'appid':self._get_Available_Key(),
+         'lang':'es',
+         'units':'metric'
+      }
 
-        try:
-            response = requests.get(self._url, params = params)
+      try:
+         response = requests.get(self._url, params = params)
 
-            if response.status_code == 200:
-                return ["Peticion exitosa", pd.DataFrame(response.json())]
+         if response.status_code == 200:
+            return ["Peticion exitosa", pd.DataFrame(response.json())]
                 
-            elif response.status_code == 401 or response.status_code == 400:
-                print(response.json())
-                return ["No se pudo procesar la peticion", response.json()]
+         elif response.status_code == 401 or response.status_code == 400:
+            print(response.json())
+            return ["No se pudo procesar la peticion", response.json()]
         
-        except NameError as err:
-            return ["No se pudo procesar la peticion", err]
+      except NameError as err:
+         return ["No se pudo procesar la peticion", err]
 
-    def changeKey(self):
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/utils/keys.json")) as file:
+   def _get_Available_Key(self):
+      try:
+         with open(self._path) as file:
             keys = json.load(file)
-            index = int(keys['numberKey'])
-            self._api_key = keys['keys'][index]
-            if index == 7:
-                keys['numberKey'] = 0
-            else:
-                keys['numberKey'] = index + 1
+            available_key = ""
+            for key in keys:
+               if key['petitions'] < 999:
+                  key['petitions'] += 1
+                  available_key = key['key']
+                  with open(self._path, 'w') as open_file:
+                     json.dump(keys, open_file, indent = 4)
+                     if key['key'] == keys[-1]['key'] and key['petitions'] >= 999:
+                        print("Entro")
+                        for key in keys:
+                           key['petitions'] = 0
+                        with open(self._path, 'w') as open_file:
+                           json.dump(keys, open_file, indent = 4)
+                     break
+               
+               
+               elif key['key'] == keys[-1]['key'] and key['petitions'] >= 999:
+                  print("Entro")
+                  for key in keys:
+                     key['petitions'] = 0
+                  with open(self._path, 'w') as open_file:
+                     json.dump(keys, open_file, indent = 4)
+                  available_key = self._get_Available_Key()
+               
+               
+            return available_key
+      except OSError:
+         return self._get_Available_Key()
 
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/utils/keys.json"), 'w') as OpenFile:
-                json.dump(keys, OpenFile, indent = 4)
+
 
 
 
