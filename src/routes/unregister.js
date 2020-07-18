@@ -4,6 +4,7 @@ import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
 import path from 'path'
 import fs from 'fs'
+import {encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid} from '../utils/cipher'
 
 const router = Router()
 
@@ -127,24 +128,28 @@ router.get('/auth/google/callback', (req, res, next) => {
 
 router.post('/auth/mobile/facebook', (req,res) => {
 
-    User.find({email: req.body.email}, (err,docs) => {
+    User.find({email: encryptAES(decryptAndroid(req.body.email))}, (err,docs) => {
 
 		if(docs.length==0){
-			const newUser = new User()
+            const newUser = new User()
+            
+            let geo = geoip.lookup(req.ip)
 
-			let geo = geoip.lookup(req.ip)
+            geo = {
+                ll: [19, -99]
+            }
 			
 			if(geo){
 
 				let userObject = newUser.encryptUser(
-					req.body.email,
+					decryptAndroid(req.body.email),
 					geo.ll[0],
 					geo.ll[1],
-					req.body.id
+					decryptAndroid(req.body.id)
 				)
 			
-				newUser.name = req.body.givenName
-				newUser.lastName = req.body.familyName
+				newUser.name = decryptAndroid(req.body.name)
+				newUser.lastName = decryptAndroid(req.body.lastName)
 				newUser.email = userObject.email
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
@@ -152,14 +157,14 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				newUser.type = 0
 			
 				newUser.save()
-				done(null, newUser)
+				res.json({"code": 200, "msg": "LOGIN_SUCCESS"});
 			}
 			else{
-				return done(["BAD_LOCATION"], false)
+                res.json({"code": 401, "msg": "BAD_LOCATION"});
 			}     		
 		}
 		else{
-			done(null, docs[0])
+			res.json({"code": 200, "msg": "LOGIN_SUCCESS"});
 		}
 
 	})
@@ -168,7 +173,7 @@ router.post('/auth/mobile/facebook', (req,res) => {
 
 router.post('/auth/mobile/google', (req,res) => {
 
-    User.find({email: req.body.email}, (err,docs) => {
+    User.find({email: encryptAES(decryptAndroid(req.body.email))}, (err,docs) => {
 
 		if(docs.length==0){
 			const newUser = new User()
@@ -178,14 +183,14 @@ router.post('/auth/mobile/google', (req,res) => {
 			if(geo){
 
 				let userObject = newUser.encryptUser(
-					req.body.email,
+					decryptAndroid(req.body.email),
 					geo.ll[0],
 					geo.ll[1],
-					req.body.id
+					decryptAndroid(req.body.id)
 				)
 			
-				newUser.name = req.body.givenName
-				newUser.lastName = req.body.familyName
+				newUser.name = decryptAndroid(req.body.givenName)
+				newUser.lastName = decryptAndroid(req.body.familyName)
 				newUser.email = userObject.email
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
@@ -198,7 +203,7 @@ router.post('/auth/mobile/google', (req,res) => {
                 
 			}
 			else{
-				res.json({code:200,"msg":["BAD_LOCATION"]})
+				res.json({code:401,"msg":["BAD_LOCATION"]})
 			}     		
 		}
 		else{
