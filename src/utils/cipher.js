@@ -1,8 +1,24 @@
 import crypto from 'crypto'
+import * as CryptoJS from 'crypto-js';  
 
 const algorithm = 'aes-256-cbc';
 const passwordAES = 'TStrzyg!zGXNvKyK3xkQW#6arP{q6AcL';
 const IV = "5183666c72eec9e4";
+
+const _key = "Y01JNiM0cFRhXmFBN0gwaVFsazlmJG8kckw0Xmk2d2Q=";
+const _iv = "AcynMwikMkW4c7+mHtwtfw==";
+
+const encryptAndroid = plainText => {
+    let key = CryptoJS.enc.Base64.parse(_key);
+    let iv = CryptoJS.enc.Base64.parse(_iv);
+    return CryptoJS.AES.encrypt(plainText.trim(),key,{ iv: iv }).toString();
+}
+
+const decryptAndroid = cryptedText => {
+    let key = CryptoJS.enc.Base64.parse(_key);
+    let iv = CryptoJS.enc.Base64.parse(_iv);
+    return CryptoJS.AES.decrypt(cryptedText, key,{ iv: iv }).toString(CryptoJS.enc.Utf8);
+}
 
 const encryptFront = plainText => {
     try{
@@ -61,7 +77,7 @@ const decryptAES = cryptedText => {
     }
 }
 
-export {encryptFront, decryptFront, encryptAES, decryptAES}
+export {encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid}
 
 const publicKeyServer = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0TlmjdegY60EXB2y5IR/
