@@ -33,7 +33,12 @@
         "real":                 "Trayectoria Real",
         "predicted":            "Trayectoria Predicha",
         "risk_zone":            "Zona de Riesgo",
-        "hurricaine":           "Fenómeno Meteorológico"
+        "tropical_depression":  "Depresión Tropical",
+        "tropical_storm":       "Tormenta Tropical",
+        "hurricane":            "Huracán",
+        "remanent":             "Remanente",
+        "title":                "Simbología",
+        "subtitle":             "Consulta los fenómenos meteorológicos actuales"
     },
     "features":{
         "title":                "Características",

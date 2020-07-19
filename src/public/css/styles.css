@@ -37,9 +37,9 @@
 #circle {
     background: #8333ca5b;
     border: #6721a6 1px solid;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 #windy {

@@ -1,36 +1,10 @@
-import requests
-import pandas as pd
 import os
 import json
 
-class Petition():
+class KeysManager():
 
-   def __init__(self,  url = 'https://api.openweathermap.org/data/2.5/onecall'):
-      self._url = url
-      self._path = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/utils/keys.json")
-    
-   def getPetition(self, lat, lng):
-      params = {
-         'lat':lat,
-         'lon':lng,
-         'exclude':'current,daily,minutely',
-         'appid':self._get_Available_Key(),
-         'lang':'es',
-         'units':'metric'
-      }
-
-      try:
-         response = requests.get(self._url, params = params)
-
-         if response.status_code == 200:
-            return ["Peticion exitosa", pd.DataFrame(response.json())]
-                
-         elif response.status_code == 401 or response.status_code == 400:
-            print(response.json())
-            return ["No se pudo procesar la peticion", response.json()]
-        
-      except NameError as err:
-         return ["No se pudo procesar la peticion", err]
+   def __init__(self):
+      self._path = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/keys.json")
 
    def _get_Available_Key(self):
       try:
@@ -65,7 +39,5 @@ class Petition():
       except OSError:
          return self._get_Available_Key()
 
-
-
-
+         
 

@@ -33,7 +33,12 @@
         "real":                 "Real Trajectory",
         "predicted":            "Predicted Trajectory",
         "risk_zone":            "Risk Zone",
-        "hurricaine":           "Meteorological Phenomenon"
+        "tropical_depression":  "Tropical Depression",
+        "tropical_storm":       "Tropical Storm",
+        "hurricane":            "Hurricaine",
+        "remanent":             "Remanent",
+        "title":                "Sibology",
+        "subtitle":             "Check current weather phenomenals"
     },
     "features":{
         "title":                "Features",

@@ -42,7 +42,19 @@
 
     <%- include("./components/header",{assets: assets}) %> 
     <%- include("./components/features",{assets: assets}) %> 
-    <%- include("./components/map",{assets: assets}) %> 
+
+    <div class="slider-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <center><h2><%= (assets.alerts).toUpperCase() %></h2></center>
+                    <div class="p-heading p-large"><%= assets.simbology.subtitle %></div>
+                    <%- include("./components/map",{assets: assets}) %> 
+                </div>
+            </div>
+        </div>
+    </div>
+
     <%- include("./components/twitter-history",{assets: assets}) %> 
     <%- include("./components/contact",{assets: assets}) %> 
     <%- include("./components/footer",{assets: assets}) %> 
