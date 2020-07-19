@@ -11,9 +11,8 @@ const router = Router()
 /***************************************
                 Rendering
 ***************************************/
-
 router.get('/', (req,res) => {
-
+    
     if(!req.session.error)
         req.session.error = []
 
