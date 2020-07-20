@@ -34,20 +34,6 @@
     <%- include("./components/loader") %>
 
     <%- include("./components/navbar-register",{assets: assets}) %> 
-
-    <div class="slider-1">
-        <div class="container" style="margin: 0 !important; padding: 0 !important;">
-            <div class="row" style="margin: 0 !important; padding: 0 !important;">
-                <div class="col-10" style="margin: 0 !important; padding: 0 !important;">
-                    <center><h2><%= (assets.alerts).toUpperCase() %></h2></center>
-                    <%- include("./components/map",{assets: assets}) %> 
-                </div>
-                <div class="col-2" style="margin: 0 !important; padding: 0 !important;" id="panelAlert">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
  
     <%- include("./components/footer",{assets: assets}) %> 
 
@@ -62,26 +48,22 @@
 <script src="/js/lib/morphext.min.js"></script>
 <script src="/js/lib/validator.min.js"></script>
 <script src="/js/lib/scripts.js"></script>
-<script src="/js/alertManager.js"></script>
 <script src="/js/lib/alert.js"></script>
-<script src="/js/home.js"></script>
+
 <script>
 
-    const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+    let assets = {}
 
-    document.getElementById("homeButton").setAttribute("href","#");
-    document.getElementById("homeImageButton").setAttribute("href","#");
-    document.getElementById("privacyButton").setAttribute("href","/privacy");
-    document.getElementById("termsButton").setAttribute("href","/terms");
+    fetch('/assets').then( res => { res.json().then( json => { assets = json; getActiveCyclones()}).catch( err => { console.log(err) }) }).catch( err => { console.log(err) })
 
-    document.getElementById("homeButton").setAttribute("class","nav-link page-scroll active")
+    document.getElementById("homeButton").setAttribute("href","/home")
+    document.getElementById("homeImageButton").setAttribute("href","/home")
+    document.getElementById("privacyButton").setAttribute("href","/privacy")
+    document.getElementById("termsButton").setAttribute("href","/terms")
+    document.getElementById("update").setAttribute("href", "#")
+
+    document.getElementById("configuration").setAttribute("class","nav-item dropdown active")
 
 </script>
-
-<% if(!context.verify){ %>
-    <script>
-        alert.show(assets.verification,assets.notice)
-    </script>
-<% } %>
 
 </html>

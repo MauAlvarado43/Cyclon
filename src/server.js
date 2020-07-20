@@ -13,7 +13,7 @@ import flash from 'connect-flash'
 import path from 'path'
 import graphqlHTTP from 'express-graphql'
 import schema from './config/schema'
-import {errorLog, infoLog} from './utils/logger'
+import { infoLog } from './utils/logger'
 
 // Initialzing packages
 const app = express()
