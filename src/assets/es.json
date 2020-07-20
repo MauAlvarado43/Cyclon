@@ -4,7 +4,8 @@
         "index":                "Inicio",
         "terms":                "Términos y condiciones",
         "privacy":              "Políticas de privacidad",
-        "home":                 "Inicio" 
+        "home":                 "Inicio",
+        "update_info":          "Actualizar datos"
     },
     "inputs":{
         "email":                "Correo electrónico",
@@ -39,6 +40,16 @@
         "remanent":             "Remanente",
         "title":                "Simbología",
         "subtitle":             "Consulta los fenómenos meteorológicos actuales"
+    },
+    "alertMessages":{
+        "DT":                   "Depresión Tropical",
+        "ST":                   "Tormenta Tropical",
+        "H1":                   "Huracán Categoría 1",
+        "H2":                   "Huracán Categoría 2",
+        "H3":                   "Huracán Categoría 3",
+        "H4":                   "Huracán Categoría 4",
+        "H5":                   "Huracán Categoría 5",
+        "no_alerts":            "No hay alertas"
     },
     "features":{
         "title":                "Características",
@@ -109,5 +120,7 @@
     "tweets":                   "Últimos Tweets",
     "tweets_description":       "Revisa las últimas publicaciones de Cyclon en Twitter",
     "download":                 "¡Descárgala ya!",
-    "success":                  "Éxito!"
+    "success":                  "Éxito!",
+    "notice":                   "Aviso",
+    "verification":             "Verifica tu cuenta para recibir las alertas únicamente de tu localidad"
 }

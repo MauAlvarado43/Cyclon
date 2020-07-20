@@ -2,6 +2,8 @@ import passport from 'passport'
 import {Strategy as FacebookStrategy } from 'passport-facebook'
 import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
+import {encryptAES} from '../utils/cipher'
+import { errorLog } from '../utils/logger'
 
 passport.use('facebook-auth',new FacebookStrategy({
     clientID: '3170951326462560',
@@ -11,12 +13,18 @@ passport.use('facebook-auth',new FacebookStrategy({
     profileFields: ["id", "email", "first_name", "last_name"]
   },async (req, accessToken, refreshToken, profile, done) => {
 
-    User.find({email: profile.emails[0].value}, (err,docs) => {
+    User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+
+		if(err) errorLog.error(err)
 
 		if(docs.length==0){
 			const newUser = new User()
 
 			let geo = geoip.lookup(req.ip)
+
+			geo = {
+                ll: [19, -99]
+            }
 			
 			if(geo){
 
@@ -34,6 +42,7 @@ passport.use('facebook-auth',new FacebookStrategy({
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
 				newUser.type = 0
+				newUser.verify = true
 							
 				newUser.save()
 				done(null, newUser)

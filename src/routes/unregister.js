@@ -4,7 +4,8 @@ import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
 import path from 'path'
 import fs from 'fs'
-import {encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid} from '../utils/cipher'
+import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid } from '../utils/cipher'
+import { errorLog } from '../utils/logger'
 
 const router = Router()
 
@@ -87,6 +88,7 @@ router.get('/auth/facebook/callback', (req, res, next) => {
         }
 
         req.session.level = user.type 
+        req.session.verify = user.verify
 
         req.logIn(user, function(err) {
             if (err) return next({code:401,"msg":err})
@@ -111,6 +113,7 @@ router.get('/auth/google/callback', (req, res, next) => {
         }
 
         req.session.level = user.type 
+        req.session.verify = user.verify
 
         req.logIn(user, function(err) {
             if (err) return next({code:401,"msg":err})
@@ -129,14 +132,16 @@ router.post('/auth/mobile/facebook', (req,res) => {
 
     User.find({email: encryptAES(decryptAndroid(req.body.email))}, (err,docs) => {
 
+        if(err) errorLog.error(err)
+
 		if(docs.length==0){
             const newUser = new User()
             
             let geo = geoip.lookup(req.ip)
 
-            geo = {
-                ll: [19, -99]
-            }
+            // geo = {
+            //     ll: [19, -99]
+            // }
 			
 			if(geo){
 
@@ -153,7 +158,8 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
-				newUser.type = 0
+                newUser.type = 0
+                newUser.verify = true
 			
 				newUser.save()
 				res.json({"code": 200, "msg": "LOGIN_SUCCESS"});
@@ -173,6 +179,8 @@ router.post('/auth/mobile/facebook', (req,res) => {
 router.post('/auth/mobile/google', (req,res) => {
 
     User.find({email: encryptAES(decryptAndroid(req.body.email))}, (err,docs) => {
+
+        if(err) errorLog.error(err)
 
 		if(docs.length==0){
 			const newUser = new User()
@@ -195,7 +203,8 @@ router.post('/auth/mobile/google', (req,res) => {
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
 				newUser.type = 0
-			
+                newUser.verify = true
+                
 				newUser.save()
                 
                 res.json({code:200,"msg":["ACCOUNT_CREATED"]})
@@ -223,6 +232,7 @@ router.post('/auth/register', (req, res, next) => {
         }
 
         req.session.level = user.type 
+        req.session.verify = user.verify
 
         req.logIn(user, function(err) {
             if (err) return next(err)
@@ -238,7 +248,8 @@ router.post('/auth/login', (req,res,next) => {
         if (err)  return res.send({code:401,"msg":err})
         if (!user) { return res.json({code:401,"msg":["BAD_INPUT"]}) }
 
-        req.session.level = user.type 
+        req.session.level = user.type
+        req.session.verify = user.verify
 
         req.logIn(user, function(err) {
           if (err) return next({code:401,"msg":err})

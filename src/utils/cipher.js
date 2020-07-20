@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import * as CryptoJS from 'crypto-js';  
+import { errorLog } from './logger'
 
 const algorithm = 'aes-256-cbc';
 const passwordAES = 'TStrzyg!zGXNvKyK3xkQW#6arP{q6AcL';
@@ -32,6 +33,7 @@ const encryptFront = plainText => {
         return cipher.encrypt(plainText);
 
     }catch(err){
+        if(err) errorLog.error(err)
         return null
     }
 }
@@ -48,6 +50,7 @@ const decryptFront = cryptedText => {
         return cipher.decrypt(cryptedText).toString("utf8");
 
     }catch(err){
+        if(err) errorLog.error(err)
         return null
     }
 }
@@ -61,6 +64,7 @@ const encryptAES = plainText => {
         return encrypted;
 
     }catch(err){
+        if(err) errorLog.error(err)
         return null
     }
 }
@@ -73,11 +77,12 @@ const decryptAES = cryptedText => {
         return (decrypted + decipher.final('utf8'));
 
     }catch(err){
+        if(err) errorLog.error(err)
         return null 
     }
 }
 
-export {encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid}
+export { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid }
 
 const publicKeyServer = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0TlmjdegY60EXB2y5IR/

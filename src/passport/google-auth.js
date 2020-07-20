@@ -3,6 +3,8 @@ import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth'
 import {UserModel as User} from '../models/UserModel'
 import {encryptAES} from '../utils/cipher'
 import geoip from 'geoip-lite'
+import { errorLog } from '../utils/logger'
+
 
 passport.use('google-auth',new GoogleStrategy({
         clientID: "155001320669-kd32n0gk5u8le64bbmtie7d2ebvfujot.apps.googleusercontent.com",
@@ -12,6 +14,8 @@ passport.use('google-auth',new GoogleStrategy({
     }, async (req, accessToken, refreshToken, profile, done) => {
 
         User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+
+            if(err) errorLog.error(err)
 
             if(docs.length==0){
                 const newUser = new User()
@@ -34,6 +38,7 @@ passport.use('google-auth',new GoogleStrategy({
                     newUser.location.lng = userObject.lng
                     newUser.password = userObject.password
                     newUser.type = 0
+                    newUser.verify = true
                 
                     newUser.save()
                     done(null, newUser)

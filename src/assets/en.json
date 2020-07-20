@@ -4,7 +4,8 @@
         "index":                "Index",
         "terms":                "Terms & Conditions",
         "privacy":              "Privacy policies",
-        "home":                 "Home"   
+        "home":                 "Home",
+        "update_info":          "Update information"
     },
     "inputs":{
         "email":                "Email",
@@ -39,6 +40,16 @@
         "remanent":             "Remanent",
         "title":                "Sibology",
         "subtitle":             "Check current weather phenomenals"
+    },
+    "alertMessages":{
+        "DT":                   "Tropical Depression",
+        "ST":                   "Tropical Storm",
+        "H1":                   "Hurricaine Category 1",
+        "H2":                   "Hurricaine Category 2",
+        "H3":                   "Hurricaine Category 3",
+        "H4":                   "Hurricaine Category 4",
+        "H5":                   "Hurricaine Category 5",
+        "no_alerts":            "There is not alerts"
     },
     "features":{
         "title":                "Features",
@@ -108,5 +119,6 @@
     "tweets":                   "Twitter History",
     "tweets_description":       "Check the latest Cyclon posts on Twitter",
     "download":                 "Download it today!",
-    "success":                  "Success!"
+    "success":                  "Success!",
+    "verification":             "Verify your account to receive alerts only from your location"
 }
