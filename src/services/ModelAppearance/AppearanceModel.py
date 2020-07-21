@@ -2,14 +2,16 @@ from subprocess import call
 import time
 import os
 import numpy as np
-from Geometry import Geometry
-from Petition import Petition
+from ModelAppearance.Geometry import Geometry
+from ModelAppearance.Petition import Petition
 import datetime
 import pickle
 from sklearn.cluster import KMeans
 import json
 from time import sleep
-from Timer import Timer
+from ModelAppearance.Timer import Timer
+import os
+import pymongo
 
 class AppearanceModel():
 
@@ -18,32 +20,38 @@ class AppearanceModel():
       self._geometryPoints = geometry
       self._petition = petition
       self._timer = Timer(self._monitoring)
+      self._mongo_URL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"
+      self._mongoLocal = "mongodb://localhost:27017/"
+      self._connect_bd()
       with open(os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/utils/model_clustering.pickle"), 'rb') as file:
          self._kmeans, self._X, self._Y = pickle.load(file)
+
+   def _connect_bd(self):
+      self._client = pymongo.MongoClient(self._mongoLocal)
+      self._database = self._client.cyclon
+      self._collection = self._database.RiskArea
 
    def starJob(self):
       self._timer.start()
 
    def test(self):
-      print("Inicio del monitore... :)")
       self._monitoring()
    
    def stop(self):
       self._timer.stop()
 
    def _monitoring(self):
-      start_time = time.time()
       data_json = []
       for ocean in self._oceans:
+         data_json = []
          points = self._geometryPoints.getPoints(ocean)
          for coords in points:
             lat = coords['lat']
             lng = coords['lng']
-            print("Lat: %s , Lng: %s" %(str(lat), str(lng)))
             petition = self._petition.getPetition(lat, lng)
             message = petition[0]
-            if message == "No se pudo procesar la peticion":
-               print("Hubo un error")
+            if message == False:
+               print("Error detected")
             else:
                data = petition[1]
                for i in range(len(data)):
@@ -52,22 +60,25 @@ class AppearanceModel():
                   prediction = self._kmeans.predict(np.array([[wind, pressure]]))
                   if prediction[0] == 1:
                      data_json.append({
-                        "ocean": ocean,
-                        "lat": lat,
-                        "lng": lng,
+                        "position": {
+                           "lat": float(lat),
+                           "lng": float(lng) 
+                        },
+                        "ocean": ocean.replace("_"," "),
                         "date": self._unixToTimestamp(data['hourly'][i]['dt'])
                      })
                      break
 
-               print("Terminado lat: %s , lng: %s , oceano %s" % (str(lat), str(lng), str(ocean)))
-                       
-      with open(os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""","/")+ "/utils/results.json"), 'w') as file:
-         json.dump(data_json, file, indent=4)
-         end_time = time.time()
-         print(f"Total time: {end_time - start_time}")
-
+               print("Finished lat: %s , lng: %s , ocean %s" % (str(lat), str(lng), str(ocean)))
+         
+         self._saving_scanning(data_json)
         
    def _unixToTimestamp(self, hour):
       return datetime.datetime.fromtimestamp(int(hour)).strftime('%Y-%m-%d %H:%M:%S')
+
+   def _saving_scanning(self, data):
+      for scan in data:
+         result = self._collection.insert_one(scan)
+         print(result.inserted_id())
 
 

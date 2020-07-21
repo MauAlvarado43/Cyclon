@@ -23,14 +23,17 @@ class Petition():
          response = requests.get(self._url, params = params)
 
          if response.status_code == 200:
-            return ["Peticion exitosa", pd.DataFrame(response.json())]
+            return [True, pd.DataFrame(response.json())]
                 
-         elif response.status_code == 401 or response.status_code == 400:
-            print(response.json())
-            return ["No se pudo procesar la peticion", response.json()]
+         else:
+            # print(response.json())
+            print("Entro en recursivo")
+            return self.getPetition(lat, lng)
         
       except NameError as err:
-         return ["No se pudo procesar la peticion", err]
+         print("Entro en recursivo")
+         return self.getPetition(lat, lng) 
+         # return [False, err]
 
    def _get_Available_Key(self):
       try:

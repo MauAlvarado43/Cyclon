@@ -1,14 +1,16 @@
+
 from aiohttp import web
 from multiprocessing import Process
-from Models.ModelAppearance import AppearanceModel as AM
 import socketio
-import noaaSocket
-import sys
-import pandas as pd
+# import noaaSocket
+from ModelAppearance.AppearanceModel import AppearanceModel
 
-AppearanceModel = AM.AppearanceModel()
-AppearanceModel.startJob()
+# Start the appearance model
+appearance_model = AppearanceModel()
+appearance_model.starJob()
 
+
+"""
 sio = socketio.AsyncServer(cors_allowed_origins='*')
 app = web.Application()
 sio.attach(app)
@@ -31,3 +33,4 @@ if __name__ == '__main__':
     noaaThread.start()
 
     web.run_app(app)
+"""
