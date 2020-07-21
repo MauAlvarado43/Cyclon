@@ -1,0 +1,36 @@
+{
+    "es":{
+        "level":["Normal", "Investigador", "Administrador"],
+        "verification": {
+            "subject": "Verificación de cuenta",
+            "text": [
+                "Usuario",
+                "Hola",
+                "Para que puedas recibir todos los privilegios de tu cuenta, es necesario que confirmes la propiedad de esta cuenta de correo. Tan solo tienes que dar click en el botón de abajo:",
+                "Verificar cuenta",
+                "¿Ya tienes la aplicación móvil?",
+                "Descárgala ya!",
+                "Cyclon",
+                "Síguenos en nuestras redes sociales",
+                "Contáctanos"
+            ]
+        }
+    },
+    "en":{
+        "level":["Normal", "Scientist", "Administrator"],
+        "verification": {
+            "subject": "Account verification",
+            "text": [
+                "Level",
+                "Hi", 
+                "In order for you to receive all the privileges of your account, it is necessary that you confirm the ownership of this email account. You just have to click on the button below:",
+                "Veryfy account",
+                "Do you already have the mobile application?",
+                "Downlaod now!",
+                "Cyclon",
+                "Follow us on our social networks",
+                "Contact us"
+            ]
+        }
+    }
+}

@@ -6,6 +6,7 @@ import path from 'path'
 import fs from 'fs'
 import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid } from '../utils/cipher'
 import { errorLog } from '../utils/logger'
+import { sendEmail } from '../utils/email'
 
 const router = Router()
 
@@ -89,6 +90,8 @@ router.get('/auth/facebook/callback', (req, res, next) => {
 
         req.session.level = user.type 
         req.session.verify = user.verify
+        req.session.lat = user.location.lat
+        req.session.lng = user.location.lng
 
         req.logIn(user, function(err) {
             if (err) return next({code:401,"msg":err})
@@ -114,6 +117,8 @@ router.get('/auth/google/callback', (req, res, next) => {
 
         req.session.level = user.type 
         req.session.verify = user.verify
+        req.session.lat = user.location.lat
+        req.session.lng = user.location.lng
 
         req.logIn(user, function(err) {
             if (err) return next({code:401,"msg":err})
@@ -223,7 +228,12 @@ router.post('/auth/mobile/google', (req,res) => {
 })
 
 router.post('/auth/register', (req, res, next) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = "en" 
+
     passport.authenticate('local-signup', function(err, user, info) {
+        
         if (err){
             return res.json({code:401,"msg":err})
         }
@@ -231,14 +241,17 @@ router.post('/auth/register', (req, res, next) => {
             return res.json({code:401,"msg":["BAD_INPUT"]})
         }
 
+        sendEmail(decryptAES(user.email), "verification", language, user.name + " " + user.lastName, user.type, user.email)
+
         req.session.level = user.type 
         req.session.verify = user.verify
+        req.session.lat = user.location.lat
+        req.session.lng = user.location.lng
 
         req.logIn(user, function(err) {
             if (err) return next(err)
             return res.json({code:200,"msg":"SIGNUP_SUCCESS"})
           })
-
 
     })(req, res, next)
 })
@@ -250,6 +263,8 @@ router.post('/auth/login', (req,res,next) => {
 
         req.session.level = user.type
         req.session.verify = user.verify
+        req.session.lat = user.location.lat
+        req.session.lng = user.location.lng
 
         req.logIn(user, function(err) {
           if (err) return next({code:401,"msg":err})

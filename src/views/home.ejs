@@ -64,7 +64,7 @@
 <script src="/js/lib/scripts.js"></script>
 <script src="/js/alertManager.js"></script>
 <script src="/js/lib/alert.js"></script>
-<script src="/js/home.js"></script>
+
 <script>
 
     const assets = JSON.parse('<%- JSON.stringify(assets) %>')
@@ -81,6 +81,37 @@
 <% if(!context.verify){ %>
     <script>
         alert.show(assets.verification,assets.notice)
+    </script>
+<% } else { %>
+    <script>
+        const addPanelInfo = () => {
+
+            latUser = parseFloat('<%- functions.decryptAES(context.lat) %>')
+            lngUser =  parseFloat('<%- functions.decryptAES(context.lng) %>')
+
+            if(activeCyclones.length == 0)
+                $("#panelAlert").html(`
+                <br><br><br><br><br><br><br><br><br><br><br>
+                <center>
+                    <h4>${assets.alertMessages.no_alerts}</h4>
+                </center>
+            `)
+        
+            activeCyclones.forEach(element => {
+        
+                let lastPoint =  element.realTrajectory[element.realTrajectory.length - 1]
+                let category = getCategoryRadious(lastPoint.windSpeed)[0]
+                let radious = getCategoryRadious(lastPoint.windSpeed)[1]
+        
+                let distance = getDistance(latUser, lngUser, lastPoint.position.lat, lastPoint.position.lng)
+                
+                if(radious<distance<radious+250)
+                    $("#panelAlert").html(`
+                    
+                    `)
+        
+            })
+        }
     </script>
 <% } %>
 

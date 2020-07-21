@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import * as CryptoJS from 'crypto-js';  
 import { errorLog } from './logger'
+import tokenGenerator from 'jsonwebtoken'
 
 const algorithm = 'aes-256-cbc';
 const passwordAES = 'TStrzyg!zGXNvKyK3xkQW#6arP{q6AcL';
@@ -82,7 +83,10 @@ const decryptAES = cryptedText => {
     }
 }
 
-export { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid }
+const generateToken = () => ( tokenGenerator.sign({ foo: crypto.randomBytes , iat: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 365)}, '=L;aSx&MuAYeb.8x') )
+const validateToken = token => ( tokenGenerator.decode(token, '=L;aSx&MuAYeb.8x', (err, decode) => (decode)) )
+
+export { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid, generateToken, validateToken }
 
 const publicKeyServer = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0TlmjdegY60EXB2y5IR/
