@@ -133,17 +133,6 @@
     let latUser = 19
     let lngUser = -99
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-
-            latUser = position.coords.latitude
-            lngUser = position.coords.longitude
-
-            loadMap()
-
-        }, (e) => { }, { enableHighAccuracy: true, timeout: 2000, maximumAge: 0 })
-    }
-
     const closeSimbology = () => {
         $("#containerSibologyIcons").css("visibility","hidden");
         $("#simbologyContainer").animate({width: 'hide'}, {duration: 500})
@@ -199,5 +188,7 @@
 
         })
     }
+
+    loadMap()
 
 </script>
