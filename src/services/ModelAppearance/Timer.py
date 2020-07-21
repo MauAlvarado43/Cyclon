@@ -26,18 +26,18 @@ class Timer(Thread):
 
       if hour <= datetime.now():
          hour += timedelta(hours = self.step_hours)
-      print("Ejecucion automatica iniciada")
-      print(f"Proxima ejecucion programada el {hour.date()} a las {hour.time()}")
+      print("Starting automatic execution...")
+      print(f"Next scheduled execution on {hour.date()} at {hour.time()}")
 
       while self._state:
          if hour <= datetime.now():
             self.function()
-            print(f"Ejecución programada ejecutada el {hour.date()} a las {hour.time()}")
+            print(f"Scheduled execution executed on {hour.date()} at {hour.time()}")
             hour += timedelta(hours = self.step_hours)
-            print(f"Proxima ejecucion programada el {hour.date()} a las {hour.time()}")
+            print(f"Next scheduled execution on {hour.date()} at {hour.time()}")
          
          sleep(self.delay)
 
       else:
-         print("Ejecución automatica finalizada")
+         print("Automatic execution finished")
 

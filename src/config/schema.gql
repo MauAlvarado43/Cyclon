@@ -19,8 +19,14 @@ type Cyclone{
 	category: String
 }
 
+type RiskArea{
+	position: Geolocation
+	ocean: String
+	date:  String
+}
+
 type Trajectory{
-    position: Geolocation
+   position: Geolocation
 	windSpeed: Float
 	hurrSpeed: Float
 	temperature: Float
