@@ -14,7 +14,6 @@ import path from 'path'
 import graphqlHTTP from 'express-graphql'
 import schema from './config/schema'
 import { infoLog } from './utils/logger'
-import { stdout, stderr } from 'process'
 
 // Initialzing packages
 const app = express()
@@ -64,7 +63,7 @@ app.use(bodyParser.json())
 app.use(cookieParser('secret'))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(morgan("combined", { "stream": infoLog.stream }))
+app.use(morgan('combined', { 'stream': infoLog.stream }))
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
@@ -77,19 +76,8 @@ app.use(require('./routes/register'))
 app.use(require('./routes/admin'))
 app.use(require('./routes/investigator'))
 
-/*
-const exec = require('child_process').exec;
-
-exec(`python ${__dirname.replace(/\\/g, "/")}/services/index.py`, (err, stdout, stderr) => {
-    if(err){
-        console.log(err)
-    }
-    console.log("Servicio de python iniciado")
-})
-*/
-
 // Start the server
-server.listen(app.get('port'),"0.0.0.0", () => {
+server.listen(app.get('port'),'0.0.0.0', () => {
     console.log('Server on port', app.get('port'))
 })
 

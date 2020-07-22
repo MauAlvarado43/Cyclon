@@ -3,22 +3,25 @@ import passport from 'passport'
 import {Strategy as LocalStrategy} from 'passport-local'
 import geoip from 'geoip-lite'
 import {UserModel as User} from '../models/UserModel'
-import {encryptAES} from '../utils/cipher'
+import { encryptAES, decryptFront } from '../utils/cipher'
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.id)
 })
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
-  done(null, user);
+  const user = await User.findById(id)
+  done(null, user)
 })
 
 passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
-}, async (req, email, password, done) => {
+}, async (req, emailCrypted, passwordCrypted, done) => {
+
+    const email = decryptFront(emailCrypted)
+    const password = decryptFront(passwordCrypted)
 
     const user = await User.findOne({'email': encryptAES(email)})
 
@@ -28,7 +31,7 @@ passport.use('local-signup', new LocalStrategy({
     else{
 
         const newUser = new User()
-        const userValidation = newUser.validateUser(req.body.name, req.body.lastName, email, password)
+        const userValidation = newUser.validateUser(decryptFront(req.body.name), decryptFront(req.body.lastName), email, password)
 
         if(userValidation.length==0){
 
@@ -47,8 +50,8 @@ passport.use('local-signup', new LocalStrategy({
                     password
                 )
             
-                newUser.name = req.body.name
-                newUser.lastName = req.body.lastName
+                newUser.name = decryptFront(req.body.name)
+                newUser.lastName = decryptFront(req.body.lastName)
                 newUser.email = userObject.email
                 newUser.location.lat = userObject.lat
                 newUser.location.lng = userObject.lng
@@ -60,7 +63,7 @@ passport.use('local-signup', new LocalStrategy({
                 done(null, newUser)
 			}
 			else{
-				return done(["BAD_LOCATION"], false)
+				return done(['BAD_LOCATION'], false)
             }     	
             
         }
@@ -77,14 +80,14 @@ passport.use('local-signin', new LocalStrategy({
     passReqToCallback: true
 }, async (req, email, password, done) => {
 
-    const user = await User.findOne({email: encryptAES(email)})
+    const user = await User.findOne({email: encryptAES(decryptFront(email))})
 
     if(!user){
-        return done(["USER_NOT_EXIST"], false)
+        return done(['USER_NOT_EXIST'], false)
     }
     
-    if(!user.comparePassword(encryptAES(password), user.password)) {
-        return done(["INCORRECT_PASSWORD"], false)
+    if(!user.comparePassword(encryptAES(decryptFront(password)), user.password)) {
+        return done(['INCORRECT_PASSWORD'], false)
     }
 
     return done(null, user)

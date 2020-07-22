@@ -1,6 +1,3 @@
-let assets = {}
-fetch("/assets").then( res => { res.json().then( json => { assets = json }) })
-
 const app = new Vue({
     el: "#app",
     data:{
@@ -40,8 +37,8 @@ const app = new Vue({
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email: this.email,
-                        password: this.password
+                        email: encrypt(this.email),
+                        password: encrypt(this.password)
                     })
                 }
 
@@ -91,10 +88,10 @@ const app = new Vue({
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email: this.email,
-                        password: this.password,
-                        name: this.name,
-                        lastName: this.lastName
+                        email: encrypt(this.email),
+                        password: encrypt(this.password),
+                        name: encrypt(this.name),
+                        lastName: encrypt(this.lastName)
                     })
                 }
 

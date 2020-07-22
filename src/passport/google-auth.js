@@ -7,9 +7,9 @@ import { errorLog } from '../utils/logger'
 
 
 passport.use('google-auth',new GoogleStrategy({
-        clientID: "155001320669-kd32n0gk5u8le64bbmtie7d2ebvfujot.apps.googleusercontent.com",
-        clientSecret: "KAOYHF3jiEHKco7qDSGQ5frg",
-        callbackURL: process.env.URL + "/auth/google/callback",
+        clientID: '155001320669-kd32n0gk5u8le64bbmtie7d2ebvfujot.apps.googleusercontent.com',
+        clientSecret: 'KAOYHF3jiEHKco7qDSGQ5frg',
+        callbackURL: process.env.URL + '/auth/google/callback',
         passReqToCallback: true
     }, async (req, accessToken, refreshToken, profile, done) => {
 
@@ -44,7 +44,7 @@ passport.use('google-auth',new GoogleStrategy({
                     done(null, newUser)
                 }
                 else{
-                    return done(["BAD_LOCATION"], false)
+                    return done(['BAD_LOCATION'], false)
                 }  
 
             }

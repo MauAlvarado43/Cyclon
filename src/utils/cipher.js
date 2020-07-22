@@ -1,37 +1,37 @@
 import crypto from 'crypto'
-import * as CryptoJS from 'crypto-js';  
+import * as CryptoJS from 'crypto-js'
 import { errorLog } from './logger'
 import tokenGenerator from 'jsonwebtoken'
 
-const algorithm = 'aes-256-cbc';
-const passwordAES = 'TStrzyg!zGXNvKyK3xkQW#6arP{q6AcL';
-const IV = "5183666c72eec9e4";
+const algorithm = 'aes-256-cbc'
+const passwordAES = 'TStrzyg!zGXNvKyK3xkQW#6arP{q6AcL'
+const IV = '5183666c72eec9e4'
 
-const _key = "Y01JNiM0cFRhXmFBN0gwaVFsazlmJG8kckw0Xmk2d2Q=";
-const _iv = "AcynMwikMkW4c7+mHtwtfw==";
+const _key = 'Y01JNiM0cFRhXmFBN0gwaVFsazlmJG8kckw0Xmk2d2Q='
+const _iv = 'AcynMwikMkW4c7+mHtwtfw=='
 
 const encryptAndroid = plainText => {
-    let key = CryptoJS.enc.Base64.parse(_key);
-    let iv = CryptoJS.enc.Base64.parse(_iv);
-    return CryptoJS.AES.encrypt(plainText.trim(),key,{ iv: iv }).toString();
+    let key = CryptoJS.enc.Base64.parse(_key)
+    let iv = CryptoJS.enc.Base64.parse(_iv)
+    return CryptoJS.AES.encrypt(plainText.trim(),key,{ iv: iv }).toString()
 }
 
 const decryptAndroid = cryptedText => {
-    let key = CryptoJS.enc.Base64.parse(_key);
-    let iv = CryptoJS.enc.Base64.parse(_iv);
-    return CryptoJS.AES.decrypt(cryptedText, key,{ iv: iv }).toString(CryptoJS.enc.Utf8);
+    let key = CryptoJS.enc.Base64.parse(_key)
+    let iv = CryptoJS.enc.Base64.parse(_iv)
+    return CryptoJS.AES.decrypt(cryptedText, key,{ iv: iv }).toString(CryptoJS.enc.Utf8)
 }
 
 const encryptFront = plainText => {
     try{
 
-        global.navigator = {appName: 'nodejs'};
-        global.window = {};
-        const JSEncrypt = require ('./JSEncrypt').default;
+        global.navigator = {appName: 'nodejs'}
+        global.window = {}
+        const JSEncrypt = require ('./JSEncrypt').default
 
-        const cipher = new JSEncrypt ();
-        cipher.setPublicKey(publicKeyServer);
-        return cipher.encrypt(plainText);
+        const cipher = new JSEncrypt ()
+        cipher.setPublicKey(publicKeyServer)
+        return cipher.encrypt(plainText)
 
     }catch(err){
         if(err) errorLog.error(err)
@@ -42,13 +42,13 @@ const encryptFront = plainText => {
 const decryptFront = cryptedText => {
     try{
 
-        global.navigator = {appName: 'nodejs'};
-        global.window = {};
-        const JSEncrypt = require ('./JSEncrypt').default;
+        global.navigator = {appName: 'nodejs'}
+        global.window = {}
+        const JSEncrypt = require ('./JSEncrypt').default
 
-        const cipher = new JSEncrypt ();
-        cipher.setPrivateKey(privateKeyServer);
-        return cipher.decrypt(cryptedText).toString("utf8");
+        const cipher = new JSEncrypt ()
+        cipher.setPrivateKey(privateKeyServer)
+        return cipher.decrypt(cryptedText).toString('utf8')
 
     }catch(err){
         if(err) errorLog.error(err)
@@ -59,10 +59,10 @@ const decryptFront = cryptedText => {
 const encryptAES = plainText => {
     try{
 
-        let cipher = crypto.createCipheriv(algorithm, passwordAES, IV);
-        let encrypted = cipher.update(plainText, 'utf8', 'base64');
-        encrypted += cipher.final('base64');
-        return encrypted;
+        let cipher = crypto.createCipheriv(algorithm, passwordAES, IV)
+        let encrypted = cipher.update(plainText, 'utf8', 'base64')
+        encrypted += cipher.final('base64')
+        return encrypted
 
     }catch(err){
         if(err) errorLog.error(err)
@@ -73,9 +73,9 @@ const encryptAES = plainText => {
 const decryptAES = cryptedText => {
     try{
 
-        let decipher = crypto.createDecipheriv(algorithm, passwordAES, IV);
-        let decrypted = decipher.update(cryptedText, 'base64', 'utf8');
-        return (decrypted + decipher.final('utf8'));
+        let decipher = crypto.createDecipheriv(algorithm, passwordAES, IV)
+        let decrypted = decipher.update(cryptedText, 'base64', 'utf8')
+        return (decrypted + decipher.final('utf8'))
 
     }catch(err){
         if(err) errorLog.error(err)
@@ -96,7 +96,7 @@ by/muPD3Er8RbPs7eagJPvqoYCiilREl2u2MHhs38n6g9UGDrPQPNcyZ2fS2+1dG
 2gVRILlNBtaLpf1ULPH4M6wSUrDXDaK2Jqn8rU4mw2SaMKY2MnBzStxe7PP8IEnM
 qk8RCV1+D8STephfMKadTBNqft58Tjye5lEGBu2sINd8ro52A4hAnaWQd1bDoYPK
 LQIDAQAB
------END PUBLIC KEY-----`;
+-----END PUBLIC KEY-----`
 
 const privateKeyServer = `-----BEGIN RSA PRIVATE KEY-----
 MIIEpQIBAAKCAQEAxpQPpHiKrzzWdrbgQy/EYcC6kAnDgTyuc7mGWCM6765HLEpH
@@ -124,4 +124,4 @@ K58bVI7qsgIu8JqwNKNe/Niovu8x5uIokVLWdRT4Ela/QwnP4CTkZG/8WJiERGRA
 RxNPt0hlAoGAdX11NW6fhNomRPJGtkFD4oY/vWdMgaokoYR8L+RgFXAH8eX4S9EA
 zPnX95EowZTsFdnMZLbiwHgLA77UsVBwhnc/8PGC0TTfT4usdLhyAYVY9RQ6SRSE
 c1jdNZYeM6v6ddFuUZ+qHP0VFu7CsJiOoKhYIInTD7IT4gM2vIlSPxw=
------END RSA PRIVATE KEY-----`;
+-----END RSA PRIVATE KEY-----`

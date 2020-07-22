@@ -19,9 +19,9 @@ router.get('/', (req,res) => {
         req.session.error = []
 
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en"
+    if (!language) language = 'en'
     
-    if(req.session.passport && req.session.passport.user)
+    if(req.user)
         res.redirect('/home')
     else{
 
@@ -38,7 +38,7 @@ router.get('/', (req,res) => {
 
 router.get('/privacy', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en" 
+    if (!language) language = 'en'
 
     let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
 
@@ -50,7 +50,7 @@ router.get('/privacy', (req,res) => {
 
 router.get('/terms', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en" 
+    if (!language) language = 'en'
 
     let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
 
@@ -66,7 +66,7 @@ router.get('/terms', (req,res) => {
 
 router.get('/assets', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en" 
+    if (!language) language = 'en'
     res.send(JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')))
 })
 
@@ -81,22 +81,17 @@ router.get('/auth/facebook/callback', (req, res, next) => {
 
         if (err){
             req.session.error = err 
-            return res.redirect("/?action=login")
+            return res.redirect('/?action=login')
         }
         if (!user){ 
-            req.session.error = ["BAD_INPUT"]
-            return res.redirect("/?action=login") 
+            req.session.error = ['BAD_INPUT']
+            return res.redirect('/?action=login') 
         }
 
-        req.session.level = user.type 
-        req.session.verify = user.verify
-        req.session.lat = user.location.lat
-        req.session.lng = user.location.lng
-
         req.logIn(user, function(err) {
-            if (err) return next({code:401,"msg":err})
+            if (err) return next({'code':401,'msg':err})
             req.session.error = []
-            return res.redirect("/home") 
+            return res.redirect('/home') 
         })
         
     })(req, res, next)
@@ -108,22 +103,17 @@ router.get('/auth/google/callback', (req, res, next) => {
     passport.authenticate('google-auth', function(err, user, info) {
         if (err){
             req.session.error = err 
-            return res.redirect("/?action=login")
+            return res.redirect('/?action=login')
         }
         if (!user){ 
-            req.session.error = ["BAD_INPUT"]
-            return res.redirect("/?action=login") 
+            req.session.error = ['BAD_INPUT']
+            return res.redirect('/?action=login') 
         }
 
-        req.session.level = user.type 
-        req.session.verify = user.verify
-        req.session.lat = user.location.lat
-        req.session.lng = user.location.lng
-
         req.logIn(user, function(err) {
-            if (err) return next({code:401,"msg":err})
+            if (err) return next({'code':401,'msg':err})
             req.session.error = []
-            return res.redirect("/home") 
+            return res.redirect('/home') 
         })
         
     })(req, res, next)
@@ -167,14 +157,14 @@ router.post('/auth/mobile/facebook', (req,res) => {
                 newUser.verify = true
 			
 				newUser.save()
-				res.json({"code": 200, "msg": "LOGIN_SUCCESS"});
+				res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
 			}
 			else{
-                res.json({"code": 401, "msg": "BAD_LOCATION"});
+                res.json({'code': 401, 'msg': 'BAD_LOCATION'})
 			}     		
 		}
 		else{
-			res.json({"code": 200, "msg": "LOGIN_SUCCESS"});
+			res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
 		}
 
 	})
@@ -212,15 +202,15 @@ router.post('/auth/mobile/google', (req,res) => {
                 
 				newUser.save()
                 
-                res.json({code:200,"msg":["ACCOUNT_CREATED"]})
+                res.json({'code':200,'msg':['ACCOUNT_CREATED']})
                 
 			}
 			else{
-				res.json({code:401,"msg":["BAD_LOCATION"]})
+				res.json({'code':401,'msg':['BAD_LOCATION']})
 			}     		
 		}
 		else{
-			res.json({code:200,"msg":["LOGIN_SUCCESS"]})
+			res.json({'code':200,'msg':['LOGIN_SUCCESS']})
 		}
 
 	})
@@ -230,45 +220,35 @@ router.post('/auth/mobile/google', (req,res) => {
 router.post('/auth/register', (req, res, next) => {
 
     let language = req.acceptsLanguages('es', 'en')
-    if (!language) language = "en" 
+    if (!language) language = 'en' 
 
     passport.authenticate('local-signup', function(err, user, info) {
         
         if (err){
-            return res.json({code:401,"msg":err})
+            return res.json({'code':401,'msg':err})
         }
         if (!user){ 
-            return res.json({code:401,"msg":["BAD_INPUT"]})
+            return res.json({'code':401,'msg':['BAD_INPUT']})
         }
 
-        sendEmail(decryptAES(user.email), "verification", language, user.name + " " + user.lastName, user.type, user.email)
-
-        req.session.level = user.type 
-        req.session.verify = user.verify
-        req.session.lat = user.location.lat
-        req.session.lng = user.location.lng
+        sendEmail(decryptAES(user.email), 'verification', language, user.name + ' ' + user.lastName, user.type, user.email)
 
         req.logIn(user, function(err) {
             if (err) return next(err)
-            return res.json({code:200,"msg":"SIGNUP_SUCCESS"})
-          })
+            return res.json({'code':200,'msg':'SIGNUP_SUCCESS'})
+        })
 
     })(req, res, next)
 })
 
 router.post('/auth/login', (req,res,next) => {
     passport.authenticate('local-signin', function(err, user, info) {
-        if (err)  return res.send({code:401,"msg":err})
-        if (!user) { return res.json({code:401,"msg":["BAD_INPUT"]}) }
-
-        req.session.level = user.type
-        req.session.verify = user.verify
-        req.session.lat = user.location.lat
-        req.session.lng = user.location.lng
+        if (err)  return res.send({'code':401,'msg':err})
+        if (!user) { return res.json({'code':401,'msg':['BAD_INPUT']}) }
 
         req.logIn(user, function(err) {
-          if (err) return next({code:401,"msg":err})
-          return res.json({code:200,"msg":["LOGIN_SUCCESS"]})
+          if (err) return next({'code':401,'msg':err})
+          return res.json({'code':200,'msg':['LOGIN_SUCCESS']})
         })
     })(req, res, next)
 })

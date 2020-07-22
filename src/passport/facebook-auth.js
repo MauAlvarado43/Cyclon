@@ -10,7 +10,7 @@ passport.use('facebook-auth',new FacebookStrategy({
     clientSecret: 'e201c5704c07e7b3bcdc9f79a890feb2',
     callbackURL: process.env.URL + '/auth/facebook/callback',
     passReqToCallback: true,
-    profileFields: ["id", "email", "first_name", "last_name"]
+    profileFields: ['id', 'email', 'first_name', 'last_name']
   },async (req, accessToken, refreshToken, profile, done) => {
 
     User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
@@ -48,7 +48,7 @@ passport.use('facebook-auth',new FacebookStrategy({
 				done(null, newUser)
 			}
 			else{
-				return done(["BAD_LOCATION"], false)
+				return done(['BAD_LOCATION'], false)
 			}     		
 		}
 		else{

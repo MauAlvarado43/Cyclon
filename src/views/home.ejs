@@ -35,7 +35,7 @@
 
     <%- include("./components/navbar-register",{assets: assets}) %> 
 
-    <div class="slider-1">
+    <div class="basic-1">
         <div class="container" style="margin: 0 !important; padding: 0 !important;">
             <div class="row" style="margin: 0 !important; padding: 0 !important;">
                 <div class="col-10" style="margin: 0 !important; padding: 0 !important;">
@@ -80,14 +80,21 @@
 
 <% if(!context.verify){ %>
     <script>
+        const addPanelInfo = false
         alert.show(assets.verification,assets.notice)
+        $("#panelAlert").html(`
+                <br><br><br><br><br><br><br><br><br><br><br>
+                <center>
+                    <h4>${assets.verification}</h4>
+                </center>
+            `)
     </script>
 <% } else { %>
     <script>
         const addPanelInfo = () => {
 
-            latUser = parseFloat('<%- functions.decryptAES(context.lat) %>')
-            lngUser =  parseFloat('<%- functions.decryptAES(context.lng) %>')
+            latUser = parseFloat('<%- functions.decryptAES(context.location.lat) %>')
+            lngUser =  parseFloat('<%- functions.decryptAES(context.location.lng) %>')
 
             if(activeCyclones.length == 0)
                 $("#panelAlert").html(`

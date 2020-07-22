@@ -33,20 +33,20 @@ UserSchema.methods.validateUser = (name, lastName, email, password, type) => {
 
     let errors = []
 
-    if(!checkWords(name)) errors.push({field:"name", error: "BAD_FORMAT"})
-    if(name.length<0) errors.push({field:"name", error: "EMPTY_FORMAT"})
-    if(name.length>50) errors.push({field:"name", error: "MAX_LENGTH"})
+    if(!checkWords(name)) errors.push({field:'name', error: 'BAD_FORMAT'})
+    if(name.length<0) errors.push({field:'name', error: 'EMPTY_FORMAT'})
+    if(name.length>50) errors.push({field:'name', error: 'MAX_LENGTH'})
 
-    if(!checkWords(lastName)) errors.push({field:"lastName", error: "ONLY_LETTERS_LASTNAME"})
-    if(lastName.length==0) errors.push({field:"lastName", error: "EMPTY_LASTNAME"})
-    if(lastName.length>50) errors.push({field:"lastName", error: "MAX_LASTNAME"})
+    if(!checkWords(lastName)) errors.push({field:'lastName', error: 'ONLY_LETTERS_LASTNAME'})
+    if(lastName.length==0) errors.push({field:'lastName', error: 'EMPTY_LASTNAME'})
+    if(lastName.length>50) errors.push({field:'lastName', error: 'MAX_LASTNAME'})
 
-    if(!checkEmail(email)) errors.push({field:"email", error: "BAD_FORMAT"})
-    if(email.length==0) errors.push({field:"email", error: "EMPTY_FORMAT"})
-    if(email.length>50) errors.push({field:"email", error: "MAX_LENGTH"})
+    if(!checkEmail(email)) errors.push({field:'email', error: 'BAD_FORMAT'})
+    if(email.length==0) errors.push({field:'email', error: 'EMPTY_FORMAT'})
+    if(email.length>50) errors.push({field:'email', error: 'MAX_LENGTH'})
 
-    if(password.length<8) errors.push({field:"password", error: "EMPTY_PASSWORD"})
-    if(password.length>50) errors.push({field:"password", error: "MAX_PASSWORD"})
+    if(password.length<8) errors.push({field:'password', error: 'EMPTY_PASSWORD'})
+    if(password.length>50) errors.push({field:'password', error: 'MAX_PASSWORD'})
 
     return errors
 
@@ -63,6 +63,6 @@ UserSchema.methods.comparePassword = (password, userPassword) => (
     userPassword == password
 )
 
-const UserModel = mongoose.model("User", UserSchema)
+const UserModel = mongoose.model('User', UserSchema)
 
 export {UserModel}

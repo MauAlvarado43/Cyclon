@@ -60,7 +60,7 @@ const sendEmail = (destiny, topic, language, name, level, _id) => {
             ]
         }
 
-        if (language == "es"){
+        if (language == 'es'){
             mailOptions.attachments[1] = {
                 filename: 'app-store-es.png',
                 path: 'src/public/images/app-store-es.png',
@@ -77,9 +77,6 @@ const sendEmail = (destiny, topic, language, name, level, _id) => {
             if (err){
                 console.log(err)
             }
-            else{
-                console.log("ENVIADO")
-            }
         })
 
     }catch(err){
@@ -91,21 +88,21 @@ const sendEmail = (destiny, topic, language, name, level, _id) => {
 
 const getHTML = (topic, assets, name, level, language, _id) => {
 
-    if (topic == "verification"){
+    if (topic == 'verification'){
         let html = fs.readFileSync(path.join(__dirname,'./templates/verification.html'),'utf-8')
-        .replace("$(0)", name)
-        .replace("$(1)",assets[language].verification.text[0])
-        .replace("$(2)",assets[language].level[level])
-        .replace("$(3)",assets[language].verification.text[1])
-        .replace("$(4)", name.split(" ")[0] + " !")
-        .replace("$(5)",assets[language].verification.text[2])
-        .replace("$(6)",assets[language].verification.text[3])
-        .replace("$(7)",assets[language].verification.text[4])
-        .replace("$(8)",assets[language].verification.text[5])
-        .replace("$(9)",assets[language].verification.text[6])
-        .replace("$(10)",assets[language].verification.text[7])
-        .replace("$(11)",assets[language].verification.text[8])
-        .replace('$(link)', "href=\""+ process.env.URL + "/verifyAccount?v="+generateToken()+"&u="+encryptAES(_id)+"\"")
+        .replace('$(0)', name)
+        .replace('$(1)',assets[language].verification.text[0])
+        .replace('$(2)',assets[language].level[level])
+        .replace('$(3)',assets[language].verification.text[1])
+        .replace('$(4)', name.split(' ')[0] + ' !')
+        .replace('$(5)',assets[language].verification.text[2])
+        .replace('$(6)',assets[language].verification.text[3])
+        .replace('$(7)',assets[language].verification.text[4])
+        .replace('$(8)',assets[language].verification.text[5])
+        .replace('$(9)',assets[language].verification.text[6])
+        .replace('$(10',assets[language].verification.text[7])
+        .replace('$(11)',assets[language].verification.text[8])
+        .replace('$(link)', 'href=\"'+ process.env.URL + '/verifyAccount?v='+generateToken()+'&u='+encryptAES(_id)+'\"')
         
         return html
     }

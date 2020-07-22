@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import {encryptAES} from '../utils/cipher'
 
 const { Schema } = mongoose
 
@@ -20,6 +19,6 @@ const RiskAreaSchema = new Schema({
    date: Date
 })
 
-const RiskAreaModel = mongoose.model("RiskArea", RiskAreaSchema)
+const RiskAreaModel = mongoose.model('RiskArea', RiskAreaSchema)
 
-export {RiskAreaModel}
+export { RiskAreaModel }
