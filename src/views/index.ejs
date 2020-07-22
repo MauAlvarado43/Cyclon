@@ -79,8 +79,14 @@
 <script src="/js/index.js"></script>
 <script src="/js/alertManager.js"></script>
 <script src="/js/gmail.js"></script>
+<script src="/js/lib/JSEncrypt.js"></script>
+<script src="/js/cipher.js"></script>
 
 <script>
+
+    const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+
+    const addPanelInfo = false
 
     document.getElementById("loginButton").setAttribute("data-toggle","modal");
     document.getElementById("loginButton").setAttribute("data-target","#loginModal");

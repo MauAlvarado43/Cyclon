@@ -9,7 +9,6 @@ from ModelAppearance.AppearanceModel import AppearanceModel
 appearance_model = AppearanceModel()
 appearance_model.starJob()
 
-
 """
 sio = socketio.AsyncServer(cors_allowed_origins='*')
 app = web.Application()

@@ -13,9 +13,9 @@ const infoLogger = winston.createLogger({
           'datePattern': 'YYYY-MM-DD',
           'prepend': true,
           'maxFiles': '14d',
-          "flags": "w",
+          'flags': 'w',
           timestamp : function() {
-            return getDateTime();        
+            return getDateTime()      
           },
           exitOnError: false
       })
@@ -33,9 +33,9 @@ const errorLogger = createLogger({
           'datePattern': 'YYYY-MM-DD',
           'prepend': true,
           'maxFiles': '14d',
-          "flags": "w",
+          'flags': 'w',
           timestamp : function() {
-            return getDateTime();        
+            return getDateTime()       
           },
           exitOnError: false
       })
@@ -49,24 +49,24 @@ const options = {
     typeFormat: 'json'
 }
 
-errorLogger.format = configuredFormatter(options);
-infoLogger.format = configuredFormatter(options);
+errorLogger.format = configuredFormatter(options)
+infoLogger.format = configuredFormatter(options)
 
 infoLogger.stream = {
     write: function(message, encoding){
-      infoLogger.info(message);
+      infoLogger.info(message)
     }
 }
 
 function getDateTime(){
-    var currentdate = new Date(); 
-    var datetime = currentdate.getDate() + "/"
-      + (currentdate.getMonth()+1)  + "/" 
-      + currentdate.getFullYear() + " "  
-      + currentdate.getHours() + ":"  
-      + currentdate.getMinutes() + ":" 
-      + currentdate.getSeconds();
-    return datetime;  
+    var currentdate = new Date()
+    var datetime = currentdate.getDate() + '/'
+      + (currentdate.getMonth()+1)  + '/'
+      + currentdate.getFullYear() + ' '  
+      + currentdate.getHours() + ':'  
+      + currentdate.getMinutes() + ':' 
+      + currentdate.getSeconds()
+    return datetime
 }
 
 export {infoLogger as infoLog, errorLogger as errorLog}

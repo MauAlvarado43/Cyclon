@@ -935,10 +935,13 @@ input[type='checkbox'] {
 	margin: 0 auto 3rem auto;
 }
 
+.form-contact{
+	background: url('../images/contact-background.jpg') center bottom no-repeat;
+}
+
 .form {
 	padding-top: 6.25rem;
 	padding-bottom: 5.625rem;
-	background: url('../images/contact-background.jpg') center bottom no-repeat;
 	background-size: cover; 
 }
 

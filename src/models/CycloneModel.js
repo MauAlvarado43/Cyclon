@@ -1,6 +1,4 @@
 import mongoose from 'mongoose'
-import {encryptAES} from '../utils/cipher'
-import {checkWords, checkEmail} from '../utils/regex'
 
 const { Schema } = mongoose
 
@@ -33,6 +31,6 @@ const CycloneSchema = new Schema({
     category: String
 })
 
-const CycloneModel = mongoose.model("Hurricaine", CycloneSchema)
+const CycloneModel = mongoose.model('Hurricaine', CycloneSchema)
 
 export {CycloneModel}

@@ -32,10 +32,11 @@
 <body data-spy="scroll" data-target=".fixed-top">
 
     <%- include("./components/loader") %>
+    <%- include("./components/navbar-register",{assets: assets}) %>
 
-    <%- include("./components/navbar-register",{assets: assets}) %> 
+    <%- include("./components/updateForm",{assets: assets, context: context, functions: functions}) %> 
  
-    <%- include("./components/footer",{assets: assets}) %> 
+    <%- include("./components/footer",{assets: assets}) %>
 
 </body>
 
@@ -49,12 +50,14 @@
 <script src="/js/lib/validator.min.js"></script>
 <script src="/js/lib/scripts.js"></script>
 <script src="/js/lib/alert.js"></script>
+<script src="/js/regex.js"></script>
+<script src="/js/lib/vue.js"></script>
+<script src="/js/lib/JSEncrypt.js"></script>
+<script src="/js/cipher.js"></script>
 
 <script>
 
-    let assets = {}
-
-    fetch('/assets').then( res => { res.json().then( json => { assets = json; getActiveCyclones()}).catch( err => { console.log(err) }) }).catch( err => { console.log(err) })
+const assets = JSON.parse('<%- JSON.stringify(assets) %>')
 
     document.getElementById("homeButton").setAttribute("href","/home")
     document.getElementById("homeImageButton").setAttribute("href","/home")
@@ -64,6 +67,125 @@
 
     document.getElementById("configuration").setAttribute("class","nav-item dropdown active")
 
+</script>
+
+<script>
+
+    const app = new Vue({
+        el: "#app",
+        data:{
+            email:"<%= functions.decryptAES(context.email) %>",
+            name:"<%= context.name %>",
+            lastName:"<%= context.lastName %>",
+            password:"",
+            confirmPassword:"",
+            passwordVerify:"",
+            infoErrors:{
+                name: [],
+                lastName: [],
+                email: [],
+            },
+            passwordErros:{
+                password:[]
+            }
+        },
+        methods: {
+            async updateInfo(){
+    
+                this.infoErrors = {
+                    name: [],
+                    lastName: [],
+                    email: []
+                }
+
+                if(!checkWords(this.name) && this.name.length>0) this.infoErrors["name"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+                if(this.name.length==0) this.infoErrors["name"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+                if(this.name.length>50) this.infoErrors["name"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+
+                if(!checkWords(this.lastName)) this.infoErrors["lastName"].push(assets.errors["ONLY_LETTERS_LASTNAME"])
+                if(this.lastName.length==0) this.infoErrors["lastName"].push(assets.errors["EMPTY_LASTNAME"])
+                if(this.lastName.length>50) this.infoErrors["lastName"].push(assets.errors["MAX_LASTNAME"])
+            
+                if(!checkEmail(this.email) && this.email.length>0) this.infoErrors["email"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                if(this.email.length==0) this.infoErrors["email"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                if(this.email.length>50) this.infoErrors["email"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                
+                if(this.infoErrors.name.length==0 && this.infoErrors.lastName.length==0 && this.infoErrors.email.length==0){
+                    $("#modalPasswordVerification").modal('show')
+                }
+
+            },
+            async register(){
+
+                this.passwordErros = {
+                    password: []
+                }
+
+            },
+            async verifyPassword(){
+
+                $("#passwordMessage").text("")
+                $("#errorVerificationLabel").css("visibility","hidden")
+
+                if(this.passwordVerify.length==0){
+                    $("#passwordMessage").text(assets.errors["EMPTY_PASSWORD"])
+                    $("#errorVerificationLabel").css("visibility","visible")
+                }
+                else{
+                    let config = {
+                        method: 'POST',
+                        headers:{
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            password: encrypt(this.passwordVerify)
+                        })
+                    }
+
+                    let response = await fetch("/verifyPassword", config)
+                    let res = await response.json()
+
+                    if(res.code == 401){
+                        $("#passwordMessage").text(assets.errors[res.msg])
+                        $("#errorVerificationLabel").css("visibility","visible")
+                    }
+                    else if(res.code == 402){
+                        window.location.href = "/"
+                    }
+                    else{
+                        $("#modalPasswordVerification").modal('hide')
+
+                        let config = {
+                            method: 'POST',
+                            headers:{
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name: encrypt(this.name),
+                                lastName: encrypt(this.lastName),
+                                email: encrypt(this.email)
+                            })
+                        }
+
+                        let response = await fetch("/updateInfo", config)
+                        let res = await response.json()
+
+                        if(res.code==401)
+                            alert.success(assets.errors[res.msg],"Error")
+                        else if(res.code==201){
+                            alert.success(assets[res.msg],"")
+                            setTimeout(() => { window.location.href = "/" }, 3000)
+                        }
+                        else 
+                            alert.success(assets[res.msg],"")
+
+                    }
+                }
+            }
+        },
+    })
 </script>
 
 </html>
