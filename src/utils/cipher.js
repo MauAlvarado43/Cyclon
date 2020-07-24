@@ -83,7 +83,7 @@ const decryptAES = cryptedText => {
     }
 }
 
-const generateToken = () => ( tokenGenerator.sign({ foo: crypto.randomBytes , iat: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 365)}, '=L;aSx&MuAYeb.8x') )
+const generateToken = (duration) => ( tokenGenerator.sign({ foo: crypto.randomBytes , iat: Math.floor(Date.now() / 1000) + duration}, '=L;aSx&MuAYeb.8x') )
 const validateToken = token => ( tokenGenerator.decode(token, '=L;aSx&MuAYeb.8x', (err, decode) => (decode)) )
 
 export { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid, generateToken, validateToken }

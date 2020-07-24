@@ -6,6 +6,7 @@ const app = new Vue({
         name:"",
         lastName:"",
         confirmPassword:"",
+        emailRecover:"",
         registerErrors:{
             name: [],
             lastName: [],
@@ -18,6 +19,58 @@ const app = new Vue({
         }
     },
     methods: {
+        async recover(){
+
+            $("#errorRecoverLabel").css("visibility", "hidden")
+            $("#recoverMessage").text("")
+
+            if(!checkEmail(this.emailRecover) && this.emailRecover.length>0){
+                $("#errorRecoverLabel").css("visibility", "visible")
+                $("#recoverMessage").text(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+            }
+            else{
+
+                let config = {  
+                    method: 'POST',
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: encrypt(this.emailRecover),
+                    })
+                }
+
+                let response = await fetch("/api/requestRecoverPassword", config)
+                let res = await response.json()
+    
+                if (res.code == 401)
+                    alert.error(assets.errors[res.msg[0]],"Error")
+                else{
+                    $("#recoverModal").modal("hide")
+                    alert.success(assets["recover_acepted"],"")
+                }
+            }
+
+        },
+        reset(){
+            this.email = ""
+            this.password = ""
+            this.name = ""
+            this.lastName = ""
+            this.confirmPassword = ""
+            this.registerErrors = {
+                name: [],
+                lastName: [],
+                email: [],
+                password: []
+            }
+            this.loginErrors = {
+                email:[],
+                password:[]
+            }
+
+        },
         async login(){
 
             this.loginErrors = {
@@ -30,7 +83,7 @@ const app = new Vue({
 
             else{
 
-                let config = {
+                let config = {  
                     method: 'POST',
                     headers:{
                         'Accept': 'application/json',

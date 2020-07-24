@@ -38,6 +38,7 @@
     <div id="app">    
         <%- include('./components/login-form',{assets: assets, errors: errors}) %>
         <%- include('./components/register-form',{assets: assets, errors: errors}) %>
+        <%- include('./components/sendRecoverForm',{assets: assets, errors: errors}) %>
     </div>  
 
     <%- include("./components/header",{assets: assets}) %> 
@@ -106,9 +107,6 @@
         }
         if(searchParams.get("action")=="login"){
             $('#loginModal').modal('show');
-        }
-        if(searchParams.get("action")=="recoverPassword"){
-            $('#newPassword').modal('show');
         }
     });
 

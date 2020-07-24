@@ -22,9 +22,9 @@
 
 .modal-open[style] {
 	padding-right: 0px !important;
-	position: relative;
-	overflow-y: scroll;
- }
+	position: relative !important;
+	overflow-y: scroll ;
+}
 
 #real{
     background: linear-gradient(90deg,#00bc79 0%, #887c73 35%,#a9136c 100%);

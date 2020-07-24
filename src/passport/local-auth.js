@@ -37,10 +37,6 @@ passport.use('local-signup', new LocalStrategy({
 
             let geo = geoip.lookup(req.ip)
 
-            geo = {
-                ll: [19, -99]
-            }
-
             if(geo){
 
                 let userObject = newUser.encryptUser(

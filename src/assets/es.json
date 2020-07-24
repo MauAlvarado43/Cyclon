@@ -6,7 +6,8 @@
         "privacy":              "Políticas de privacidad",
         "home":                 "Inicio",
         "update_info":          "Actualizar datos",
-        "verify":               "Verificación"
+        "verify":               "Verificación",
+        "recoverPassword":      "Recuperar contraseña"
     },
     "inputs":{
         "email":                "Correo electrónico",
@@ -35,7 +36,9 @@
         "logout":               "Cerrar sesión",
         "update_password":      "Cambiar contraseña",
         "update_location":      "Actualizar ubicación",
-        "verify":               "Verificar"
+        "verify":               "Verificar",
+        "resend_email":         "Reenviar correo de verificación",
+        "send_recover":         "Enviar correo de recuperación"
     },
     "simbology":{
         "real":                 "Trayectoria Real",
@@ -106,13 +109,19 @@
         "MAX_LASTNAME":         "Los apellidos no pueden tener más de 50 caracteres",
         "ONLY_LETTERS_LASTNAME":"Los apellidos solo pueden tener letras y espacios",
         "INCORRECT_PASSWORD":   "La contraseña es incorrecta",
-        "USER_NOT_EXIST":       "El usuario no existe"
+        "USER_NOT_EXIST":       "El usuario no existe",
+        "TOKEN_INVALID":        "Token inválido"
 
     },
     "ACCOUNT_CREATED":          "Cuenta creada correctamente, iniciando sesión...",
     "SIGNUP_SUCCESS":           "Iniciando sesión...",
     "LOGIN_AGAIN":              "Inicie sesión de nuevo",
     "UPDATE_SUCCESS":           "Los datos han sido modificados exitosamente!",
+    "UPDATED_LOCATION":         "Ubicación actualizada exitosamente!",
+    "RESENDED_VEMAIL":          "Correo enviado exitosamente!",
+    "TOKEN_EXPIRED":            "El vínculo de autenticación ha caducado, vuelva a mandar la solicitud",
+    "recover_acepted":          "Se ha enviado un correo de recuperación a su cuenta",
+    "password_forgotten":       "¿Olvidaste tu contraseña?",
     "privacy":                  "Políticas de privacidad",
     "terms":                    "Términos y condiciones",
     "read":                     "He leído y acepto las condiciones declaradas de Cyclon en",

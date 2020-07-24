@@ -44,26 +44,40 @@
                             <hr>
 
                             <div class="form-group">
-                                <input type="text" class="form-control-input" id="new_password" v-model="password" required>
+                                <input type="password" class="form-control-input notEmpty" id="new_password" v-model="password" required>
                                 <label class="label-control" for="new_password"><%= assets.inputs.new_password %></label>
                                 <div class="help-block with-errors"></div>
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control-input" id="c_new_password" v-model="confirmPassword" required>
+                                <input type="password" class="form-control-input notEmpty" id="c_new_password" v-model="confirmPassword" required>
                                 <label class="label-control" for="c_new_password"><%= assets.inputs.confirm_n_password %></label>
                                 <div class="help-block with-errors"></div>
                             </div>
 
+                            <ul>
+                                <li v-for="msg of passwordErrors.password" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                            </ul> 
+
                             <div class="form-group">
-                                <input type="button" class="btn btn-secondary" style="width: 100% !important;" value="<%= assets.buttons.update_password %>" required>
+                                <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="changePassword" value="<%= assets.buttons.update_password %>" required>
                             </div>
 
                             <hr>
 
                             <div class="form-group">
-                                <input type="button" class="btn btn-primary" style="width: 100% !important;" value="<%= assets.buttons.update_location %>" required>
+                                <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="updateLocation" value="<%= assets.buttons.update_location %>" required>
                             </div>
+
+                            <% if(!context.verify){ %>
+
+                                <hr>
+
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="resendEmail" value="<%= assets.buttons.resend_email %>" required>
+                                </div>
+
+                            <% } %>
 
                         </form>
 
