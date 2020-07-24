@@ -1,4 +1,4 @@
-from Models.ModelTrajectory import TrajectoriesModel as TM
+from ModelTrajectory.TrajectoriesModel import TrajectoriesModel
 import time
 import requests
 import json
@@ -8,50 +8,42 @@ import gc
 import asyncio
 import pymongo
 
-class NoaaSocket: 
+class NoaaSocket(): 
 
-    TrajectoriesModel = TM.TrajectoriesModel()
+    def __init__(self,):
+        self._url = "https://www.nhc.noaa.gov/CurrentStorms.json"
+        self._mongoURL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"
+        self._connect_bd()
+        self._model = TrajectoriesModel()
+        self._time = 24
 
-    url = "https://www.nhc.noaa.gov/CurrentStorms.json"
-    mongoURL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"
+    def _connect_bd(self):
+        client = pymongo.MongoClient(self._mongoURL)
+        database = client.cyclon
+        self._cyclone = database.hurricaines
 
-    async def emitAlert(self, json):
-        await self.sio.emit("/alert", json)
+    async def _emitAlert(self, json):
+        await self._sio.emit("/alert", json)
 
-    def closeCyclone(self, id):
-        client = pymongo.MongoClient(self.mongoURL)
-        db = client["cyclon"]
-        cyclone = mydb["Hurricaine"]
+    def _closeCyclone(self, id):
+        self._connect_bd()
+        self._cyclone.update_one({"id": id}, {"$set": {"active": 'False'}})
 
-        cyclone.update_one({"id": id}, { "$set": { "active": False } })
-
-    def insertData(self, json):
-
-        try: 
-            #TODO Request to OpenWeather for getting this moment cyclone's information
-            #response = requests.get(self.url,headers={"Content-type":"application/json"})
-        
-            #TODO Use the model to save or update the cyclone
-            client = pymongo.MongoClient(self.mongoURL)
-            db = client["cyclon"]
-            cyclone = mydb["Hurricaine"]
-
-            x = cyclone.insert_one("""INFORMATION""")     
-        except Exception as err:
-            print("REFUSED with error: {0}".format(err))
+    def _train_model(self, data):
+        self._model.save_cyclone(data)
 
     def run(self, sio):
 
-        self.sio = sio
+        self._sio = sio
 
         json_history = {}
         json_data = []
 
-        print("Monitoring NOAA")
+        print("Monitoring NOAA...")
         while (True):
             try:
-                response = requests.get(self.url,headers={"Content-type":"application/json"})
-                if(response.status_code==200):
+                response = requests.get(self._url,headers={"Content-type":"application/json"})
+                if response.status_code == 200:
 
                     json_dataTemp = json.loads(response.content)
 
@@ -63,19 +55,19 @@ class NoaaSocket:
                                 
                                 exist = False
 
-                                for actualCyclone in json_data:
-                                    if lastCyclone["id"] == actualCyclone["id"]
+                                for actualCyclone in json_data: 
+                                    if lastCyclone["id"] == actualCyclone["id"]:
                                         exist = True
 
                                 if not exist:
-                                    closeCyclone(lastCyclone["id"])
+                                    self._closeCyclone(lastCyclone["id"])
 
                         json_history = json_dataTemp
 
                         for alert in json_dataTemp["activeStorms"]:
 
                             category = ""
-                            speed = alert["movementSpeed"]*1.60934    #Millas por hora a kilometros por hora
+                            speed = float(alert["movementSpeed"]) * 1.60934    #Millas por hora a kilometros por hora
                             pressure = alert["pressure"]   #mB
 
                             if speed < 62:
@@ -109,10 +101,11 @@ class NoaaSocket:
                                 }
                             )
 
-                            insertData(
+                            self._train_model(
                                 {
                                     "id":alert["id"],
                                     "category":category,
+                                    "name": alert["name"],
                                     "speed":speed,
                                     "pressure":pressure,
                                     "center":{
@@ -122,12 +115,11 @@ class NoaaSocket:
                                     "direction":alert["movementDir"],  #Grados
                                     "date":alert["lastUpdate"]
                                 }
+
                             )
                         
-                        asyncio.run(self.emitAlert(json_data))     
-
+                        asyncio.run(self._emitAlert(json_data))     
                         print("New data")
-
                         json_data = []
 
                 else:
