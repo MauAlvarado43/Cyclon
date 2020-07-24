@@ -1,0 +1,30 @@
+<div class="modal fade" id="recoverModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="recoverModalLabel" style="color: black;"> <%= assets.titles.recoverPassword %> </h5>
+				<button type="button" class="close" @click="reset" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+            </div>
+            
+			<div class="modal-body" style="color: black;">
+				<form>
+
+					<div class="form-group">
+						<label for="emailRecover"><%= assets.inputs.email %></label>
+						<input type="email" class="form-control" id="emailRecover" aria-describedby="emailHelp" placeholder="example@example.com" v-model="emailRecover" @keyup.enter="recover">
+						<ul id="errorRecoverLabel" style="visibility: hidden;">
+                            <li style="color: red; margin-left: 5%; text-align: left;" id="recoverMessage"></li>
+                        </ul>
+					</div>
+
+					<button type="button" class="btn mb-3 btn-block" @click="recover" style=" background-color: #5260ff; color: white;" onmouseover="this.style.background = '#4d57c5'" onmouseout="this.style.background = '#5260ff'"><%= assets.buttons.send_recover %></button>
+
+				</form>
+            </div>
+            
+		</div>
+	</div>
+</div>

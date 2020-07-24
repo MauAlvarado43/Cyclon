@@ -5,6 +5,8 @@ import { validateToken, decryptAES, decryptFront, encryptAES } from '../utils/ci
 import { UserModel as User } from '../models/UserModel'
 import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
+import geoip from 'geoip-lite'
+
 
 const router = Router()
 
@@ -29,6 +31,45 @@ router.get('/home', (req,res) => {
                 decryptAES
             }
         })
+})
+
+router.get('/recoverPassword', async (req,res) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en'
+
+    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+
+    if(req.query.v && req.query.u){
+
+        let email = decryptAES(req.query.u)
+        let docs = await User.find({email: email})
+
+        if(docs.length==1){
+            if(validateToken(req.query.v)){
+
+                req.session.tokenRecover = req.query.v
+                req.session.userRecover = email
+
+                res.render('recoverForm', {
+                    title: `Cyclon - ${assets.titles.recoverPassword}`, 
+                    assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+                })
+
+            }
+            else{
+                res.render('tokenExpired', {
+                    title: `Cyclon - ${assets.errors.TOKEN_INVALID}`, 
+                    assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+                })
+            }
+        }
+        else{
+            res.redirect('/')
+        }
+
+    }
+    
 })
 
 router.get('/verifyAccount', async (req,res) => {
@@ -58,6 +99,7 @@ router.get('/verifyAccount', async (req,res) => {
         else{
             res.redirect('/')
         }
+
     }
     else{
         res.redirect('/')
@@ -92,7 +134,69 @@ router.get('/update', (req,res) => {
                    API
 ***************************************/
 
-router.post('/updateInfo', async (req,res) => {
+router.get('/api/resendVerificationEmail', (req,res) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    sendEmail(decryptAES(req.user.email), 'verification', language, req.user.name + ' ' + req.user.lastName, req.user.type, req.user.email)
+    res.json({'code': 200, 'msg': 'RESENDED_VEMAIL' }) 
+
+})
+
+router.get('/api/updateLocation', (req,res) => {
+
+    let geo = geoip.lookup(req.ip)
+
+    geo = {
+        ll: [19, -99]
+    }
+
+    User.updateOne({email: req.user.email}, {$set: { lat: encryptAES(geo[0]), lng: encryptAES(geo[1]) } }, (err,raw) => {
+        if(err) 
+            res.json({'code': 401, 'msg': '500'})
+        else{
+            res.json({'code': 200, 'msg': 'UPDATED_LOCATION' }) 
+            req.session.destroy()
+            req.logout()
+        }
+    }) 
+
+})
+
+router.post('/api/updatePassword', (req,res) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    if(req.session.allowChanges){
+
+        let password = decryptFront(req.body.password)
+
+        const user = new User()
+        const userValidation = user.validateUser( req.user.name, req.user.lastName, decryptAES(req.user.email), password)
+
+        if(userValidation.length==0){
+            User.updateOne({email: req.user.email}, {$set: { password: encryptAES(password) } }, (err,raw) => {
+                if(err) 
+                    res.json({'code': 401, 'msg': '500'})
+                else{
+                    res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
+                    req.session.destroy()
+                    req.logout()
+                }
+            }) 
+        }
+        else
+            res.json({'code': 401, 'msg': 'BAD_INPUT'})
+
+    }
+
+    req.session.allowChanges = false
+
+})
+
+router.post('/api/updateInfo', async (req,res) => {
 
     let language = req.acceptsLanguages('es', 'en')
     if (!language) language = 'en' 
@@ -105,53 +209,107 @@ router.post('/updateInfo', async (req,res) => {
 
     const userValidation = user.validateUser( newName, newApat, newEmail, decryptAES(req.user.password))
 
-    if(userValidation.length==0){
+    if(req.session.allowChanges){
 
-        newEmail = encryptAES(newEmail)
+        if(userValidation.length==0){
 
-        if(req.user.email == newEmail){
-            User.updateOne({email: req.user.email}, {$set: { lastName: newApat, name: newName } }, (err,raw) => {
-                if(err) 
-                    res.json({'code': 401, 'msg': '500'})
-                else 
-                    res.json({'code': 200, 'msg': 'UPDATE_SUCCESS' })
-            }) 
-        }
-        else{
-            let docs = await User.find({ email: newEmail })
-
-            if(docs.length==0){
-                User.updateOne({email: req.user.email}, {$set: { verify: false, email: newEmail, lastName: newApat, name: newName } }, (err,raw) => {
+            newEmail = encryptAES(newEmail)
+    
+            if(req.user.email == newEmail){
+                User.updateOne({email: req.user.email}, {$set: { lastName: newApat, name: newName } }, (err,raw) => {
                     if(err) 
-                        res.json({'code': 401, 'msg': '500'})                    
-                    else {
-                        sendEmail(decryptAES(newEmail), 'verification', language, newName + ' ' + newApat, req.user.type, newEmail)
-                        res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
-                        req.session.destroy()
-                        req.logout()
-                    }
+                        res.json({'code': 401, 'msg': '500'})
+                    else
+                        res.json({'code': 200, 'msg': 'UPDATE_SUCCESS' })
                 }) 
             }
-            else
-                res.json({'code': 401, 'msg': 'EMAIL_TAKEN'})
-        }    
-
+            else{
+                let docs = await User.find({ email: newEmail })
+    
+                if(docs.length==0){
+                    User.updateOne({email: req.user.email}, {$set: { verify: false, email: newEmail, lastName: newApat, name: newName } }, (err,raw) => {
+                        if(err) 
+                            res.json({'code': 401, 'msg': '500'})                    
+                        else {
+                            sendEmail(decryptAES(newEmail), 'verification', language, newName + ' ' + newApat, req.user.type, newEmail)
+                            res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
+                            req.session.destroy()
+                            req.logout()
+                        }
+                    }) 
+                }
+                else
+                    res.json({'code': 401, 'msg': 'EMAIL_TAKEN'})
+            }    
+    
+        }
+        else
+            res.json({'code': 401, 'msg': 'BAD_INPUT'})
     }
-    else
-        res.json({'code': 401, 'msg': 'BAD_INPUT'})
+
+    req.session.allowChanges = false
 
 })
 
-router.post('/verifyPassword', (req,res) => {
+router.post('/api/verifyPassword', (req,res) => {
     if(!req.user){
         res.json({ 'code': 402, 'msg': '' })
+        req.session.allowChanges = false
     }
     else{
-        if(req.user.password != encryptAES(decryptFront(req.body.password)))
+        if(req.user.password != encryptAES(decryptFront(req.body.password))){
+            req.session.allowChanges = false
             res.json({ 'code': 401, 'msg': 'INCORRECT_PASSWORD' })
-        else
+        }
+        else{
+            req.session.allowChanges = true
             res.json({ 'code': 200, 'msg': '' })
+        }
     }
+
+})
+
+router.post('/api/changePassword', (req,res) => {
+    
+    if(req.session.tokenRecover && req.session.userRecover){
+
+        let password = decryptFront(req.body.password)
+
+        const user = new User()
+        const userValidation = user.validateUser("rootroot", "rootroot", decryptAES(req.session.userRecover), password)
+
+        if(userValidation.length==0){
+            User.updateOne({email: req.session.userRecover}, {$set: { password: encryptAES(password) } }, (err,raw) => {
+                if(err) 
+                    res.json({'code': 401, 'msg': '500'})
+                else{
+                    res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
+                    req.session.destroy()
+                }
+            }) 
+        }
+        else
+            res.json({'code': 401, 'msg': 'BAD_INPUT'})
+
+    }
+    
+})
+
+router.post('/api/requestRecoverPassword', async (req,res) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    let email = encryptAES(decryptFront(req.body.email))
+    let docs = await User.find({ email: encryptAES(decryptFront(req.body.email)) })
+
+    if(docs.length==0)
+        res.json({ 'code': 401, 'msg': 'USER_NOT_EXIST'})
+    else{
+        sendEmail(decryptAES(email), 'recover', language, docs[0].name + ' ' + docs[0].lastName, docs[0].type, email)
+        res.json({ 'code': 200, 'msg': 'recover_acepted'})
+    }
+
 })
 
 module.exports = router

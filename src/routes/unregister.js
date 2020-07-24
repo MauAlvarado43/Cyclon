@@ -159,13 +159,12 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				newUser.save()
 				res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
 			}
-			else{
+			else
                 res.json({'code': 401, 'msg': 'BAD_LOCATION'})
-			}     		
+			    		
 		}
-		else{
+		else
 			res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
-		}
 
 	})
 
@@ -205,13 +204,13 @@ router.post('/auth/mobile/google', (req,res) => {
                 res.json({'code':200,'msg':['ACCOUNT_CREATED']})
                 
 			}
-			else{
+			else
 				res.json({'code':401,'msg':['BAD_LOCATION']})
-			}     		
+			     		
 		}
-		else{
+		else
 			res.json({'code':200,'msg':['LOGIN_SUCCESS']})
-		}
+		
 
 	})
 
@@ -224,12 +223,12 @@ router.post('/auth/register', (req, res, next) => {
 
     passport.authenticate('local-signup', function(err, user, info) {
         
-        if (err){
+        if (err)
             return res.json({'code':401,'msg':err})
-        }
-        if (!user){ 
+        
+        if (!user)
             return res.json({'code':401,'msg':['BAD_INPUT']})
-        }
+        
 
         sendEmail(decryptAES(user.email), 'verification', language, user.name + ' ' + user.lastName, user.type, user.email)
 
@@ -244,10 +243,11 @@ router.post('/auth/register', (req, res, next) => {
 router.post('/auth/login', (req,res,next) => {
     passport.authenticate('local-signin', function(err, user, info) {
         if (err)  return res.send({'code':401,'msg':err})
-        if (!user) { return res.json({'code':401,'msg':['BAD_INPUT']}) }
+        if (!user) return res.json({'code':401,'msg':['BAD_INPUT']})
 
         req.logIn(user, function(err) {
           if (err) return next({'code':401,'msg':err})
+          res.cookie('auth', encryptAES(JSON.stringify(user)))
           return res.json({'code':200,'msg':['LOGIN_SUCCESS']})
         })
     })(req, res, next)
@@ -256,6 +256,7 @@ router.post('/auth/login', (req,res,next) => {
 router.get('/logout', function(req, res){
     req.session.destroy()
     req.logout()
+    res.clearCookie('auth')
     res.redirect('/')
 })
 

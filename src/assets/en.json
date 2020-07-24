@@ -6,7 +6,8 @@
         "privacy":              "Privacy policies",
         "home":                 "Home",
         "update_info":          "Update information",
-        "verify":               "Verification"
+        "verify":               "Verification",
+        "recoverPassword":      "Recover password"
     },
     "inputs":{
         "email":                "Email",
@@ -35,7 +36,9 @@
         "logout":               "Log out",
         "update_password":      "Update password",
         "update_location":      "Update location",
-        "verify":               "Verify"
+        "verify":               "Verify",
+        "resend_email":         "Resend verification email",
+        "send_recover":         "Enviar correo de recuperación"
     },
     "simbology":{
         "real":                 "Real Trajectory",
@@ -106,12 +109,18 @@
         "MAX_LASTNAME":         "The last name must not be more than 50 character",
         "ONLY_LETTERS_LASTNAME":"The last name can only have letters and / or spaces",
         "INCORRECT_PASSWORD":   "The password is incorrect",
-        "USER_NOT_EXIST":       "The user is not exist"
+        "USER_NOT_EXIST":       "The user is not exist",
+        "TOKEN_INVALID":        "Token invalid"
     },
     "ACCOUNT_CREATED":          "Account created successfully, log in...",
     "sign_success":             "Log in...",
     "LOGIN_AGAIN":              "Log in again",
     "UPDATE_SUCCESS":           "The data has been successfully modified!",
+    "UPDATED_LOCATION":         "Location updated successfully!",
+    "RESENDED_VEMAIL":          "Email resended successfully!",
+    "TOKEN_EXPIRED":            "Authentication token has expired, resend the request again",
+    "recover_acepted":          "A recover email has been sent to your account",
+    "password_forgotten":       "Did you forget your password?",
     "privacy":                  "Privacy policies",
     "terms":                    "Terms & Conditions",
     "read":                     "I have read and agree to Cyclon's stated conditions in",

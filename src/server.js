@@ -14,6 +14,7 @@ import path from 'path'
 import graphqlHTTP from 'express-graphql'
 import schema from './config/schema'
 import { infoLog } from './utils/logger'
+import { decryptAES } from './utils/cipher'
 
 // Initialzing packages
 const app = express()
@@ -39,6 +40,15 @@ app.use(session({
         expires: 60 * 60 * 12
     })
 }))
+
+app.use('*', (req,res,next) => {
+    if(!req.user && req.cookies && req.cookies.user){
+        req.logIn(decryptAES(JSON.parse(req.cookies.user)), function(err) {
+            next()
+        })
+    }
+    else next()
+})
 
 app.use('/graphql', (req,res,next) => { 
     graphqlHTTP({
