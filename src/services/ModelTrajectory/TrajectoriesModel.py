@@ -19,9 +19,16 @@ class TrajectoriesModel(EarthPoints):
       self._connect_bd()
 
    def _connect_bd(self):
-      self._client = pymongo.MongoClient(self._mongoLocal)
-      self._database = self._client.cyclon
-      self._collection = self._database.hurricaines
+      try:
+         self._client = pymongo.MongoClient(self._mongo_URL)
+         self._database = self._client.cyclon
+         self._collection = self._database.hurricaines
+      except Exception as err:
+         print(f"Error to connect with {self._mongo_URL}")
+         self._client = pymongo.MongoClient(self._mongoLocal)
+         self._database = self._client.cyclon
+         self._collection = self._database.hurricaines
+         print(f"Connect with local database in {self._mongoLocal}")
 
    def train(self, lat: float, lng: float, category: str, time: int):
       self._inicializate_variable(lat = lat, lng = lng, category = category, time = time)
@@ -55,13 +62,7 @@ class TrajectoriesModel(EarthPoints):
          petition = self._get_Petition(latitudes_v[i], longitudes_v[i], hour)
          if petition[0] == "Status Code: 200":
             petitions_data.append(petition[1])
-         elif petition[0] == "Status code: 401":
-            #TODO manage the errors
-            print("Status code: 401")
-         
-         elif petition[0] == "Status code: 409": 
-            #TODO manage the errors
-            print("Status code: 409")
+            
       acceleration_x = []
       acceleration_y = []
       velocity_x = 0
@@ -172,6 +173,7 @@ class TrajectoriesModel(EarthPoints):
       actual_date = str(datetime.datetime.utcnow())
       petition = self._get_Petition_One(cyclone["center"]["lat"], cyclone["center"]["long"])
       data_model = self.train(cyclone["center"]["lat"], cyclone["center"]["long"], cyclone["category"], 6)
+      print("Model finished!!")
 
       if exists:
          print("El cyclon existe")
@@ -218,7 +220,7 @@ class TrajectoriesModel(EarthPoints):
             },
             "predictedTrajectory": [],
             "realTrajectory": [],
-            "active": 'True',
+            "active": True,
             "category": cyclone["category"]
          }
          new_cyclon["realTrajectory"].append({
