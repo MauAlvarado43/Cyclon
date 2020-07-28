@@ -9,6 +9,7 @@ type User{
 }
 
 type Cyclone{
+	id: String
 	name: String
 	appearance: String
 	lastUpdate: String

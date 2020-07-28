@@ -27,11 +27,9 @@ class Petition():
                 
          else:
             # print(response.json())
-            print("Entro en recursivo")
             return self.getPetition(lat, lng)
         
       except NameError as err:
-         print("Entro en recursivo")
          return self.getPetition(lat, lng) 
          # return [False, err]
 
