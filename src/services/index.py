@@ -1,35 +1,38 @@
-
 from aiohttp import web
 from multiprocessing import Process
 import socketio
-# import noaaSocket
+from noaaSocket import NoaaSocket 
 from ModelAppearance.AppearanceModel import AppearanceModel
+import os
 
-# Start the appearance model
-appearance_model = AppearanceModel()
-appearance_model.starJob()
+class Controller():
 
-"""
-sio = socketio.AsyncServer(cors_allowed_origins='*')
-app = web.Application()
-sio.attach(app)
+    def __init__(self):
+        self._port = os.environ.get("PORT", 5000)
+        self._model_appearance = AppearanceModel()
+        self._sio = socketio.AsyncServer(cors_allowed_origins='*')
 
-@sio.event
-def connect(sid, environ):
-    print("connect ", sid)
+    def run_server(self):
+        self._noaa_thread = NoaaSocket(self._sio)
+        self._noaa_thread.start()
+        self._model_appearance.starJob()
+        self._app = web.Application()
+        self._sio.attach(self._app) 
+        self._sio.event(self.connect)
+        self._sio.event(self.disconnect)
+        web.run_app(self._app, host='localhost', port = self._port)
+        print("Holi")
 
-@sio.event
-def disconnect(sid):
-    print('disconnect ', sid)
-   
-def startMonitoring():
-    socket = noaaSocket.NoaaSocket()
-    socket.run(sio)
+    def connect(self, sid, environ):
+        print("connect ", sid)
+
+    def disconnect(self, sid):
+        print('disconnect ', sid)
+    
+    def startMonitoringNoaa(self):
+        self._socket = NoaaSocket(self._sio)
+        self._socket.run()
 
 if __name__ == '__main__':
-
-    noaaThread = Process(target=startMonitoring)
-    noaaThread.start()
-
-    web.run_app(app)
-"""
+    init = Controller()
+    init.run_server()

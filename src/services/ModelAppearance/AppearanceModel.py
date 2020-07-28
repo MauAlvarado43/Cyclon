@@ -27,9 +27,16 @@ class AppearanceModel():
          self._kmeans, self._X, self._Y = pickle.load(file)
 
    def _connect_bd(self):
-      self._client = pymongo.MongoClient(self._mongoLocal)
-      self._database = self._client.cyclon
-      self._collection = self._database.RiskArea
+      try:
+         self._client = pymongo.MongoClient(self._mongo_URL)
+         self._database = self._client.cyclon
+         self._collection = self._database.hurricaines
+      except Exception as err:
+         print(f"Error to connect with {self._mongo_URL}")
+         self._client = pymongo.MongoClient(self._mongoLocal)
+         self._database = self._client.cyclon
+         self._collection = self._database.RiskArea
+         print(f"Connect with local database in {self._mongoLocal}")
 
    def starJob(self):
       self._timer.start()
@@ -77,8 +84,8 @@ class AppearanceModel():
       return datetime.datetime.fromtimestamp(int(hour)).strftime('%Y-%m-%d %H:%M:%S')
 
    def _saving_scanning(self, data):
+      self._connect_bd()
       for scan in data:
          result = self._collection.insert_one(scan)
-         print(result.inserted_id())
 
 
