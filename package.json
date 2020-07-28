@@ -14,6 +14,9 @@
     "production": "npm run build && node bin/production && python37 src/services/index.py",
     "exportdb": "babel-node ./src/utils/database/exportDB.js"
   },
+  "nodemonConfig": {
+    "ignore": ["src/services/*", "src/public/*"]
+  },
   "keywords": [],
   "author": "Mauricio Alvarado López - Ángel Gabriel Rodríguez Rodríguez",
   "dependencies": {

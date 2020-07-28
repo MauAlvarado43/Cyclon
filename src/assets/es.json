@@ -7,7 +7,8 @@
         "home":                 "Inicio",
         "update_info":          "Actualizar datos",
         "verify":               "Verificación",
-        "recoverPassword":      "Recuperar contraseña"
+        "recoverPassword":      "Recuperar contraseña",
+        "records":              "Registro de huracanes"
     },
     "inputs":{
         "email":                "Correo electrónico",
@@ -38,7 +39,32 @@
         "update_location":      "Actualizar ubicación",
         "verify":               "Verificar",
         "resend_email":         "Reenviar correo de verificación",
-        "send_recover":         "Enviar correo de recuperación"
+        "send_recover":         "Enviar correo de recuperación",
+        "convert_scientist":    "Ser Investigador"
+    },
+    "units": {
+        "windSpeed": {
+            "label": "Vientos",
+            "unit": "km/h"
+        },
+        "hurrSpeed": {
+            "label": "Velocidad",
+            "unit": "km/h"
+        },
+        "temperature": {
+            "label": "Temperatura",
+            "unit": "°C"
+        },
+        "pressure": {
+            "label": "Presión",
+            "unit": "mB"
+        },
+        "latitude":{
+            "label": "Latitud"
+        },
+        "longitude":{
+            "label": "Longitud"
+        }
     },
     "simbology":{
         "real":                 "Trayectoria Real",
@@ -140,5 +166,8 @@
     "download":                 "¡Descárgala ya!",
     "success":                  "Éxito!",
     "notice":                   "Aviso",
-    "verification":             "Verifica tu cuenta para recibir las alertas únicamente de tu localidad"
+    "verification":             "Verifica tu cuenta para recibir las alertas únicamente de tu localidad",
+    "scientistInfo":            "Un usuario investigador tiene más privilegios que una cuenta normal. Puedes ver registros de huracanes, datos estadísticos, etc.",
+    "not_registered":           "Sin registro",
+    "date":                     "Fecha"
 }

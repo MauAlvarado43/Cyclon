@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <meta name="description" content="Free cyclone's alerts">
+    <meta name="author" content="Cyclon">
+
+    <title> <%= title %> </title>
+
+    <meta property="og:site_name" content="Cyclon" />
+	<meta property="og:site" content="http://cyclon.com.mx/"/>
+	<meta property="og:title" content="<%= title %>"/>
+	<meta property="og:description" content="Main page" />
+	<meta property="og:image" content="/images/favicon.ico"/>
+	<meta property="og:url" content="http://cyclon.com.mx/"/>
+	<meta property="og:type" content="article" />
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/fontawesome-all.css" rel="stylesheet">
+    <link href="/css/swiper.css" rel="stylesheet">
+	<link href="/css/magnific-popup.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/alert.css" rel="stylesheet">
+    <link href="/css/morris.css" rel="stylesheet">
+
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+<body data-spy="scroll" data-target=".fixed-top">
+
+    <%- include("./components/loader") %>
+
+    <%- include("./components/navbar-register",{assets: assets}) %> 
+
+    <div class="basic-1">
+        <div class="container">
+            <div class="row"  style="margin-top: 5%;">
+                <div class="col-6">
+                    <div id="app" style="height: 34rem; overflow-y: scroll;">
+
+                        <div>
+                            <input type="number" min="1860" id="selectYear" v-model="year" @keyup.enter="searhCyclones">
+                            <input type="button" value="Search" @click="searhCyclones">
+                            <select @change="showCyclone" v-model="selectedCyclone" id="selectCyclone">
+                                <option disabled value="">Select option</option>
+                                <option v-for="(cyclone, index) in cyclones" v-bind:class="{ cycloneActive: cyclone.active }">{{index+1}} {{cyclone.name}}</option>
+                            </select>
+                            <select @change="showCyclone" v-model="selectedTrajectory" :disabled="selectedCyclone==''">
+                                <option disabled value="">Select option</option>
+                                <option value="realTrajectory">realTrajectory</option>
+                                <option value="predictedTrajectory">predictedTrajectory</option>
+                            </select>
+                            <select @change="showGraph" v-model="selectedGraph" :disabled="selectedCyclone==''">
+                                <option disabled value="">Select option</option>
+                                <option value="windSpeed">Wind speed</option>
+                                <option value="hurrSpeed">Hurricaine Speed</option>
+                                <option value="temperature">Temperature</option>
+                                <option value="pressure">Pressure</option>
+                            </select>
+    
+                        </div>
+                        
+                        <div>
+                            <div id="cycloneTable">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-6">
+                    <%- include("./components/map",{assets: assets}) %> 
+                    <br><br>
+                    <div id="graph" style="height: 12rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include("./components/footer",{assets: assets}) %> 
+
+</body>
+
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/popper.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/jquery.easing.min.js"></script>
+<script src="/js/lib/swiper.min.js"></script>
+<script src="/js/lib/jquery.magnific-popup.js"></script>
+<script src="/js/lib/morphext.min.js"></script>
+<script src="/js/lib/validator.min.js"></script>
+<script src="/js/lib/scripts.js"></script>
+<script src="/js/lib/raphael.js"></script>
+<script src="/js/lib/morris.min.js"></script>
+<script src="/js/lib/vue.js"></script>
+<script src="/js/lib/heat_layer.js"></script>
+<script src="/js/lib/cycloneUtils.js"></script>
+<script src="/js/cycloneManager.js"></script>
+<script src="/js/graphGenerator.js"></script>
+
+<script>
+    const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+
+    document.getElementById("homeButton").setAttribute("href","/home")
+    document.getElementById("homeImageButton").setAttribute("href","/home")
+    document.getElementById("privacyButton").setAttribute("href","/privacy")
+    document.getElementById("termsButton").setAttribute("href","/terms")
+    document.getElementById("homeButton").setAttribute("class","nav-link page-scroll active")
+    document.getElementById("selectYear").setAttribute("max",(new Date()).getFullYear())
+</script>
+
+</html>
