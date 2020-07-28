@@ -1,3 +1,48 @@
+.cycloneActive{
+	color: red;
+}
+
+svg{
+	overflow: visible !important;
+}
+
+.customToolTip {
+	width: 100%;
+	position: relative;
+	display: inline-block;
+}
+
+.customToolTip .customToolTipText {
+	visibility: hidden;
+	width: 22rem;
+	background-color: rgba(0, 0, 0, 0.39);
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	top: 150%;
+	left: 50%;
+	margin-left: -32%;
+}
+
+.customToolTip .customToolTipText::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent rgba(0, 0, 0, 0.39) transparent;
+}
+
+.customToolTip:hover .customToolTipText {
+	visibility: visible;
+}
+						
+
 ::-webkit-scrollbar {
 	z-index: 9999;
 }

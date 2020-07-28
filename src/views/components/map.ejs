@@ -4,8 +4,7 @@
 <style>
 
     #windy{
-        width: 70%; 
-        height: 30rem;
+        width: 100%; 
     }
 
     #simbologyContainer{
@@ -49,7 +48,7 @@
 
 </style>
 
-    <div id="windy" class="mx-auto">
+    <div id="windy" style="height: <%= (path=="/records") ? "18rem" : "30rem" %>;">
     </div>
 
     <div id="simbologyButtonContainer" class="top-border noselect clickable">
@@ -59,7 +58,7 @@
     <div id="simbologyContainer">
 
         <div id="containerSibologyIcons" style="visibility: hidden; vertical-align: middle;">
-            <div><input type="button" value="←" onclick="closeSimbology();" style="margin-left: 3%; margin-top: -1%; font-size: 40px; background: none; outline: none; border: 0; color: white;"></div>
+            <div><input type="button" value="←" onclick="closeSimbology();" style="margin-left: 0%; margin-top: -1%; font-size: 40px; background: none; outline: none; border: 0; color: white;"></div>
             <center>
                 <h5><%= assets.simbology.title %></h5>
             </center>
@@ -128,8 +127,16 @@
 
 
 <script>
-    let map_const;
+    let icons = {
+        "DT": "/images/DepresiónTropical.png",
+        "ST": "/images/TormentaTropical.png",
+        "HX": "/images/Categoría.png",
+        "RH": "/images/Remanente.png"
+    }
 
+    let map_const
+    let lastLayer
+    let lastmarker
     let latUser = 19
     let lngUser = -99
 

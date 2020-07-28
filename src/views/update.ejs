@@ -90,6 +90,19 @@ const assets = JSON.parse('<%- JSON.stringify(assets) %>')
             }
         },
         methods: {
+            async convertScientist() {
+
+                let response = await fetch("/api/upgradeUser")
+                let res = await response.json()
+
+                if(res.code==401)
+                    alert.error(assets.errors[res.msg],"Error")
+                else{
+                    alert.success(assets[res.msg],"")
+                    setTimeout(() => { window.location.href = "/" }, 3000)
+                }
+                
+            },
             async resendEmail(){
 
                 let response = await fetch("/api/resendVerificationEmail")

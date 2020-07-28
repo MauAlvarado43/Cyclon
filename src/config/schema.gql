@@ -41,5 +41,5 @@ type Geolocation{
 
 type Query {
     activeCyclones: [Cyclone]
-	allCyclones: [Cyclone]
+	searchCyclone (year: Int): [Cyclone]
 }

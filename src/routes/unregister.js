@@ -13,6 +13,7 @@ const router = Router()
 /***************************************
                 Rendering
 ***************************************/
+
 router.get('/', (req,res) => {
     
     if(!req.session.error)
@@ -30,6 +31,7 @@ router.get('/', (req,res) => {
         res.render('index', {
             title: `Cyclon - ${assets.titles.index}`,
             assets: assets, 
+            path: '/',
             errors: req.session.error
         })
     }
@@ -44,6 +46,7 @@ router.get('/privacy', (req,res) => {
 
     res.render('privacy', {
         title: `Cyclon - ${assets.titles.privacy}`, 
+        path: '/privacy',
         assets: assets
     })
 })
@@ -56,6 +59,7 @@ router.get('/terms', (req,res) => {
 
     res.render('terms', {
         title: `Cyclon - ${assets.titles.terms}`, 
+        path: '/terms',
         assets: assets
     })
 })

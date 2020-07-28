@@ -24,9 +24,10 @@ router.get('/home', (req,res) => {
         res.redirect('/')
     else
         res.render('home', {
-            title: `Cyclon - ${assets.titles.home}`, 
-            assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')),
+            title: `Cyclon - ${assets.titles.records}`, 
+            assets: assets,
             context: req.user,
+            path: '/home',
             functions: {
                 decryptAES
             }
@@ -52,15 +53,17 @@ router.get('/recoverPassword', async (req,res) => {
                 req.session.userRecover = email
 
                 res.render('recoverForm', {
-                    title: `Cyclon - ${assets.titles.recoverPassword}`, 
-                    assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+                    title: `Cyclon - ${assets.titles.recoverPassword}`,
+                    path: '/recoverPassword',
+                    assets: assets
                 })
 
             }
             else{
                 res.render('tokenExpired', {
                     title: `Cyclon - ${assets.errors.TOKEN_INVALID}`, 
-                    assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+                    path: '/recoverPassword',
+                    assets: assets
                 })
             }
         }
@@ -122,6 +125,7 @@ router.get('/update', (req,res) => {
             title: `Cyclon - ${assets.titles.update_info}`, 
             assets: assets,
             context: req.user,
+            path: '/update',
             functions: {
                 decryptAES
             }
@@ -284,6 +288,7 @@ router.post('/api/changePassword', (req,res) => {
                     res.json({'code': 401, 'msg': '500'})
                 else{
                     res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
+                    req.logout()
                     req.session.destroy()
                 }
             }) 
@@ -310,6 +315,18 @@ router.post('/api/requestRecoverPassword', async (req,res) => {
         res.json({ 'code': 200, 'msg': 'recover_acepted'})
     }
 
+})
+
+router.get('/api/upgradeUser', async (req,res) => {
+    User.updateOne({email: req.user.email, verify: true}, {$set: { type: 1 } }, (err,raw) => {
+        if(err) 
+            res.json({'code': 401, 'msg': '500'})
+        else{
+            res.json({'code': 201, 'msg': 'LOGIN_AGAIN' }) 
+            req.logout()
+            req.session.destroy()
+        }
+    })
 })
 
 module.exports = router

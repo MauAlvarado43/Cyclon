@@ -7,7 +7,8 @@
         "home":                 "Home",
         "update_info":          "Update information",
         "verify":               "Verification",
-        "recoverPassword":      "Recover password"
+        "recoverPassword":      "Recover password",
+        "records":              "Hurricaine records"
     },
     "inputs":{
         "email":                "Email",
@@ -38,7 +39,32 @@
         "update_location":      "Update location",
         "verify":               "Verify",
         "resend_email":         "Resend verification email",
-        "send_recover":         "Enviar correo de recuperación"
+        "send_recover":         "Enviar correo de recuperación",
+        "convert_scientist":    "Be a Scientist"
+    },
+    "units": {
+        "windSpeed": {
+            "label": "Wind",
+            "unit": "km/h"
+        },
+        "hurrSpeed": {
+            "label": "Velocity",
+            "unit": "km/h"
+        },
+        "temperature": {
+            "label": "Temperature",
+            "unit": "°C"
+        },
+        "pressure": {
+            "label": "Pressure",
+            "unit": "mB"
+        },
+        "latitude":{
+            "label": "Latitude"
+        },
+        "longitude":{
+            "label": "Longitude"
+        }
     },
     "simbology":{
         "real":                 "Real Trajectory",
@@ -138,5 +164,8 @@
     "tweets_description":       "Check the latest Cyclon posts on Twitter",
     "download":                 "Download it today!",
     "success":                  "Success!",
-    "verification":             "Verify your account to receive alerts only from your location"
+    "verification":             "Verify your account to receive alerts only from your location",
+    "scientistInfo":            "An investigating user has more privileges than a normal account. You can see hurricane records, statistical data, etc.",
+    "not_registered":           "Not registered",
+    "date":                     "Date"
 }

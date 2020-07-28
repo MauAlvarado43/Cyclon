@@ -70,13 +70,16 @@
                             </div>
 
                             <% if(!context.verify){ %>
-
                                 <hr>
-
                                 <div class="form-group">
                                     <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="resendEmail" value="<%= assets.buttons.resend_email %>" required>
                                 </div>
-
+                            <% } else if(!context.type && context.verify) { %>
+                                <hr>
+                                <div class="form-group customToolTip">
+                                    <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="convertScientist" value="<%= assets.buttons.convert_scientist %>" required>
+                                    <span class="customToolTipText" ><%= assets.scientistInfo %></span>
+                                </div>
                             <% } %>
 
                         </form>
