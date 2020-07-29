@@ -20,7 +20,12 @@
         "message":              "Mensaje",
         "new_password":         "Nueva contraseña",
         "confirm_n_password":   "Confirmar nueva contraseña",
-        "verify_password":      "Verifique su contraseña"
+        "verify_password":      "Verifique su contraseña",
+        "select":               "Seleccione",
+        "year":                 "Año",
+        "cyclone":              "Huracán",
+        "trajectory":           "Trayectoria",
+        "graph":                "Gráfica"
     },
     "buttons": {
         "login" :               "Iniciar Sesión",
@@ -40,7 +45,8 @@
         "verify":               "Verificar",
         "resend_email":         "Reenviar correo de verificación",
         "send_recover":         "Enviar correo de recuperación",
-        "convert_scientist":    "Ser Investigador"
+        "convert_scientist":    "Ser Investigador",
+        "search":               "Buscar"
     },
     "units": {
         "windSpeed": {
@@ -75,7 +81,10 @@
         "hurricane":            "Huracán",
         "remanent":             "Remanente",
         "title":                "Simbología",
-        "subtitle":             "Consulta los fenómenos meteorológicos actuales"
+        "subtitle":             "Consulta los fenómenos meteorológicos actuales",
+        "graphs":               "Gráficas",
+        "map":                  "Mapa",
+        "tab":                  "Tabulación"
     },
     "alertMessages":{
         "DT":                   "Depresión Tropical",
@@ -169,5 +178,6 @@
     "verification":             "Verifica tu cuenta para recibir las alertas únicamente de tu localidad",
     "scientistInfo":            "Un usuario investigador tiene más privilegios que una cuenta normal. Puedes ver registros de huracanes, datos estadísticos, etc.",
     "not_registered":           "Sin registro",
-    "date":                     "Fecha"
+    "date":                     "Fecha",
+    "parameters":               "Parametros de Búsqueda"
 }

@@ -20,7 +20,12 @@
         "message":              "Message",
         "new_password":         "New password",
         "confirm_n_password":   "Confirm new password",
-        "verify_password":      "Verify your password"
+        "verify_password":      "Verify your password",
+        "select":               "Select",
+        "year":                 "Year",
+        "cyclone":              "Hurricaine",
+        "trajectory":           "Trajectory",
+        "graph":                "Graph"
     },
     "buttons": {
         "login" :               "Log in",
@@ -40,7 +45,8 @@
         "verify":               "Verify",
         "resend_email":         "Resend verification email",
         "send_recover":         "Enviar correo de recuperación",
-        "convert_scientist":    "Be a Scientist"
+        "convert_scientist":    "Be a Scientist",
+        "search":               "Search"
     },
     "units": {
         "windSpeed": {
@@ -167,5 +173,6 @@
     "verification":             "Verify your account to receive alerts only from your location",
     "scientistInfo":            "An investigating user has more privileges than a normal account. You can see hurricane records, statistical data, etc.",
     "not_registered":           "Not registered",
-    "date":                     "Date"
+    "date":                     "Date",
+    "parameters":               "Search parameters"
 }
