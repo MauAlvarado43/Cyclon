@@ -49,8 +49,14 @@ const app = new Vue({
         async searhCyclones(){
             if(this.year >1859 && this.year < ((new Date()).getFullYear() + 1) ){
 
+                if (lastLayer != null) {
+                    map_const.removeLayer(lastLayer)
+                }
+                if(lastmarker != null){
+                    map_const.removeLayer(lastmarker)
+                }
+
                 this.selectedCyclone = ''
-                $("#graph").text("")
 
                 const response = await fetch("/graphql?query="+(query.replace("$", this.year)))
                 const res = await response.json()
@@ -74,6 +80,20 @@ const app = new Vue({
 
                 this.cyclones = cyclonesArray
 
+                $("#cycloneTable").text("")
+                $("#cycloneTable").html(`<center">
+                    <br><br><br><br><br><br>
+                    <h3>Escoja un huracán primero</h3>
+                </center>`)
+
+                $("#graph").text("")
+                $("#graph").html(`<center">
+                    <br><br><br><br><br><br>
+                    <h3>Escoja un huracán primero</h3>
+                </center>`)
+
+                $("#cycloneTableContent").css("overflow-y","hidden")
+
             }
         },
         showCyclone(){
@@ -91,136 +111,153 @@ const app = new Vue({
             let latlngs = []
             let trajectorySelected =  this.cyclones[(this.selectedCyclone.split(" ")[0])-1][this.selectedTrajectory]
 
-            let table = `<table class="table small" style="background-color: white;">
-                            <tr>
-                                <th>${assets.units.latitude.label}</th>
-                                <th>${assets.units.longitude.label}</th>
-                                <th>${assets.units.windSpeed.label} ${assets.units.windSpeed.unit}</th>
-                                <th>${assets.units.hurrSpeed.label} ${assets.units.hurrSpeed.unit}</th>
-                                <th>${assets.units.temperature.label} ${assets.units.temperature.unit}</th>
-                                <th>${assets.units.pressure.label} ${assets.units.pressure.unit}</th>
-                                <th>${assets.date}</th>
-                            </tr>`
+            if(trajectorySelected.length==0){
 
-            if(this.selectedTrajectory!='realTrajectory') 
-                palette = {
-                    0.0: '#0081b6',
-                    0.5: '#895762',
-                    1.0: '#a41214'
-                }
-            else
-                palette = {
-                    0.0: '#00bc79',
-                    0.5: '#887c73',
-                    1.0: '#a9136c'
-                }
-
-            trajectorySelected.forEach(element => {
-
-                table += `<tr>
-                            <td>${element.position.lat}</td>
-                            <td>${element.position.lng}</td>
-                            <td>${((element.windSpeed == 0) ? assets.not_registered : Math.round(element.windSpeed * 100) / 100)}</td>
-                            <td>${((element.hurrSpeed == 0) ? assets.not_registered : Math.round(element.hurrSpeed * 100) / 100)}</td>
-                            <td>${((element.temperature == 0) ? assets.not_registered : Math.round(element.temperature * 100) / 100)}</td>
-                            <td>${((element.pressure == 0) ? assets.not_registered : Math.round(((element.pressure<100) ? element.pressure*100 : element.pressure) * 100) / 100)}</td>
-                            <td>${element.date}</td>
-                        </tr>`
-
-                latlngs.push([element.position.lat, element.position.lng, element.windSpeed])
-            })      
-            
-            lastLayer = new L.Hotline(latlngs, {
-                min: 119,
-                max: 250,
-                palette: palette,
-                weight: 6,
-                outlineColor: '#000000',
-                outlineWidth: 1
-            }).addTo(map_const)
-
-            lastLayer.on('click', function (e) {
-
-                let latClicked = e.latlng.lat
-                let lngClicked = e.latlng.lng
-                let distance = 9999999
-                let toShow = {}
-
-                trajectorySelected.forEach(item => {
-                    let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
-                    if(distanceTemp<distance){
-                        distance = distanceTemp;
-                        toShow = item;
-                    }
-                }) 
-
-                let popup = `
-                    <h6 style="color:black;">${assets.units.latitude.label}:  ${Math.round((latClicked) * 100) / 100}</h6>
-                    <h6 style="color:black;">${assets.units.longitude.label}:  ${Math.round((lngClicked) * 100) / 100}</h6>
-
-                    <h6 style="color:black;">${assets.units.windSpeed.label}:  ${((toShow.windSpeed == 0) ? assets.not_registered : Math.round(toShow.windSpeed * 100) / 100 + assets.units.windSpeed.unit)}</h6>
-                    <h6 style="color:black;">${assets.units.hurrSpeed.label}:  ${((toShow.hurrSpeed == 0) ? assets.not_registered : Math.round(toShow.hurrSpeed * 100) / 100 + assets.units.hurrSpeed.unit)}</h6>
-                    <h6 style="color:black;">${assets.units.temperature.label}:  ${((toShow.temperature == 0) ? assets.not_registered : Math.round(toShow.temperature * 100) / 100 + assets.units.windSpeed.unit)}</h6>
-                    <h6 style="color:black;">${assets.units.pressure.label}:  ${((toShow.pressure == 0) ? assets.not_registered : Math.round(((toShow.pressure<100) ? toShow.pressure*100 : toShow.pressure) * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                $("#cycloneTable").text("")
+                $("#cycloneTable").html(`<center">
+                    <br><br><br><br><br><br>
+                    <h3>No hay datos registrados</h3>
+                </center>`)
                 
-                    <h6 style="color:black;">${assets.date}: ${(new Date(toShow.date)).toLocaleString()}</h6>
-                `
-    
-                L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(popup).openOn(map_const)
-    
-            })
-
-            lastLayer.on('mouseover', function () {
-                lastLayer.setStyle({
-                  weight: 4,
-                })
-            })
-    
-            lastLayer.on('mouseout', function () {
-                lastLayer.setStyle({
-                  weight: 3,
-                })
-            })
-
-            if(trajectorySelected.length==1){       
-                map_const.flyTo([
-                    trajectorySelected[0].position.lat, 
-                    trajectorySelected[0].position.lng], 4)
             }
             else{
-                map_const.flyTo([
-                    trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lat,
-                    trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lng], 4)
-            }
 
-            
-            // if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
+                let table = `<table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
+                                <tr>
+                                    <th>${assets.units.latitude.label}</th>
+                                    <th>${assets.units.longitude.label}</th>
+                                    <th>${assets.units.windSpeed.label} ${assets.units.windSpeed.unit}</th>
+                                    <th>${assets.units.hurrSpeed.label} ${assets.units.hurrSpeed.unit}</th>
+                                    <th>${assets.units.temperature.label} ${assets.units.temperature.unit}</th>
+                                    <th>${assets.units.pressure.label} ${assets.units.pressure.unit}</th>
+                                    <th>${assets.date}</th>
+                                </tr>`
 
-            //     var icon = L.icon({
-            //         iconUrl: '../../img/cyclone.png',
-            //         iconSize: [35, 35],
-            //         popupAnchor: [-3, -76]
-            //     })
+                if(this.selectedTrajectory!='realTrajectory') 
+                    palette = {
+                        0.0: '#0081b6',
+                        0.5: '#895762',
+                        1.0: '#a41214'
+                    }
+                else
+                    palette = {
+                        0.0: '#00bc79',
+                        0.5: '#887c73',
+                        1.0: '#a9136c'
+                    }
 
-            //     var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
+                trajectorySelected.forEach(element => {
+
+                    table += `<tr>
+                                <td>${element.position.lat}</td>
+                                <td>${element.position.lng}</td>
+                                <td>${((element.windSpeed == 0) ? assets.not_registered : Math.round(element.windSpeed * 100) / 100)}</td>
+                                <td>${((element.hurrSpeed == 0) ? assets.not_registered : Math.round(element.hurrSpeed * 100) / 100)}</td>
+                                <td>${((element.temperature == 0) ? assets.not_registered : Math.round(element.temperature * 100) / 100)}</td>
+                                <td>${((element.pressure == 0) ? assets.not_registered : Math.round(((element.pressure<100) ? element.pressure*100 : element.pressure) * 100) / 100)}</td>
+                                <td>${new Date (element.date).toLocaleString()}</td>
+                            </tr>`
+
+                    latlngs.push([element.position.lat, element.position.lng, element.windSpeed])
+                })      
                 
-            //     marker.on('click', function (e) {
-            //         map_const.fitBounds(hotlineLayer.getBounds());
-            //         L.popup()
-            //             .setLatLng([e.latlng.lat, e.latlng.lng])
-            //             .setContent(`<article class="Popup" onclick="ElementoClick(\"Maria_2017\",this)"><header><h4 class="Titulo">${json[0].name}</h4></header><br><div class="Datos MostrarDatosHuracan"><h6 style=\"color:black;\">Posición: ${json[0].realTrajectory[json[0].realTrajectory.length-1].lat}N,  ${json[0].realTrajectory[json[0].realTrajectory.length-1].lng}W</h6><br></div></article>`)
-            //             .openOn(map_const)
-            //     })
+                lastLayer = new L.Hotline(latlngs, {
+                    min: 119,
+                    max: 250,
+                    palette: palette,
+                    weight: 6,
+                    outlineColor: '#000000',
+                    outlineWidth: 1
+                }).addTo(map_const)
 
-            //     lastmarker = marker
+                lastLayer.on('click', function (e) {
 
-            // }
+                    let latClicked = e.latlng.lat
+                    let lngClicked = e.latlng.lng
+                    let distance = 9999999
+                    let toShow = {}
 
-            map_const.fitBounds(lastLayer.getBounds())
+                    trajectorySelected.forEach(item => {
+                        let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
+                        if(distanceTemp<distance){
+                            distance = distanceTemp;
+                            toShow = item;
+                        }
+                    }) 
 
-            table += `</table>`
-            $("#cycloneTable").text("")
-            $("#cycloneTable").html(table)
+                    let popup = `
+                        <h6 style="color:black;">${assets.units.latitude.label}:  ${Math.round((latClicked) * 100) / 100}</h6>
+                        <h6 style="color:black;">${assets.units.longitude.label}:  ${Math.round((lngClicked) * 100) / 100}</h6>
+
+                        <h6 style="color:black;">${assets.units.windSpeed.label}:  ${((toShow.windSpeed == 0) ? assets.not_registered : Math.round(toShow.windSpeed * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.hurrSpeed.label}:  ${((toShow.hurrSpeed == 0) ? assets.not_registered : Math.round(toShow.hurrSpeed * 100) / 100 + assets.units.hurrSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.temperature.label}:  ${((toShow.temperature == 0) ? assets.not_registered : Math.round(toShow.temperature * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.pressure.label}:  ${((toShow.pressure == 0) ? assets.not_registered : Math.round(((toShow.pressure<100) ? toShow.pressure*100 : toShow.pressure) * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                    
+                        <h6 style="color:black;">${assets.date}: ${(new Date(toShow.date)).toLocaleString()}</h6>
+                    `
+        
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(popup).openOn(map_const)
+        
+                })
+
+                lastLayer.on('mouseover', function () {
+                    lastLayer.setStyle({
+                    weight: 4,
+                    })
+                })
+        
+                lastLayer.on('mouseout', function () {
+                    lastLayer.setStyle({
+                    weight: 3,
+                    })
+                })
+
+                if(trajectorySelected.length==1){       
+                    map_const.flyTo([
+                        trajectorySelected[0].position.lat, 
+                        trajectorySelected[0].position.lng], 4)
+                }
+                else{
+                    map_const.flyTo([
+                        trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lat,
+                        trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lng], 4)
+                }
+
+                
+                // if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
+
+                //     var icon = L.icon({
+                //         iconUrl: '../../img/cyclone.png',
+                //         iconSize: [35, 35],
+                //         popupAnchor: [-3, -76]
+                //     })
+
+                //     var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
+                    
+                //     marker.on('click', function (e) {
+                //         map_const.fitBounds(hotlineLayer.getBounds());
+                //         L.popup()
+                //             .setLatLng([e.latlng.lat, e.latlng.lng])
+                //             .setContent(`<article class="Popup" onclick="ElementoClick(\"Maria_2017\",this)"><header><h4 class="Titulo">${json[0].name}</h4></header><br><div class="Datos MostrarDatosHuracan"><h6 style=\"color:black;\">Posición: ${json[0].realTrajectory[json[0].realTrajectory.length-1].lat}N,  ${json[0].realTrajectory[json[0].realTrajectory.length-1].lng}W</h6><br></div></article>`)
+                //             .openOn(map_const)
+                //     })
+
+                //     lastmarker = marker
+
+                // }
+
+                map_const.fitBounds(lastLayer.getBounds())
+
+                table += `</table>`
+                $("#cycloneTable").text("")
+                $("#cycloneTable").html(table)
+
+                $("#cycloneTableContent").css("overflow-y","hidden")
+
+                if(trajectorySelected.length>15)
+                    $("#cycloneTableContent").css("overflow-y","scroll")
+            }
             
         },
         showGraph(){
@@ -244,10 +281,23 @@ const app = new Vue({
             })
             
             if(ySUM!=0)
-                generateMultipleLineGraph("graph", data, [assets.units[this.selectedGraph].label], [assets.units[this.selectedGraph].unit], ['#FF0000'], 'x', ['y'])
+                generateMultipleLineGraph("graph", data, [assets.units[this.selectedGraph].label], [assets.units[this.selectedGraph].unit], ['#ee560d'], 'x', ['y'])
             else 
-                $("#graph").text("NOT REGISTERED")
+                $("#graph").html(`<center>
+                    <br><br><br><br><br><br>
+                    <h3>No hay datos registrados</h3>
+                </center>`)
 
+        },
+        resizeMorris(){
+            setTimeout(() => {
+                this.showGraph()
+            }, 175)
+        },
+        reloadMap(){
+            setTimeout(() => {
+                if(map_const!=null) map_const.invalidateSize()
+            }, 250)
         }
     },
     async beforeMount(){

@@ -1,3 +1,16 @@
+th, td{
+	font-size: small;
+}
+
+.borderless td, .borderless th {
+	border: none;
+}
+
+td, th, tr{
+	text-align: center;
+	color: white !important;
+}
+
 .cycloneActive{
 	color: red;
 }
@@ -689,7 +702,7 @@ input[type='checkbox'] {
 }
 
 .navbar-custom {
-	background-color: #1c35a7;
+	background-color: #2743c0;
 	box-shadow: 0 0.0625rem 0.375rem 0 rgba(0, 0, 0, 0.1);
 	font: 700 0.75rem/2rem "Montserrat", sans-serif;
 	transition: all 0.2s;
@@ -1093,7 +1106,7 @@ a:hover.back-to-top {
 .ex-header {
 	padding-top: 8rem;
 	padding-bottom: 5rem;
-	background: linear-gradient(to bottom right, #2c1a7e, #5557db);
+	background: linear-gradient(to bottom right, #0136aa, #0085e2);
 	text-align: center;
 }
 
@@ -1212,7 +1225,7 @@ a:hover.back-to-top {
 	.navbar-custom.top-nav-collapse {
         padding: 0.5rem 1.5rem 0.5rem 2rem;
 		box-shadow: 0 0.0625rem 0.375rem 0 rgba(0, 0, 0, 0.1);
-		background-color: #1c35a7;
+		background-color: #1f37a1;
 	}
 
 	.navbar-custom.top-nav-collapse .navbar-brand.logo-text {

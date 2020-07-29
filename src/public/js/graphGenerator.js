@@ -1,6 +1,8 @@
+let graph = null
+
 const generateMultipleLineGraph = (id,data,label,units,colors, keyX, keyY) => {
     $(`#${id}`).text("")
-    new Morris.Line({
+    graph = new Morris.Line({
         element: id,
         data: data,
         xkey: keyX,
@@ -9,9 +11,11 @@ const generateMultipleLineGraph = (id,data,label,units,colors, keyX, keyY) => {
         xLabels:"",
         postUnits: units,
         parseTime: false,
-        resize:true,
+        resize: true,
         xLabelAngle:45,
         lineColors:colors,
-        hideHover: true
+        hideHover: true,
+        gridTextColor: "#FFF",
+        goalLineColors: "#FFF"
     })
 }
