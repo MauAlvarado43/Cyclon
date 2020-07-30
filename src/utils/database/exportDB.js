@@ -38,26 +38,27 @@ import path from 'path'
 //                 cyclone.active = data[0].isActive
 
 //                 data[0].realTrajectory.forEach(point => {
-//                     if (point.wind < 62){
-//                         cyclone.category = "Depresión Tropical"
-//                     }
-//                     else if(point.wind < 118){
-//                         cyclone.category = "Tormenta Tropical"
-//                     }
-//                     else if(point.wind < 153){
-//                         cyclone.category = "Huracán Fase 1"
-//                     }
-//                     else if(point.wind < 177){
-//                         cyclone.category = "Huracán Fase 2"
-//                     }
-//                     else if(point.wind < 210){
-//                         cyclone.category = "Huracán Fase 3"
-//                     }
-//                     else if(point.wind < 250){
-//                         cyclone.category = "Huracán Fase 4"
-//                     }
-//                     else{
-//                         cyclone.category = "Huracán Fase 5"
+//                         if (point.wind < 62){
+//                             cyclone.category = "DT"
+//                         }
+//                         else if(point.wind < 118){
+//                             cyclone.category = "TT"
+//                         }
+//                         else if(point.wind < 153){
+//                             cyclone.category = "H1"
+//                         }
+//                         else if(point.wind < 177){
+//                             cyclone.category = "H2"
+//                         }
+//                         else if(point.wind < 210){
+//                             cyclone.category = "H3"
+//                         }
+//                         else if(point.wind < 250){
+//                             cyclone.category = "H4"
+//                         }
+//                         else{
+//                             cyclone.category = "H5"
+//                         }
 //                     }
 //                 })
 
@@ -82,7 +83,7 @@ fs.readFile(path.join(__dirname, `./hurricaines.json`), (err, file) => {
     cyclones.forEach( async (element, index) => {
 
         let cyclone = new CycloneModel()
-
+        
         cyclone.id = element.id
         cyclone.name = element.name
 
@@ -105,10 +106,11 @@ fs.readFile(path.join(__dirname, `./hurricaines.json`), (err, file) => {
         cyclone.appearance = element.realTrajectory[0].date
         cyclone.lastUpdate = element.lastUpdate
         cyclone.origin = element.origin
-        cyclone.predictedTrajectory = element.predictedTrajectory
+        cyclone.predictedTrajectory = []
         cyclone.active = element.active
-        cyclone.category = element.category
 
+        cyclone.category = element.category
+        
         await cyclone.save()
 
         console.log(`Cyclone #${index} saved`)
@@ -119,5 +121,6 @@ fs.readFile(path.join(__dirname, `./hurricaines.json`), (err, file) => {
         }
 
     })
+
 
 })

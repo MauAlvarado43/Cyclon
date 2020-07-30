@@ -21,7 +21,6 @@ class Controller():
         self._sio.event(self.connect)
         self._sio.event(self.disconnect)
         web.run_app(self._app, host='localhost', port = self._port)
-        print("Holi")
 
     def connect(self, sid, environ):
         print("connect ", sid)

@@ -7,12 +7,6 @@ minifyAll(path.join(__dirname,'../config'), { silent: true }, function(err){
     }
 })
 
-minifyAll(path.join(__dirname,'../controller'), { silent: true }, function(err){
-    if(err){
-        console.log(err)
-    }
-})
-
 minifyAll(path.join(__dirname,'../models'), { silent: true }, function(err){
     if(err){
         console.log(err)

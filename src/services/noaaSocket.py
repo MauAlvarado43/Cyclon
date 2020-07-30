@@ -14,8 +14,8 @@ class NoaaSocket(Thread):
     def __init__(self, sio):
         super(NoaaSocket, self).__init__()
         self._url = "https://www.nhc.noaa.gov/CurrentStorms.json"
-        # self._mongoURL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"
-        self._mongoURL = "mongodb://localhost:27017/"
+        self._mongo_URL = "mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority"
+        # self._mongo_URL = "mongodb://localhost:27017/"
         self._connect_bd()
         self._model = TrajectoriesModel()
         self._time = 6
