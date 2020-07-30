@@ -1,58 +1,161 @@
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
-<script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+<script src="/js/lib/leaflet.js"></script>
+<script src="/js/lib/libBoot.js"></script>
 
-<div class="container">
-    <div id="windy" style="width: 70%; height: 30rem;" class="mx-auto"></div>
-    <p>
-        <br>
-        <center>
-            <table>
-                <tr>
-                    <td>
-                        <center>
-                            <div id="real" style="width: 4rem; height: 0.2rem;"></div>
+<style>
+
+    #windy{
+        width: 100%; 
+    }
+
+    #simbologyContainer{
+        visibility: hidden;
+        position: absolute; 
+        z-index: 400;
+        background: none;
+        border: 0;
+        background-color: rgba(68,65,65,0.84); 
+        width: 20%; 
+        height: 100%; 
+    }
+
+    #simbologyButtonContainer{
+        visibility: hidden;
+        margin-top: 1%;
+        margin-left: 1%; 
+        position: absolute; 
+        z-index: 400;
+        background: none;
+        border: 0;
+    }
+
+    #simbologyButton:hover{
+        background-color: rgba(183,183,183,0.39);
+    }
+
+    #simbologyButton{
+        outline:none;
+        border: 0;
+        font-size: 16px;
+        width: 25px;
+        height: 25px;
+        border-radius: 25px;
+        background-color: rgba(68,65,65,0.84);
+        margin-bottom: 4px;
+        text-align: center;
+        align-self: flex-end;
+        color: white;
+    }
+
+</style>
+
+    <div id="windy" style="height: 30rem;">
+    </div>
+
+    <div id="simbologyButtonContainer" class="top-border noselect clickable">
+        <input id="simbologyButton" type="button" value="!" class="clickable noselect zoom-ctrl" onclick="showSimbology();"/>
+    </div>
+
+    <div id="simbologyContainer">
+
+        <div id="containerSibologyIcons" style="visibility: hidden; vertical-align: middle;">
+            <div><input type="button" value="←" onclick="closeSimbology();" style="margin-left: 0%; margin-top: -1%; font-size: 40px; background: none; outline: none; border: 0; color: white;"></div>
+            <center>
+                <h5><%= assets.simbology.title %></h5>
+            </center>
+            <br>
+            <div>
+                <br>
+                <ul>
+                    <li>  
+                        <center>                  
+                            <div id="real" style="width: 5rem; height: 0.3rem;"></div>
+                            <%= assets.simbology.real %>
                         </center>
-                    </td>
-                    <td>
-                        <center>
-                            <div id="predicted" style="width: 4rem; height: 0.2rem;"></div>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div id="predicted" style="width: 5rem; height: 0.3rem;"></div>
+                            <%= assets.simbology.predicted %>
                         </center>
-                    </td>
-                    <td>
-                        <center>
-                            <div id="circle" style="width: 1rem; height: 1rem;"></div>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div id="circle" ></div>
+                            <%= assets.simbology.risk_zone %>
                         </center>
-                    </td>
-                    <td>
-                        <center> <img src="/images/cyclone.png" width="20"></center>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Real</td>
-                    <td class="simbology" style="color: black; text-align: center;">Trayectoria Predicha</td>
-                    <td class="simbology" style="color: black; text-align: center;">Zona de Riesgo</td>
-                    <td class="simbology" style="color: black; text-align: center;">Fenómeno Meteorológico</td>
-                </tr>
-            </table>
-        </center>
-    </p>
-</div>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div><img src="/images/DepresiónTropical.png" width="25"></div>
+                            <%= assets.simbology.tropical_depression %>
+                        </center>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div><img src="/images/TormentaTropical.png" width="25"></div>
+                            <%= assets.simbology.tropical_storm %>
+                        </center>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div><img src="/images/Categoría.png" width="25"></div>
+                            <%= assets.simbology.hurricane %>
+                        </center>
+                    </li>
+                    <br>
+
+                    <li>  
+                        <center>                  
+                            <div><img src="/images/Remanente.png" width="25"></div>
+                            <%= assets.simbology.remanent %>
+                        </center>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
 
 <script>
-    let map_const;
+    let icons = {
+        "DT": "/images/DepresiónTropical.png",
+        "ST": "/images/TormentaTropical.png",
+        "HX": "/images/Categoría.png",
+        "RH": "/images/Remanente.png"
+    }
 
+    let map_const
+    let lastLayer
+    let lastmarker
     let latUser = 19
     let lngUser = -99
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+    const closeSimbology = () => {
+        $("#containerSibologyIcons").css("visibility","hidden");
+        $("#simbologyContainer").animate({width: 'hide'}, {duration: 500})
+        $("#simbologyContainer").hide()
 
-            latUser = position.coords.latitude
-            lngUser = position.coords.longitude
+        $("#simbologyButton").show()
+    }
 
-            loadMap()
+    const showSimbology = () => {
+        $("#simbologyContainer").animate({width: 'show'}, {duration: 500})
+        setTimeout(()=>{
+            $("#containerSibologyIcons").css("visibility","visible");
+        },350)
+        $("#simbologyContainer").show()
 
-        }, (e) => { }, { enableHighAccuracy: true, timeout: 2000, maximumAge: 0 });
+        $("#simbologyButton").hide()
     }
 
     const loadMap = () => {
@@ -64,19 +167,35 @@
             zoom: 1,
         }, windyAPI => {
 
-            const { map, store, utils, broadcast } = windyAPI;
+            let simbologyButton = $("#simbologyButtonContainer").clone()
+            let simbologyContainer =  $("#simbologyContainer").clone()
 
-            map_const = map;
+            $("#simbologyButtonContainer").remove()
+            $("#windy").append(simbologyButton)
 
-            map_const.doubleClickZoom.disable();
+            $("#simbologyContainer").remove()
+            $("#windy").append(simbologyContainer)
+           
+            $("#simbologyButtonContainer").css("visibility","visible")
+            $("#simbologyContainer").css("visibility","visible");
 
-            store.set("particlesAnim", "on");
+            $("#simbologyContainer").hide()
+
+            const { map, store, utils, broadcast } = windyAPI
+
+            map_const = map
+
+            map_const.doubleClickZoom.disable()
+
+            store.set("particlesAnim", "on")
 
             broadcast.once('redrawFinished', () => {
 
-            });
+            })
 
-        });
+        })
     }
+
+    loadMap()
 
 </script>

@@ -1,32 +1,183 @@
 {
-    "locale": "en-mx",
+    "locale":                   "es",
+    "titles":{
+        "index":                "Inicio",
+        "terms":                "Términos y condiciones",
+        "privacy":              "Políticas de privacidad",
+        "home":                 "Inicio",
+        "update_info":          "Actualizar datos",
+        "verify":               "Verificación",
+        "recoverPassword":      "Recuperar contraseña",
+        "records":              "Registro de huracanes"
+    },
     "inputs":{
         "email":                "Correo electrónico",
         "password":             "Contraseña",
         "confirmp":             "Confirmar contraseña",
-        "name":                 "Nombre",
-        "lastname":             "Apellidos"
+        "name":                 "Nombre (s)",
+        "lastname":             "Apellidos",
+        "subject":              "Asunto",
+        "message":              "Mensaje",
+        "new_password":         "Nueva contraseña",
+        "confirm_n_password":   "Confirmar nueva contraseña",
+        "verify_password":      "Verifique su contraseña",
+        "select":               "Seleccione",
+        "year":                 "Año",
+        "cyclone":              "Huracán",
+        "trajectory":           "Trayectoria",
+        "graph":                "Gráfica"
     },
     "buttons": {
-        "login" :               "Iniciar sesión",
+        "login" :               "Iniciar Sesión",
         "register" :            "Registrate",
         "login_google":         "Iniciar sesión con Google",
-        "login_facebook":       "Iniciar sesión con Facebook"
+        "login_facebook":       "Iniciar sesión con Facebook",
+        "send_message":         "Enviar correo",
+        "home":                 "Inicio",
+        "details":              "Detalles",
+        "back":                 "Volver",
+        "config":               "Configuración",
+        "update":               "Actualizar mis datos",
+        "cyclone_history":      "Registros",
+        "logout":               "Cerrar sesión",
+        "update_password":      "Cambiar contraseña",
+        "update_location":      "Actualizar ubicación",
+        "verify":               "Verificar",
+        "resend_email":         "Reenviar correo de verificación",
+        "send_recover":         "Enviar correo de recuperación",
+        "convert_scientist":    "Ser Investigador",
+        "search":               "Buscar"
+    },
+    "units": {
+        "windSpeed": {
+            "label": "Vientos",
+            "unit": "km/h"
+        },
+        "hurrSpeed": {
+            "label": "Velocidad",
+            "unit": "km/h"
+        },
+        "temperature": {
+            "label": "Temperatura",
+            "unit": "°C"
+        },
+        "pressure": {
+            "label": "Presión",
+            "unit": "mB"
+        },
+        "latitude":{
+            "label": "Latitud"
+        },
+        "longitude":{
+            "label": "Longitud"
+        }
+    },
+    "simbology":{
+        "real":                 "Trayectoria Real",
+        "predicted":            "Trayectoria Predicha",
+        "risk_zone":            "Zona de Riesgo",
+        "tropical_depression":  "Depresión Tropical",
+        "tropical_storm":       "Tormenta Tropical",
+        "hurricane":            "Huracán",
+        "remanent":             "Remanente",
+        "title":                "Simbología",
+        "subtitle":             "Consulta los fenómenos meteorológicos actuales",
+        "graphs":               "Gráficas",
+        "map":                  "Mapa",
+        "tab":                  "Tabulación"
+    },
+    "alertMessages":{
+        "DT":                   "Depresión Tropical",
+        "ST":                   "Tormenta Tropical",
+        "H1":                   "Huracán Categoría 1",
+        "H2":                   "Huracán Categoría 2",
+        "H3":                   "Huracán Categoría 3",
+        "H4":                   "Huracán Categoría 4",
+        "H5":                   "Huracán Categoría 5",
+        "no_alerts":            "No hay alertas"
+    },
+    "features":{
+        "title":                "Características",
+        "description":          "Cyclon fue desarrollado en base a las deficiencias en los sistemas de alertas de fenónemos meteorológicos, ofrece: ",
+        "titles":{
+            "alerts":           "Alertas",
+            "history":          "Historial",
+            "prediction":       "Zonas de Riesgo",
+            "filter":           "Filtro",
+            "analysis":         "Gráficos",
+            "places":           "Ubicación"
+        },
+        "texts":{
+            "alerts":           "Recibe alertas en tiempo real",
+            "history":          "Consulta nuestro registro de depresiones tropicales, tormentas tropicales y huracanes",
+            "prediction":       "Visualiza zonas de riesgo donde pueden aparecer depresiones tropicales",
+            "filter":           "Personaliza las alertas para recibir solamente las que estén cerca de ti",
+            "analysis":         "Analiza gráficamente los datos registrados",
+            "places":           "Lleva Cyclon a todos lados",
+            "track_hurricaine": "Después de configurar la aplicación y establecer tu ubicación, puedes visualizar información en tiempo real y planificar tus acciones ante un huracán.",
+            "monitoring_hurr":  "Nuestros servidores están siempre activos recopilando datos de la NOAA para notificarte oportunamente."
+        },
+        "labels":{
+            "configuring":      "Configuración",
+            "geolocation":      "Geolocalización",
+            "monitoring":       "Monitoreo",
+            "track_hurricaine": "Seguimiento de Huracanes",
+            "monitoring_hurr":  "Monitoreo de Huracanes"
+        }
     },
     "errors":{
         "404":                  "404 Ruta no encontrada",
         "500":                  "500 Error en el servidor",
         "BAD_LOCATION":         "No se ha podido localizar su dirección ip",
         "BAD_INPUT":            "Los datos recibidos no son válidos",
-        "BAD_NAME":             "El nombre ingresado no es válido",
-        "BAD_LASTNAME":         "El apellido ingresado no es válido",
-        "BAD_EMAIL":            "El correo electrónico ingresado no es válido",
-        "BAD_PASSWORD":         "La contraseña ingresada no es válida",
-        "SHORT_PASSWORD":       "La contraseña debe tener más de 8 caracteres",
+        "BAD_FORMAT":           "El $ ingresado no es válido",
+        "EMPTY_FORMAT":         "El $ no puede estar vacío",
+        "EMPTY_PASSWORD_L":     "La contraseña no puede estar vacía",
+        "EMPTY_PASSWORD":       "La contraseña debe tener más de 8 caracteres",
+        "MAX_PASSWORD":         "La contraseña no debe tener más de 50 caracteres",
         "PASSWORD_NOT_MATCH":   "Las contraseñas no coinciden",
         "ONLY_LETTERS_NAME":    "El nombre solo puede tener letras y/o espacios",
         "FORMAT_EMAIL":         "El formato del correo electrónico es inválido",
-        "MAX_LENGTH":           "El dato no puede tener más de 50 caracteres"
+        "MAX_LENGTH":           "El $ no puede tener más de 50 caracteres",
+        "EMAIL_TAKEN":          "El correo electrónico ingresado ya está registrado",
+        "EMPTY_LASTNAME":       "Los apellidos no pueden estar vacíos",
+        "MAX_LASTNAME":         "Los apellidos no pueden tener más de 50 caracteres",
+        "ONLY_LETTERS_LASTNAME":"Los apellidos solo pueden tener letras y espacios",
+        "INCORRECT_PASSWORD":   "La contraseña es incorrecta",
+        "USER_NOT_EXIST":       "El usuario no existe",
+        "TOKEN_INVALID":        "Token inválido"
+
     },
-    "SIGNUP_SUCCESS":"Inicio de sesión correcto"
+    "ACCOUNT_CREATED":          "Cuenta creada correctamente, iniciando sesión...",
+    "SIGNUP_SUCCESS":           "Iniciando sesión...",
+    "LOGIN_AGAIN":              "Inicie sesión de nuevo",
+    "UPDATE_SUCCESS":           "Los datos han sido modificados exitosamente!",
+    "UPDATED_LOCATION":         "Ubicación actualizada exitosamente!",
+    "RESENDED_VEMAIL":          "Correo enviado exitosamente!",
+    "TOKEN_EXPIRED":            "El vínculo de autenticación ha caducado, vuelva a mandar la solicitud",
+    "recover_acepted":          "Se ha enviado un correo de recuperación a su cuenta",
+    "password_forgotten":       "¿Olvidaste tu contraseña?",
+    "privacy":                  "Políticas de privacidad",
+    "terms":                    "Términos y condiciones",
+    "read":                     "He leído y acepto las condiciones declaradas de Cyclon en",
+    "and":                      "y",
+    "description":              "Cyclon es un proyecto que busca alertar a la población oportunamente acerca de la aparición de huracanes cercanos a su localidad",
+    "about":                    "Acerca de",
+    "contact":                  "Contacto",
+    "contact_label":            "Use el siguiente formulario de contacto",
+    "faq":                      "Preguntas frecuentes",
+    "rights":                   "Todos los derechos reservados",
+    "importantLinks":           "Enlaces Importantes",
+    "social":                   "Redes Sociales",
+    "alerts":                   "Alertas",
+    "tweets":                   "Últimos Tweets",
+    "tweets_description":       "Revisa las últimas publicaciones de Cyclon en Twitter",
+    "download":                 "¡Descárgala ya!",
+    "success":                  "Éxito!",
+    "notice":                   "Aviso",
+    "verification":             "Verifica tu cuenta para recibir las alertas únicamente de tu localidad",
+    "scientistInfo":            "Un usuario investigador tiene más privilegios que una cuenta normal. Puedes ver registros de huracanes, datos estadísticos, etc.",
+    "not_registered":           "Sin registro",
+    "date":                     "Fecha",
+    "parameters":               "Parametros de Búsqueda"
 }

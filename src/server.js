@@ -83,7 +83,7 @@ app.set('views','src/views')
 //Routes
 app.use(require('./routes/unregister'))
 app.use(require('./routes/register'))
-app.use(require('./routes/admin'))
+app.use(require('./routes/admin')(server))
 app.use(require('./routes/investigator'))
 
 // Start the server

@@ -1,9 +1,178 @@
 {
-    "locale": "en-us",
-    "buttons": {
-        "login": "Log in",
-        "register": "Create Account"
+    "locale":                   "en",
+    "titles":{
+        "index":                "Index",
+        "terms":                "Terms & Conditions",
+        "privacy":              "Privacy policies",
+        "home":                 "Home",
+        "update_info":          "Update information",
+        "verify":               "Verification",
+        "recoverPassword":      "Recover password",
+        "records":              "Hurricaine records"
     },
-    "404": "Error: 404 Page Not Found",
-    "500": "Error: 500 Internal Error"
+    "inputs":{
+        "email":                "Email",
+        "password":             "Password",
+        "confirmp":             "Confirm password",
+        "name":                 "Name",
+        "lastname":             "Last name",
+        "subject":              "Subject",
+        "message":              "Message",
+        "new_password":         "New password",
+        "confirm_n_password":   "Confirm new password",
+        "verify_password":      "Verify your password",
+        "select":               "Select",
+        "year":                 "Year",
+        "cyclone":              "Hurricaine",
+        "trajectory":           "Trajectory",
+        "graph":                "Graph"
+    },
+    "buttons": {
+        "login" :               "Log in",
+        "register" :            "Sign up",
+        "login_google":         "Login with Google",
+        "login_facebook":       "Login with Facebook",
+        "send_message":         "Submit Message",
+        "home":                 "Home",
+        "details":              "Details",
+        "back":                 "Back",
+        "config":               "Settings",
+        "update":               "Update my information",
+        "cyclone_history":      "Records",
+        "logout":               "Log out",
+        "update_password":      "Update password",
+        "update_location":      "Update location",
+        "verify":               "Verify",
+        "resend_email":         "Resend verification email",
+        "send_recover":         "Enviar correo de recuperación",
+        "convert_scientist":    "Be a Scientist",
+        "search":               "Search"
+    },
+    "units": {
+        "windSpeed": {
+            "label": "Wind",
+            "unit": "km/h"
+        },
+        "hurrSpeed": {
+            "label": "Velocity",
+            "unit": "km/h"
+        },
+        "temperature": {
+            "label": "Temperature",
+            "unit": "°C"
+        },
+        "pressure": {
+            "label": "Pressure",
+            "unit": "mB"
+        },
+        "latitude":{
+            "label": "Latitude"
+        },
+        "longitude":{
+            "label": "Longitude"
+        }
+    },
+    "simbology":{
+        "real":                 "Real Trajectory",
+        "predicted":            "Predicted Trajectory",
+        "risk_zone":            "Risk Zone",
+        "tropical_depression":  "Tropical Depression",
+        "tropical_storm":       "Tropical Storm",
+        "hurricane":            "Hurricaine",
+        "remanent":             "Remanent",
+        "title":                "Sibology",
+        "subtitle":             "Check current weather phenomenals"
+    },
+    "alertMessages":{
+        "DT":                   "Tropical Depression",
+        "ST":                   "Tropical Storm",
+        "H1":                   "Hurricaine Category 1",
+        "H2":                   "Hurricaine Category 2",
+        "H3":                   "Hurricaine Category 3",
+        "H4":                   "Hurricaine Category 4",
+        "H5":                   "Hurricaine Category 5",
+        "no_alerts":            "There is not alerts"
+    },
+    "features":{
+        "title":                "Features",
+        "description":          "Cyclon was developed based on deficiencies in meteorological phenomenon alert systems, it offers:",
+        "titles":{
+            "alerts":           "Alerta",
+            "history":          "History",
+            "prediction":       "Risk Areas",
+            "filter":           "Filter",
+            "analysis":         "Graphs",
+            "places":           "Location"
+        },
+        "texts":{
+            "alerts":           "Receive alerts in real time",
+            "history":          "Check our record of tropical depressions, tropical storms and hurricanes",
+            "prediction":       "Visualize risk areas where tropical depressions may appear",
+            "filter":           "Customize alerts to receive only those that are close to you",
+            "analysis":         "Graphically analyze the recorded data",
+            "places":           "Take Cyclon everywhere",
+            "track_hurricaine": "After configuring the application and establishing your location, you can view information in real time and plan your actions in the face of a hurricane.",
+            "monitoring_hurr":  "Our servers are always active collecting NOAA data to notify you in a timely manner."
+        },
+        "labels":{
+            "configuring":      "Configuring",
+            "geolocation":      "Geolocation",
+            "monitoring":       "Monitoring",
+            "track_hurricaine": "Track Hurricanes",
+            "monitoring_hurr":  "Hurricane Monitoring"
+        }
+    },
+    "errors":{
+        "404":                  "404 Page not found",
+        "500":                  "500 Internal error",
+        "BAD_LOCATION":         "Your IP address cannot be located",
+        "BAD_INPUT":            "The data received is not valid",
+        "PASSWORD_NOT_MATCH":   "Passwords do not match",
+        "ONLY_LETTERS_NAME":    "The name can only have letters and / or spaces",
+        "FORMAT_EMAIL":         "Email format is invalid",
+        "MAX_LENGTH":           "The $ cannot have more than 50 characters",
+        "EMAIL_TAKEN":          "The email entered is already registered",
+        "BAD_FORMAT":           "The $ entered is invalid",
+        "EMPTY_PASSWORD_L":     "The password can not be empty",
+        "EMPTY_FORMAT":         "The $ can not be empty",
+        "EMPTY_PASSWORD":       "The password must have more than 8 characters",
+        "MAX_PASSWORD":         "The password must not be more than 50 characters",
+        "EMPTY_LASTNAME":       "The last name can not be empty",
+        "MAX_LASTNAME":         "The last name must not be more than 50 character",
+        "ONLY_LETTERS_LASTNAME":"The last name can only have letters and / or spaces",
+        "INCORRECT_PASSWORD":   "The password is incorrect",
+        "USER_NOT_EXIST":       "The user is not exist",
+        "TOKEN_INVALID":        "Token invalid"
+    },
+    "ACCOUNT_CREATED":          "Account created successfully, log in...",
+    "sign_success":             "Log in...",
+    "LOGIN_AGAIN":              "Log in again",
+    "UPDATE_SUCCESS":           "The data has been successfully modified!",
+    "UPDATED_LOCATION":         "Location updated successfully!",
+    "RESENDED_VEMAIL":          "Email resended successfully!",
+    "TOKEN_EXPIRED":            "Authentication token has expired, resend the request again",
+    "recover_acepted":          "A recover email has been sent to your account",
+    "password_forgotten":       "Did you forget your password?",
+    "privacy":                  "Privacy policies",
+    "terms":                    "Terms & Conditions",
+    "read":                     "I have read and agree to Cyclon's stated conditions in",
+    "and":                      "&",
+    "description":              "Cyclon descripcion",
+    "about":                    "About",
+    "contact":                  "Contact",
+    "contact_label":            "Use the contact form below",
+    "faq":                      "Faq",
+    "rights":                   "All Rights Reserved",
+    "importantLinks":           "Important Links",
+    "social":                   "Social Media",
+    "alerts":                   "Alerts",
+    "tweets":                   "Twitter History",
+    "tweets_description":       "Check the latest Cyclon posts on Twitter",
+    "download":                 "Download it today!",
+    "success":                  "Success!",
+    "verification":             "Verify your account to receive alerts only from your location",
+    "scientistInfo":            "An investigating user has more privileges than a normal account. You can see hurricane records, statistical data, etc.",
+    "not_registered":           "Not registered",
+    "date":                     "Date",
+    "parameters":               "Search parameters"
 }

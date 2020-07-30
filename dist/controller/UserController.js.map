@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/controller/UserController.js"],"names":["UserController"],"mappings":";;;;;;AAAA;;;;;;;;IAEMA,c;;;;kBAISA,c","file":"UserController.js","sourcesContent":["import UserModel from '../models/UserModel'\r\n\r\nclass UserController{\r\n\r\n}\r\n\r\nexport default UserController"]}

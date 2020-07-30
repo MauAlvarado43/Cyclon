@@ -1,0 +1,95 @@
+<div id="contact" class="form" style="background-color: #2f2c3d !important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2><%= (assets.titles.update_info).toUpperCase() %></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+
+                <center>
+                    <div id="app">
+                        
+                        <form id="updateForm" data-toggle="validator" data-focus="false">
+                            
+                            <div class="form-group">
+                                <input type="text" class="form-control-input notEmpty" id="name" v-model="name" required>
+                                <label class="label-control" for="name"><%= assets.inputs.name %></label>
+                                <ul>
+                                    <li v-for="msg of infoErrors.name" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                                </ul>                            
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control-input notEmpty" id="lastname" v-model="lastName" required>
+                                <label class="label-control" for="lastname"><%= assets.inputs.lastname %></label>
+                                <ul>
+                                    <li v-for="msg of infoErrors.lastName" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                                </ul>  
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control-input notEmpty" id="email" v-model="email" required>
+                                <label class="label-control" for="email"><%= assets.inputs.email %></label>
+                                <ul>
+                                    <li v-for="msg of infoErrors.email" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                                </ul> 
+                            </div>
+
+                            <div class="form-group">
+                                <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="updateInfo" value="<%= assets.buttons.update %>" required>
+                            </div>
+
+                            <hr>
+
+                            <div class="form-group">
+                                <input type="password" class="form-control-input notEmpty" id="new_password" v-model="password" required>
+                                <label class="label-control" for="new_password"><%= assets.inputs.new_password %></label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" class="form-control-input notEmpty" id="c_new_password" v-model="confirmPassword" required>
+                                <label class="label-control" for="c_new_password"><%= assets.inputs.confirm_n_password %></label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <ul>
+                                <li v-for="msg of passwordErrors.password" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                            </ul> 
+
+                            <div class="form-group">
+                                <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="changePassword" value="<%= assets.buttons.update_password %>" required>
+                            </div>
+
+                            <hr>
+
+                            <div class="form-group">
+                                <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="updateLocation" value="<%= assets.buttons.update_location %>" required>
+                            </div>
+
+                            <% if(!context.verify){ %>
+                                <hr>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="resendEmail" value="<%= assets.buttons.resend_email %>" required>
+                                </div>
+                            <% } else if(!context.type && context.verify) { %>
+                                <hr>
+                                <div class="form-group customToolTip">
+                                    <input type="button" class="btn btn-primary" style="width: 100% !important;" @click="convertScientist" value="<%= assets.buttons.convert_scientist %>" required>
+                                    <span class="customToolTipText" ><%= assets.scientistInfo %></span>
+                                </div>
+                            <% } %>
+
+                        </form>
+
+                        <%- include("./confirmPassword",{assets: assets}) %>
+
+                    </div>
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>

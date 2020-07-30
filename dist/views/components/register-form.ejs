@@ -1,49 +1,56 @@
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel"> <%= assets.buttons.login %> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="registerModalLabel" style="color: black;"> <%= assets.buttons.register %> </h5>
+                <button type="button" class="close" @click="reset" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="color: black;">
 
                 <form>
 
                     <div class="form-group">
                         <label for="nameRegister"><%= assets.inputs.name %></label>
-                        <input type="text" class="form-control" id="nameRegister" aria-describedby="emailHelp"
-                            placeholder="example" v-model="name">
+                        <input type="text" class="form-control" id="nameRegister" aria-describedby="emailHelp" placeholder="example" v-model="name" @keyup.enter="register">
+                        <ul>
+                            <li v-for="msg of registerErrors.name" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
                     </div>
 
                     <div class="form-group">
                         <label for="lastnameRegister"><%= assets.inputs.lastname %></label>
-                        <input type="text" class="form-control" id="lastnameRegister" aria-describedby="emailHelp"
-                            placeholder="example" v-model="lastname">
+                        <input type="text" class="form-control" id="lastnameRegister" aria-describedby="emailHelp" placeholder="example" v-model="lastName" @keyup.enter="register">
+                        <ul>
+                            <li v-for="msg of registerErrors.lastName" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
                     </div>
 
                     <div class="form-group">
                         <label for="emailRegister"><%= assets.inputs.email %></label>
-                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp"
-                            placeholder="example@example.com" v-model="email">
+                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="register">
+                        <ul>
+                            <li v-for="msg of registerErrors.email" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
                     </div>
 
                     <div class="form-group">
                         <label for="passwordRegister"><%= assets.inputs.password %></label>
-                        <input type="password" class="form-control" id="passwordRegister" placeholder="********"
-                            v-model="password">
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="********" v-model="password" @keyup.enter="register">
                     </div>
 
                     <div class="form-group">
                         <label for="confirmPasswordRegister"><%= assets.inputs.confirmp %></label>
-                        <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="********"
-                            v-model="confirmPassword">
+                        <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="********" v-model="confirmPassword" @keyup.enter="register">
+                        <ul>
+                            <li v-for="msg of registerErrors.password" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
                     </div>
 
-                    <button type="button" class="btn btn-success mb-3 btn-block"
-                        @click="register"><%= assets.buttons.login %></button>
+                    <div class="form-group">
+                        <button type="button" class="btn mb-3 btn-block" @click="register" style=" background-color: #5260ff; color: white;" onmouseover="this.style.background = '#4d57c5'" onmouseout="this.style.background = '#5260ff'"><%= assets.buttons.register %></button>
+                    </div>
 
                 </form>
 

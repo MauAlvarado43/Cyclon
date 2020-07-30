@@ -3,47 +3,54 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="loginModalLabel"> <%= assets.buttons.login %> </h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="modal-title" id="loginModalLabel" style="color: black;"> <%= assets.buttons.login %> </h5>
+				<button type="button" class="close" @click="reset" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="color: black;">
 
 				<form>
 
 					<div class="form-group">
 						<label for="emailLogin"><%= assets.inputs.email %></label>
-						<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email">
+						<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="login">
+						<ul>
+                            <li v-for="msg of loginErrors.email" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
 					</div>
 
 					<div class="form-group">
 						<label for="passwordLogin"><%= assets.inputs.password %></label>
-						<input type="password" class="form-control" id="passwordLogin" placeholder="********" v-model="password">
+						<input type="password" class="form-control" id="passwordLogin" placeholder="********" v-model="password" @keyup.enter="login">
+						<ul>
+                            <li v-for="msg of loginErrors.password" style="color: red; margin-left: 5%;">{{msg}}</li>
+                        </ul>
 					</div>
 
 					<% errors.forEach(element => { %>
 
-					<label style="color: red; width: 100%;" class="text-center"> <%= assets.errors[element] %> </label>
+						<label style="color: red; width: 100%;" class="text-center"> <%= assets.errors[element] %> </label>
 
 					<% }); %>
 
+					<div class="form-group">
+						<center><a class="mx-auto" style="text-decoration: underline; cursor: pointer;" onclick="$('#loginModal').modal('hide')" data-toggle="modal" data-target="#recoverModal"> <%= assets.password_forgotten %> </a></center>
+					</div>
 
-					<button type="button" class="btn btn-success mb-3 btn-block" @click="login"><%= assets.buttons.login %></button>
+					<button type="button" class="btn mb-3 btn-block" @click="login" style=" background-color: #5260ff; color: white;" onmouseover="this.style.background = '#4d57c5'" onmouseout="this.style.background = '#5260ff'"><%= assets.buttons.login %></button>
 
 					<hr>
 
 					<div class="form-group">
-						<a class="btn btn-outline-dark btn-block" href="/auth/google" role="button">
+						<a class="btn btn-outline-dark btn-block" href="/auth/google" role="button" style="text-decoration: none;">
 							<img width="20px" src="/images/google.png" />
 							<%= assets.buttons.login_google %>
 						</a>
 					</div>
 
 					<div class="form-group">
-						<a class="btn btn-block" href="/auth/facebook" role="button"
-							style="background-color: #1977f3; color: white;"
-							onMouseOver="this.style.background='#236bc9'" onMouseOut="this.style.background='#1977f3'">
+						<a class="btn btn-block" href="/auth/facebook" role="button" style="background-color: #1977f3; color: white; text-decoration: none;" onMouseOver="this.style.background='#236bc9'" onMouseOut="this.style.background='#1977f3'">
 							<img width="20px" src="/images/facebook_reverse.png" />
 							<%= assets.buttons.login_facebook %>
 						</a>

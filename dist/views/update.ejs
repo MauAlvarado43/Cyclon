@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <meta name="description" content="Free cyclone's alerts">
+    <meta name="author" content="Cyclon">
+
+    <title> <%= title %> </title>
+
+    <meta property="og:site_name" content="Cyclon" />
+	<meta property="og:site" content="http://cyclon.com.mx/"/>
+	<meta property="og:title" content="<%= title %>"/>
+	<meta property="og:description" content="Main page" />
+	<meta property="og:image" content="/images/favicon.ico"/>
+	<meta property="og:url" content="http://cyclon.com.mx/"/>
+	<meta property="og:type" content="article" />
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/fontawesome-all.css" rel="stylesheet">
+    <link href="/css/swiper.css" rel="stylesheet">
+	<link href="/css/magnific-popup.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/alert.css" rel="stylesheet">
+
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+<body data-spy="scroll" data-target=".fixed-top">
+
+    <%- include("./components/loader") %>
+    <%- include("./components/navbar-register",{assets: assets}) %>
+
+    <%- include("./components/updateForm",{assets: assets, context: context, functions: functions}) %> 
+ 
+    <%- include("./components/footer",{assets: assets}) %>
+
+</body>
+
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/popper.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/jquery.easing.min.js"></script>
+<script src="/js/lib/swiper.min.js"></script>
+<script src="/js/lib/jquery.magnific-popup.js"></script>
+<script src="/js/lib/morphext.min.js"></script>
+<script src="/js/lib/validator.min.js"></script>
+<script src="/js/lib/scripts.js"></script>
+<script src="/js/lib/alert.js"></script>
+<script src="/js/regex.js"></script>
+<script src="/js/lib/vue.js"></script>
+<script src="/js/lib/JSEncrypt.js"></script>
+<script src="/js/cipher.js"></script>
+
+<script>
+
+const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+
+    document.getElementById("homeButton").setAttribute("href","/home")
+    document.getElementById("homeImageButton").setAttribute("href","/home")
+    document.getElementById("privacyButton").setAttribute("href","/privacy")
+    document.getElementById("termsButton").setAttribute("href","/terms")
+    document.getElementById("update").setAttribute("href", "#")
+
+    document.getElementById("configuration").setAttribute("class","nav-item dropdown active")
+
+</script>
+
+<script>
+
+    const app = new Vue({
+        el: "#app",
+        data:{
+            email:"<%= functions.decryptAES(context.email) %>",
+            name:"<%= context.name %>",
+            lastName:"<%= context.lastName %>",
+            password:"",
+            confirmPassword:"",
+            passwordVerify:"",
+            infoErrors:{
+                name: [],
+                lastName: [],
+                email: [],
+            },
+            passwordErrors:{
+                password:[]
+            }
+        },
+        methods: {
+            async convertScientist() {
+
+                let response = await fetch("/api/upgradeUser")
+                let res = await response.json()
+
+                if(res.code==401)
+                    alert.error(assets.errors[res.msg],"Error")
+                else{
+                    alert.success(assets[res.msg],"")
+                    setTimeout(() => { window.location.href = "/" }, 3000)
+                }
+                
+            },
+            async resendEmail(){
+
+                let response = await fetch("/api/resendVerificationEmail")
+                let res = await response.json()
+
+                if(res.code==401)
+                    alert.error(assets.errors[res.msg],"Error")
+                else 
+                    alert.success(assets[res.msg],"")
+
+            },
+            async updateLocation(){
+
+                let response = await fetch("/api/updateLocation")
+                let res = await response.json()
+
+                if(res.code==401)
+                    alert.error(assets.errors[res.msg],"Error")
+                else 
+                    alert.success(assets[res.msg],"")
+
+            },
+            async updateInfo(){
+    
+                this.infoErrors = {
+                    name: [],
+                    lastName: [],
+                    email: []
+                }
+
+                if(!checkWords(this.name) && this.name.length>0) this.infoErrors["name"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+                if(this.name.length==0) this.infoErrors["name"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+                if(this.name.length>50) this.infoErrors["name"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.name.toLowerCase().split(" ")[0]))
+
+                if(!checkWords(this.lastName)) this.infoErrors["lastName"].push(assets.errors["ONLY_LETTERS_LASTNAME"])
+                if(this.lastName.length==0) this.infoErrors["lastName"].push(assets.errors["EMPTY_LASTNAME"])
+                if(this.lastName.length>50) this.infoErrors["lastName"].push(assets.errors["MAX_LASTNAME"])
+            
+                if(!checkEmail(this.email) && this.email.length>0) this.infoErrors["email"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                if(this.email.length==0) this.infoErrors["email"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                if(this.email.length>50) this.infoErrors["email"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                
+                if(this.infoErrors.name.length==0 && this.infoErrors.lastName.length==0 && this.infoErrors.email.length==0)
+                    $("#modalPasswordVerification").modal('show')
+
+            },
+            async changePassword(){
+
+                this.passwordErrors = {
+                    password: []
+                }
+                
+                if(this.password!=this.confirmPassword) this.passwordErrors["password"].push(assets.errors["PASSWORD_NOT_MATCH"])
+                if(this.password.length<8) this.passwordErrors["password"].push(assets.errors["EMPTY_PASSWORD"])
+                if(this.password.length>50) this.passwordErrors["password"].push(assets.errors["MAX_PASSWORD"])
+
+                if(this.passwordErrors.password.length==0)
+                    $("#modalPasswordVerification").modal('show')
+
+            },
+            async verifyPassword(){
+
+                $("#passwordMessage").text("")
+                $("#errorVerificationLabel").css("visibility","hidden")
+
+                if(this.passwordVerify.length==0){
+                    $("#passwordMessage").text(assets.errors["EMPTY_PASSWORD"])
+                    $("#errorVerificationLabel").css("visibility","visible")
+                }
+                else{
+                    let config = {
+                        method: 'POST',
+                        headers:{
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            password: encrypt(this.passwordVerify)
+                        })
+                    }
+
+                    let response = await fetch("/api/verifyPassword", config)
+                    let res = await response.json()
+
+                    if(res.code == 401){
+                        $("#passwordMessage").text(assets.errors[res.msg])
+                        $("#errorVerificationLabel").css("visibility","visible")
+                    }
+                    else if(res.code == 402){
+                        window.location.href = "/"
+                    }
+                    else{
+                        let config = {}
+                        let url = ""
+
+                        $("#modalPasswordVerification").modal('hide')
+
+                        if(this.password!=""){
+
+                            url = "/api/updatePassword"
+                            config = {
+                                method: 'POST',
+                                headers:{
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    password: encrypt(this.password)
+                                })
+                            }
+
+                        }
+                        else{
+                            url = "/api/updateInfo"
+                            config = {
+                                method: 'POST',
+                                headers:{
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    name: encrypt(this.name),
+                                    lastName: encrypt(this.lastName),
+                                    email: encrypt(this.email)
+                                })
+                            }
+                        }
+
+                        let response = await fetch(url, config)
+                        let res = await response.json()
+
+                        if(res.code==401)
+                            alert.error(assets.errors[res.msg],"Error")
+                        else if(res.code==201){
+                            alert.success(assets[res.msg],"")
+                            setTimeout(() => { window.location.href = "/" }, 3000)
+                            if(this.password!=""){
+                                this.password = ""
+                                this.confirmPassword = ""
+                            }
+                        }
+                        else 
+                            alert.success(assets[res.msg],"")
+                    }
+                }
+            }
+        },
+    })
+</script>
+
+</html>
