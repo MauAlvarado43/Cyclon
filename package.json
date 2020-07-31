@@ -47,6 +47,7 @@
     "graphql-tools": "^6.0.12",
     "helmet": "^3.23.2",
     "http": "0.0.1-security",
+    "ipware": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
     "morgan": "^1.10.0",

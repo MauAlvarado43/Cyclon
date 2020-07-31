@@ -47,6 +47,16 @@ app.use(session({
     })
 }))
 
+import ipware from 'ipware'
+
+const get_ip  = ipware().get_ip
+
+app.use(function(req, res, next) {
+    var ip_info = get_ip(req);
+    console.log(ip_info);
+    next();
+});
+
 app.use('*', (req,res,next) => {
     if(!req.user && req.cookies && req.cookies.user){
         req.logIn(decryptAES(JSON.parse(req.cookies.user)), function(err) {

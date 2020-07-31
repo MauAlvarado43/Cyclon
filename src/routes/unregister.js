@@ -17,13 +17,6 @@ const router = Router()
 ***************************************/
 
 router.get('/', (req,res) => {
-
-    console.log(req.ip);
-
-    console.log(req.headers['x-forwarded-for']);
-    console.log(req.connection.remoteAddress);
-    console.log(req.socket.remoteAddress);
-    console.log(req.connection.socket.remoteAddress.split(",")[0]);
     
     if(!req.session.error)
         req.session.error = []
