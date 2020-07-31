@@ -90,11 +90,8 @@ fs.readFile(path.join(__dirname, `./hurricaines.json`), (err, file) => {
         element.realTrajectory.forEach(element => {
           
             cyclone.realTrajectory.push({
-                position: {
-                    lat: element.lat,
-                    lng: element.lng
-                },
-                windSpeed: element.wind,
+                position: element.position,
+                windSpeed: element.windSpeed,
                 hurrSpeed: 0,
                 temperature: element.temperature,
                 pressure: element.pressure,

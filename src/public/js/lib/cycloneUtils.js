@@ -1,18 +1,29 @@
 const getCategoryRadious = (speed) => {
     if (speed < 62)
-        return ["DT", 75]
+        return [assets.alertMessages.DT, 75]
     else if (speed < 118)
-        return ["TT", 200]
+        return [assets.alertMessages.TT, 200]
     else if (speed < 153)
-        return ["H1", 400] 
+        return [assets.alertMessages.H1, 400] 
     else if (speed < 177)
-        return ["H2", 700]
+        return [assets.alertMessages.H2, 700]
     else if (speed < 210)
-        return ["H3", 900]
+        return [assets.alertMessages.H3, 900]
     else if (speed < 250)
-        return ["H4", 1100]
+        return [assets.alertMessages.H4, 1100]
     else
-        return ["H5", 1300]
+        return [assets.alertMessages.H5, 1300]
+}
+
+const getIcon = (category) => {
+    if(category=="DT")
+        return "/images/DT.png"
+    if(category=="TT")
+        return "/images/DT.png"
+    if(category=="H1" || category=="H2" ||category=="H3" ||category=="H4" ||category=="H5")
+        return "/images/HN.png"
+    if(category=="RT")
+        return "/images/RT.png"
 }
 
 const getDistance = (lat1, lon1, lat2, lon2) => {

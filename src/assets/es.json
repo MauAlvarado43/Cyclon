@@ -84,7 +84,9 @@
         "subtitle":             "Consulta los fenómenos meteorológicos actuales",
         "graphs":               "Gráficas",
         "map":                  "Mapa",
-        "tab":                  "Tabulación"
+        "tab":                  "Tabulación",
+        "category":             "Categoría",
+        "position":             "Posición"
     },
     "alertMessages":{
         "DT":                   "Depresión Tropical",

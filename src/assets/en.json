@@ -81,7 +81,12 @@
         "hurricane":            "Hurricaine",
         "remanent":             "Remanent",
         "title":                "Sibology",
-        "subtitle":             "Check current weather phenomenals"
+        "subtitle":             "Check current weather phenomenals",
+        "graphs":               "Graphs",
+        "map":                  "Map",
+        "tab":                  "Tabs",
+        "category":             "Category",
+        "position":             "Position"
     },
     "alertMessages":{
         "DT":                   "Tropical Depression",

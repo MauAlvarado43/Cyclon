@@ -184,6 +184,7 @@
 
 </body>
 
+<script src="/js/lib/moment-with-locales.js"></script>
 <script src="/js/lib/jquery.min.js"></script>
 <script src="/js/lib/popper.min.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
@@ -203,6 +204,7 @@
 
 <script>
     const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+    moment.locale(assets.locale)
 
     document.getElementById("homeButton").setAttribute("href","/home")
     document.getElementById("homeImageButton").setAttribute("href","/home")
