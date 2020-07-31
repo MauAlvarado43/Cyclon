@@ -19,7 +19,6 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "src/services/*",
       "src/public/*",
       "src/assets/*",
       "src/views/*"
