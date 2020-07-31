@@ -17,6 +17,8 @@ const router = Router()
 ***************************************/
 
 router.get('/', (req,res) => {
+
+    console.log(req.clientIp)
     
     if(!req.session.error)
         req.session.error = []
