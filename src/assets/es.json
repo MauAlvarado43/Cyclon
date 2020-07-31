@@ -179,5 +179,6 @@
     "scientistInfo":            "Un usuario investigador tiene más privilegios que una cuenta normal. Puedes ver registros de huracanes, datos estadísticos, etc.",
     "not_registered":           "Sin registro",
     "date":                     "Fecha",
-    "parameters":               "Parametros de Búsqueda"
+    "parameters":               "Parametros de Búsqueda",
+    "EMAIL_SENDED":             "Correo electrónico enviado"
 }
