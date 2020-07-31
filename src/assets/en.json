@@ -174,5 +174,6 @@
     "scientistInfo":            "An investigating user has more privileges than a normal account. You can see hurricane records, statistical data, etc.",
     "not_registered":           "Not registered",
     "date":                     "Date",
-    "parameters":               "Search parameters"
+    "parameters":               "Search parameters",
+    "EMAIL_SENDED":             "Email sended"
 }

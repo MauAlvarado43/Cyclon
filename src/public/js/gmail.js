@@ -6,7 +6,6 @@ var scopes = 'https://www.googleapis.com/auth/gmail.readonly https://www.googlea
 const authenticate = () => {
     return gapi.auth2.getAuthInstance().signIn({ scope: scopes }).then(
         () => {
-            console.log('Sign-in successful')
         }, (err) => {
             console.error(err)
         }
@@ -32,10 +31,12 @@ function sendEmail() {
     sendMessage(
         {
             To: 'hypersoftcode@gmail.com',
-            Subject: document.getElementById("subject").val,
+            Subject: document.getElementById("subject").value,
         },
-        document.getElementById('cname').val + "\n" + document.getElementById('message').val,
-        () => { }
+        document.getElementById('cname').value + "\n" + document.getElementById('message').value,
+        () => { 
+            alert.success(assets["EMAIL_SENDED"],"")
+        }
     )
 
     return false

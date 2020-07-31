@@ -13,12 +13,19 @@ passport.use('google-auth',new GoogleStrategy({
         passReqToCallback: true
     }, async (req, accessToken, refreshToken, profile, done) => {
 
-        User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+        User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {
 
             if(err) errorLog.error(err)
 
             if(docs.length==0){
                 const newUser = new User()
+
+                console.log(req.ip)
+
+                let response = await fetch('http://ipwhois.app/json/'+ req.ip)
+                let res = await response.json()
+
+                console.log(res)
 
                 let geo = geoip.lookup(req.ip)
 
