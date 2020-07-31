@@ -5,6 +5,9 @@
   "private": true,
   "license": "GPL-3.0-or-later",
   "main": "server.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "node bin/production",
