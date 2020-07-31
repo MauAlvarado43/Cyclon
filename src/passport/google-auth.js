@@ -17,15 +17,15 @@ passport.use('google-auth',new GoogleStrategy({
 
             if(err) errorLog.error(err)
 
+            console.log(req.ip)
+
+            let response = await fetch('http://ipwhois.app/json/'+ req.ip)
+            let res = await response.json()
+
+            console.log(res)
+
             if(docs.length==0){
                 const newUser = new User()
-
-                console.log(req.ip)
-
-                let response = await fetch('http://ipwhois.app/json/'+ req.ip)
-                let res = await response.json()
-
-                console.log(res)
 
                 let geo = geoip.lookup(req.ip)
 
