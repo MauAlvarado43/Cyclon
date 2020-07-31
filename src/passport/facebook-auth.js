@@ -14,7 +14,7 @@ passport.use('facebook-auth',new FacebookStrategy({
     profileFields: ['id', 'email', 'first_name', 'last_name']
   },async (req, accessToken, refreshToken, profile, done) => {
 
-    User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+    User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {
 
 		if(err) errorLog.error(err)
 
