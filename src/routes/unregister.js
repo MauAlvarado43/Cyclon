@@ -16,14 +16,14 @@ const router = Router()
                 Rendering
 ***************************************/
 
-router.get('/', async (req,res) => {
+router.get('/', (req,res) => {
 
-    console.log(req.header('x-forwarded-for'))
+    console.log(req.ip);
 
-    let response = await fetch('http://ipwhois.app/json/'+ req.header('x-forwarded-for'))
-    let resx = await response.json()
-
-    console.log(resx)
+    console.log(req.headers['x-forwarded-for']);
+    console.log(req.connection.remoteAddress);
+    console.log(req.socket.remoteAddress);
+    console.log(req.connection.socket.remoteAddress.split(",")[0]);
     
     if(!req.session.error)
         req.session.error = []
