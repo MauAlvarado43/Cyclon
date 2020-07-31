@@ -8,6 +8,8 @@ import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, dec
 import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
 
+import fetch from 'node-fetch'
+
 const router = Router()
 
 /***************************************
@@ -15,6 +17,13 @@ const router = Router()
 ***************************************/
 
 router.get('/', (req,res) => {
+
+    console.log(req.ip)
+
+    let response = await fetch('http://ipwhois.app/json/'+ req.ip)
+    let res = await response.json()
+
+    console.log(res)
     
     if(!req.session.error)
         req.session.error = []
