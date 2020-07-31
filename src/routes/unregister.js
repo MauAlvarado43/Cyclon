@@ -21,9 +21,9 @@ router.get('/', async (req,res) => {
     console.log(req.ip)
 
     let response = await fetch('http://ipwhois.app/json/'+ req.ip)
-    let res = await response.json()
+    let resx = await response.json()
 
-    console.log(res)
+    console.log(resx)
     
     if(!req.session.error)
         req.session.error = []
