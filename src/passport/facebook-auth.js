@@ -4,6 +4,7 @@ import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
 import {encryptAES} from '../utils/cipher'
 import { errorLog } from '../utils/logger'
+import fetch from 'node-fetch'
 
 passport.use('facebook-auth',new FacebookStrategy({
     clientID: '3170951326462560',
@@ -19,6 +20,13 @@ passport.use('facebook-auth',new FacebookStrategy({
 
 		if(docs.length==0){
 			const newUser = new User()
+
+			console.log(req.ip)
+
+			let response = await fetch('http://ipwhois.app/json/'+ req.ip)
+			let res = await response.json()
+
+			console.log(res)
 
 			let geo = geoip.lookup(req.ip)
 
