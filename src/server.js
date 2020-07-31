@@ -2,6 +2,7 @@ import express from 'express'
 import http from 'http'
 import compression from 'compression'
 import session from 'express-session'
+import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -23,6 +24,11 @@ const store = memoryStore(session)
 const corsOptions = {
     origin: '*'
 }
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
+    message: "DDOS detected"
+})
 
 require('dotenv').config()
 require('./config/database')
@@ -77,6 +83,7 @@ app.use(morgan('combined', { 'stream': infoLog.stream }))
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
+app.use(limiter)
 app.set('view engine','ejs')
 app.set('views','src/views')
 
