@@ -1,5 +1,5 @@
-var CLIENT_ID = '30241802743-j36frevsmpvj855vrdao6dcavs20sp79.apps.googleusercontent.com'
-var API_KEY = 'AIzaSyC_dWFOmnYiXQ6M_4Qb_SMMYoVcaHb4Yyw'
+var CLIENT_ID = '155001320669-hoc5h6sqqqjd6r06rgacom7ksn6gu9aa.apps.googleusercontent.com'
+var API_KEY = 'AIzaSyAVqrzMq-QHlZTF-lhQWDYJsfPhKzNG0hM'
 
 var scopes = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send'
 
@@ -18,7 +18,6 @@ const loadClient = () => {
     return gapi.client.load('https://content.googleapis.com/discovery/v1/apis/gmail/v1/rest').then(
         (res) => {
             sendEmail()
-            console.log(res)
         }, (err) => { 
             console.log(err) 
         }
