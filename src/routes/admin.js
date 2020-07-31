@@ -23,6 +23,10 @@ module.exports = (server) => {
                 console.log(`child process terminated due to receipt of signal ${signal}`)
             })
 
+            child.on('error', (err) => {
+                console.log(err)
+            })
+
             setTimeout(() => {
                 cyclonSocket.connectPython()
             }, 5000)
