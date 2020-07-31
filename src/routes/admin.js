@@ -10,26 +10,16 @@ module.exports = (server) => {
     const cyclonSocket = new CyclonSocket(server)
     const router = Router()
 
-    let child = null
     let pythonRunning = false
 
     router.get('/api/admin/run', (req,res) => {
-        if(child == null && pythonRunning == false){
+        if(pythonRunning == false){
 
-            child =  spawn(process.env.PYTHON_ENV, [path.join(__dirname, '../services/index.py')])
             pythonRunning = true
-
-            child.on('close', (code, signal) => {
-                console.log(`child process terminated due to receipt of signal ${signal}`)
-            })
-
-            child.on('error', (err) => {
-                console.log(err)
-            })
 
             setTimeout(() => {
                 cyclonSocket.connectPython()
-            }, 5000)
+            }, 30000)
 
             res.send("START")
 
@@ -40,10 +30,8 @@ module.exports = (server) => {
     })
 
     router.get('/api/admin/stop', (req,res) => {
-        if(child != null && pythonRunning == true){
+        if(pythonRunning == true){
 
-            child.kill('SIGTERM')
-            child =  null
             pythonRunning = false
 
             cyclonSocket.disconnectPython()
