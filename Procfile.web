@@ -1,2 +1,0 @@
-django: gunicorn dist/services/index.py --bind 127.0.0.1:$DJANGO_PORT
-node: node bin/production
