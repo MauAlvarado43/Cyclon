@@ -110,6 +110,7 @@ const app = new Vue({
             let palette = {}
             let latlngs = []
             let trajectorySelected =  this.cyclones[(this.selectedCyclone.split(" ")[0])-1][this.selectedTrajectory]
+            let [category, radious] = getCategoryRadious(trajectorySelected[trajectorySelected.length - 1].windSpeed)
 
             if(trajectorySelected.length==0){
 
@@ -122,7 +123,13 @@ const app = new Vue({
             }
             else{
 
-                let table = `<table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
+                let table = `
+                            <div>
+                                Appearance Date: ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].appearance).format("MMMM D YYYY, h:mm:ss a")}<br>
+                                Last Update: ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].lastUpdate, "YYYYMMDD").fromNow()}
+                            </div>
+                
+                            <table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
                                 <tr>
                                     <th>${assets.units.latitude.label}</th>
                                     <th>${assets.units.longitude.label}</th>
@@ -155,7 +162,7 @@ const app = new Vue({
                                 <td>${((element.hurrSpeed == 0) ? assets.not_registered : Math.round(element.hurrSpeed * 100) / 100)}</td>
                                 <td>${((element.temperature == 0) ? assets.not_registered : Math.round(element.temperature * 100) / 100)}</td>
                                 <td>${((element.pressure == 0) ? assets.not_registered : Math.round(((element.pressure<100) ? element.pressure*100 : element.pressure) * 100) / 100)}</td>
-                                <td>${new Date (element.date).toLocaleString()}</td>
+                                <td>${moment(element.date).format("MMMM D YYYY, h:mm:ss a")}</td>
                             </tr>`
 
                     latlngs.push([element.position.lat, element.position.lng, element.windSpeed])
@@ -180,8 +187,8 @@ const app = new Vue({
                     trajectorySelected.forEach(item => {
                         let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
                         if(distanceTemp<distance){
-                            distance = distanceTemp;
-                            toShow = item;
+                            distance = distanceTemp
+                            toShow = item
                         }
                     }) 
 
@@ -223,29 +230,38 @@ const app = new Vue({
                         trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lat,
                         trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lng], 4)
                 }
-
                 
-                // if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
+                if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
 
-                //     var icon = L.icon({
-                //         iconUrl: '../../img/cyclone.png',
-                //         iconSize: [35, 35],
-                //         popupAnchor: [-3, -76]
-                //     })
+                    var icon = L.icon({
+                        iconUrl: getIcon(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category),
+                        iconSize: [35, 35],
+                        popupAnchor: [-3, -76]
+                    })
 
-                //     var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
+                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: iconMarker }).addTo(map_const);
+                
+                    marker.on('click', function (e) {
+                        map_const.fitBounds(layerRealTrayectory.getBounds());
+                        L.popup()
+                            .setLatLng([e.latlng.lat, e.latlng.lng])
+                            .setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
+                            .openOn(map_const)
+                    })  
+
+                    var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
                     
-                //     marker.on('click', function (e) {
-                //         map_const.fitBounds(hotlineLayer.getBounds());
-                //         L.popup()
-                //             .setLatLng([e.latlng.lat, e.latlng.lng])
-                //             .setContent(`<article class="Popup" onclick="ElementoClick(\"Maria_2017\",this)"><header><h4 class="Titulo">${json[0].name}</h4></header><br><div class="Datos MostrarDatosHuracan"><h6 style=\"color:black;\">Posición: ${json[0].realTrajectory[json[0].realTrajectory.length-1].lat}N,  ${json[0].realTrajectory[json[0].realTrajectory.length-1].lng}W</h6><br></div></article>`)
-                //             .openOn(map_const)
-                //     })
+                    marker.on('click', function (e) {
+                        map_const.fitBounds(layerRealTrayectory.getBounds());
+                        L.popup()
+                            .setLatLng([e.latlng.lat, e.latlng.lng])
+                            .setContent(`<h4 style="color:black;">${this.cyclones[(this.selectedCyclone.split(" ")[0])-1].name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
+                            .openOn(map_const)
+                    })  
 
-                //     lastmarker = marker
+                    lastmarker = marker
 
-                // }
+                }
 
                 map_const.fitBounds(lastLayer.getBounds())
 

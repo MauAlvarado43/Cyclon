@@ -2,6 +2,8 @@ const query = `
 {
     activeCyclones {
         active
+        category
+        name
         realTrajectory {
             position {
                 lat
@@ -37,8 +39,8 @@ const getActiveCyclones = async () => {
 
     activeCyclones = res.data.activeCyclones
 
+    console.log(activeCyclones)
+
     if(addPanelInfo) addPanelInfo()
 
 }
-
-getActiveCyclones()

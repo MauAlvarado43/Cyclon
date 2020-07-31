@@ -1,5 +1,6 @@
 <script src="/js/lib/leaflet.js"></script>
 <script src="/js/lib/libBoot.js"></script>
+<script src="/js/lib/heat_layer.js"></script>
 
 <style>
 
@@ -14,7 +15,7 @@
         background: none;
         border: 0;
         background-color: rgba(68,65,65,0.84); 
-        width: 20%; 
+        width: 8rem; 
         height: 100%; 
     }
 
@@ -92,7 +93,7 @@
 
                     <li>  
                         <center>                  
-                            <div><img src="/images/DepresiónTropical.png" width="25"></div>
+                            <div><img src="/images/DT.png" width="25"></div>
                             <%= assets.simbology.tropical_depression %>
                         </center>
                     </li>
@@ -100,7 +101,7 @@
 
                     <li>  
                         <center>                  
-                            <div><img src="/images/TormentaTropical.png" width="25"></div>
+                            <div><img src="/images/TT.png" width="25"></div>
                             <%= assets.simbology.tropical_storm %>
                         </center>
                     </li>
@@ -108,7 +109,7 @@
 
                     <li>  
                         <center>                  
-                            <div><img src="/images/Categoría.png" width="25"></div>
+                            <div><img src="/images/HN.png" width="25"></div>
                             <%= assets.simbology.hurricane %>
                         </center>
                     </li>
@@ -116,7 +117,7 @@
 
                     <li>  
                         <center>                  
-                            <div><img src="/images/Remanente.png" width="25"></div>
+                            <div><img src="/images/RT.png" width="25"></div>
                             <%= assets.simbology.remanent %>
                         </center>
                     </li>
@@ -127,12 +128,6 @@
 
 
 <script>
-    let icons = {
-        "DT": "/images/DepresiónTropical.png",
-        "ST": "/images/TormentaTropical.png",
-        "HX": "/images/Categoría.png",
-        "RH": "/images/Remanente.png"
-    }
 
     let map_const
     let lastLayer
@@ -190,6 +185,8 @@
             store.set("particlesAnim", "on")
 
             broadcast.once('redrawFinished', () => {
+
+                <%- (path=="/home")? "getActiveCyclones()": "" %>
 
             })
 
