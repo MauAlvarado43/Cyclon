@@ -11,18 +11,11 @@ passport.use('google-auth',new GoogleStrategy({
         clientSecret: 'KAOYHF3jiEHKco7qDSGQ5frg',
         callbackURL: process.env.URL + '/auth/google/callback',
         passReqToCallback: true
-    }, async (req, accessToken, refreshToken, profile, done) => {
+    }, (req, accessToken, refreshToken, profile, done) => {
 
-        User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {
+        User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
 
             if(err) errorLog.error(err)
-
-            console.log(req.ip)
-
-            let response = await fetch('http://ipwhois.app/json/'+ req.ip)
-            let res = await response.json()
-
-            console.log(res)
 
             if(docs.length==0){
                 const newUser = new User()
