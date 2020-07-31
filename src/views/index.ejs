@@ -112,7 +112,12 @@
         if(searchParams.get("action")=="login"){
             $('#loginModal').modal('show');
         }
-    });
+    })
+
+    if("geolocation" in navigator)
+        navigator.geolocation.getCurrentPosition((position) => {
+            console.log(position.coords)
+        })
 
 </script>
 
