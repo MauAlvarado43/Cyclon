@@ -17,11 +17,6 @@ const router = Router()
 ***************************************/
 
 router.get('/', (req,res) => {
-
-    console.log(req.clientIp)
-
-    let geo = geoip.lookup(req.clientIp)
-    console.log(geo)
     
     if(!req.session.error)
         req.session.error = []

@@ -16,6 +16,7 @@ import graphqlHTTP from 'express-graphql'
 import schema from './config/schema'
 import { infoLog } from './utils/logger'
 import { decryptAES } from './utils/cipher'
+import requestIP from 'request-ip'
 
 // Initialzing packages
 const app = express()
@@ -46,20 +47,6 @@ app.use(session({
         expires: 60 * 60 * 12
     })
 }))
-
-// import ipware from 'ipware'
-
-// const get_ip  = ipware().get_ip
-
-// app.use(function(req, res, next) {
-//     var ip_info = get_ip(req);
-//     console.log(ip_info);
-//     next();
-// });
-
-import requestIP from 'request-ip'
-
-app.use(requestIP.mw())
 
 app.use('*', (req,res,next) => {
     if(!req.user && req.cookies && req.cookies.user){
@@ -97,6 +84,7 @@ app.use(morgan('combined', { 'stream': infoLog.stream }))
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
+app.use(requestIP.mw())
 app.use(limiter)
 app.set('view engine','ejs')
 app.set('views','src/views')

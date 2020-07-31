@@ -35,7 +35,7 @@ passport.use('local-signup', new LocalStrategy({
 
         if(userValidation.length==0){
 
-            let geo = geoip.lookup(req.ip)
+            let geo = geoip.lookup(req.clientIp)
 
             if(geo){
 
