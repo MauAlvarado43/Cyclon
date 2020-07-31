@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "node bin/production",
-    "build": "npm run clean && mkdir dist && babel src -s -d dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && cp -R src/services dist/ && node dist/utils/minify.js",
+    "build": "npm run clean && mkdir dist && babel src -s -d dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/public dist && cp -R src/services dist/ && cp src/config/schema.gql dist/config && node dist/utils/minify.js",
     "clean": "rm -rf dist/",
     "test": "nodemon --exec mocha src/test/ --reporter spec --require babel-register",
     "production": "npm run build && node bin/production",
