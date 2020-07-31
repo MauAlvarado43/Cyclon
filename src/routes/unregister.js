@@ -18,9 +18,9 @@ const router = Router()
 
 router.get('/', async (req,res) => {
 
-    console.log(req.ip)
+    console.log(req.connection.remoteAddress)
 
-    let response = await fetch('http://ipwhois.app/json/'+ req.ip)
+    let response = await fetch('http://ipwhois.app/json/'+ req.connection.remoteAddress)
     let resx = await response.json()
 
     console.log(resx)
