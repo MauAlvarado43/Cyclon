@@ -4,7 +4,7 @@ import {UserModel as User} from '../models/UserModel'
 import {encryptAES} from '../utils/cipher'
 import geoip from 'geoip-lite'
 import { errorLog } from '../utils/logger'
-
+import fetch from 'node-fetch'
 
 passport.use('google-auth',new GoogleStrategy({
         clientID: '155001320669-kd32n0gk5u8le64bbmtie7d2ebvfujot.apps.googleusercontent.com',
