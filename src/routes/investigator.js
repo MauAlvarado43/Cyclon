@@ -16,7 +16,7 @@ router.get('/records', (req,res) => {
 
     let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
 
-    if(!req.user)
+    if(!req.user || req.user.type==0)
         res.redirect('/')
     else
         res.render('records', {

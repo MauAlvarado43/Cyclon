@@ -45,6 +45,7 @@
     "graphql": "^15.2.0",
     "graphql-tools": "^6.0.12",
     "helmet": "^3.23.2",
+    "heroku-client": "^3.1.0",
     "http": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
