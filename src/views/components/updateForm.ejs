@@ -29,39 +29,47 @@
                                 </ul>  
                             </div>
 
-                            <div class="form-group">
-                                <input type="text" class="form-control-input notEmpty" id="email" v-model="email" required>
-                                <label class="label-control" for="email"><%= assets.inputs.email %></label>
-                                <ul>
-                                    <li v-for="msg of infoErrors.email" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
-                                </ul> 
-                            </div>
+                            <% if(context.register == 0) { %>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control-input notEmpty" id="email" v-model="email" required>
+                                    <label class="label-control" for="email"><%= assets.inputs.email %></label>
+                                    <ul>
+                                        <li v-for="msg of infoErrors.email" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                                    </ul> 
+                                </div>
+
+                            <% } %>
 
                             <div class="form-group">
                                 <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="updateInfo" value="<%= assets.buttons.update %>" required>
                             </div>
 
-                            <hr>
+                            <% if(context.register == 0) { %>
+                                
+                                <hr>
 
-                            <div class="form-group">
-                                <input type="password" class="form-control-input notEmpty" id="new_password" v-model="password" required>
-                                <label class="label-control" for="new_password"><%= assets.inputs.new_password %></label>
-                                <div class="help-block with-errors"></div>
-                            </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control-input notEmpty" id="new_password" v-model="password" required>
+                                    <label class="label-control" for="new_password"><%= assets.inputs.new_password %></label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+    
+                                <div class="form-group">
+                                    <input type="password" class="form-control-input notEmpty" id="c_new_password" v-model="confirmPassword" required>
+                                    <label class="label-control" for="c_new_password"><%= assets.inputs.confirm_n_password %></label>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+    
+                                <ul>
+                                    <li v-for="msg of passwordErrors.password" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
+                                </ul> 
+    
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="changePassword" value="<%= assets.buttons.update_password %>" required>
+                                </div>
 
-                            <div class="form-group">
-                                <input type="password" class="form-control-input notEmpty" id="c_new_password" v-model="confirmPassword" required>
-                                <label class="label-control" for="c_new_password"><%= assets.inputs.confirm_n_password %></label>
-                                <div class="help-block with-errors"></div>
-                            </div>
-
-                            <ul>
-                                <li v-for="msg of passwordErrors.password" style="color: red; text-align: left; margin-left: 5%;">{{msg}}</li>
-                            </ul> 
-
-                            <div class="form-group">
-                                <input type="button" class="btn btn-secondary" style="width: 100% !important;" @click="changePassword" value="<%= assets.buttons.update_password %>" required>
-                            </div>
+                            <% } %>
 
                             <hr>
 

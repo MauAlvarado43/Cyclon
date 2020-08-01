@@ -10,9 +10,9 @@ passport.use('google-auth',new GoogleStrategy({
         clientSecret: 'KAOYHF3jiEHKco7qDSGQ5frg',
         callbackURL: process.env.URL + '/auth/google/callback',
         passReqToCallback: true
-    }, (req, accessToken, refreshToken, profile, done) => {
+}, async (req, accessToken, refreshToken, profile, done) => {
 
-        User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+        User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {
 
             if(err) errorLog.error(err)
 
@@ -38,8 +38,10 @@ passport.use('google-auth',new GoogleStrategy({
                     newUser.password = userObject.password
                     newUser.type = 0
                     newUser.verify = true
+                    newUser.register = 2
                 
-                    newUser.save()
+                    await newUser.save()
+
                     done(null, newUser)
                 }
                 else{

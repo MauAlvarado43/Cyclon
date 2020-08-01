@@ -46,7 +46,10 @@
         "resend_email":         "Resend verification email",
         "send_recover":         "Enviar correo de recuperación",
         "convert_scientist":    "Be a Scientist",
-        "search":               "Search"
+        "search":               "Search",
+        "cyclones":             "Cyclones",
+        "config_server":        "Cyclon Settings",
+        "users":                "Users"
     },
     "units": {
         "windSpeed": {

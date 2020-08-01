@@ -44,6 +44,40 @@ module.exports = (server) => {
 
     let pythonRunning = false
 
+    router.get('/users', (req,res) => {
+        let language = req.acceptsLanguages('es', 'en')
+        if (!language) language = 'en' 
+    
+        let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+    
+        if(!req.user || req.user.type!=2)
+            res.redirect('/')
+        else
+            res.render('users', {
+                title: `Cyclon - ${assets.titles.home}`, 
+                assets: assets,
+                path: '/users',
+                context: req.user
+            })
+    })
+
+    router.get('/cycloneSettings', (req,res) => {
+        let language = req.acceptsLanguages('es', 'en')
+        if (!language) language = 'en' 
+    
+        let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+    
+        if(!req.user || req.user.type!=2)
+            res.redirect('/')
+        else
+            res.render('cycloneSettings', {
+                title: `Cyclon - ${assets.titles.home}`, 
+                assets: assets,
+                path: '/cycloneSettings',
+                context: req.user
+            })
+    })
+
     router.get('/api/admin/run', (req,res) => {
         if(pythonRunning == false){
 

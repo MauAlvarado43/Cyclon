@@ -11,9 +11,9 @@ passport.use('facebook-auth',new FacebookStrategy({
     callbackURL: process.env.URL + '/auth/facebook/callback',
     passReqToCallback: true,
     profileFields: ['id', 'email', 'first_name', 'last_name']
-  }, (req, accessToken, refreshToken, profile, done) => {
+}, async (req, accessToken, refreshToken, profile, done) => {
 
-    User.find({email: encryptAES(profile.emails[0].value)}, (err,docs) => {
+    User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {
 
 		if(err) errorLog.error(err)
 
@@ -40,8 +40,9 @@ passport.use('facebook-auth',new FacebookStrategy({
 				newUser.password = userObject.password
 				newUser.type = 0
 				newUser.verify = true
+				newUser.register = 1
 							
-				newUser.save()
+				await newUser.save()
 				done(null, newUser)
 			}
 			else{

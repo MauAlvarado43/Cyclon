@@ -54,6 +54,7 @@ passport.use('local-signup', new LocalStrategy({
                 newUser.password = userObject.password
                 newUser.type = 0
                 newUser.verify = false
+                newUser.register = 0
             
                 await newUser.save()
                 done(null, newUser)
