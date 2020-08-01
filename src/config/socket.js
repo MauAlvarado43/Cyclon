@@ -15,7 +15,7 @@ export default class CyclonSocket {
     }
 
     connectPython(){
-        this.client = ioClient('http://localhost:'+ process.env.DJANGO_PORT )
+        this.client = ioClient('https://mlcyclonsocket.herokuapp.com/')
 
         this.client.on('connect', function(){
             console.log("CONNECTED")
