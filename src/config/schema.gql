@@ -5,7 +5,8 @@ type User{
 	location: Geolocation
 	password: String
 	type: Int,
-	verify: Boolean
+	verify: Boolean,
+	register: Int
 }
 
 type Cyclone{

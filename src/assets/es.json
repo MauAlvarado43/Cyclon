@@ -46,7 +46,10 @@
         "resend_email":         "Reenviar correo de verificación",
         "send_recover":         "Enviar correo de recuperación",
         "convert_scientist":    "Ser Investigador",
-        "search":               "Buscar"
+        "search":               "Buscar",
+        "cyclones":             "Huracanes",
+        "config_server":        "Configuración de Cyclon",
+        "users":                "Usuarios"
     },
     "units": {
         "windSpeed": {

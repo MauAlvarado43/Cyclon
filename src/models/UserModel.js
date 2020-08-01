@@ -13,7 +13,8 @@ const { Schema } = mongoose
  * @property {Number} lat - The user's GPS latitude
  * @property {Number} lng - The user's GPS longitude
  * @property {String} password - The user's password
- * @property {Number} type - The kind of user (0 -> Normal, 1 -> Scientist, 2-> Administrator)
+ * @property {Number} type - The kind of user (0 -> Normal, 1 -> Scientist, 2 -> Administrator)
+ * @property {Number} register - The kind of register (0 -> Local, 1 -> Facebook, 2 -> Google)
  */
 
 const UserSchema = new Schema({
@@ -26,7 +27,8 @@ const UserSchema = new Schema({
     },
     password: String,
     type: Number,
-    verify: Boolean
+    verify: Boolean,
+    register: Number
 })
 
 UserSchema.methods.validateUser = (name, lastName, email, password, type) => {
