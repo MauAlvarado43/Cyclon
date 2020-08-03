@@ -41,6 +41,7 @@ passport.use('facebook-auth',new FacebookStrategy({
 				newUser.type = 0
 				newUser.verify = true
 				newUser.register = 1
+				newUser.dateRegister = new Date()
 							
 				await newUser.save()
 				done(null, newUser)

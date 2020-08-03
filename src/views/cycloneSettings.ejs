@@ -1,1 +1,73 @@
-settings
+<% if(context.type==null || context.type==undefined || context.type==0 || context.type==1){ %>
+    <script> window.location.href="/" </script>
+<% } else { %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <meta name="description" content="Free cyclone's alerts">
+        <meta name="author" content="Cyclon">
+    
+        <title> <%= title %> </title>
+    
+        <meta property="og:site_name" content="Cyclon" />
+        <meta property="og:site" content="http://cyclon.com.mx/"/>
+        <meta property="og:title" content="<%= title %>"/>
+        <meta property="og:description" content="Main page" />
+        <meta property="og:image" content="/images/favicon.ico"/>
+        <meta property="og:url" content="http://cyclon.com.mx/"/>
+        <meta property="og:type" content="article" />
+    
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+        <link href="/css/bootstrap.css" rel="stylesheet">
+        <link href="/css/fontawesome-all.css" rel="stylesheet">
+        <link href="/css/swiper.css" rel="stylesheet">
+        <link href="/css/magnific-popup.css" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet">
+        <link href="/css/alert.css" rel="stylesheet">
+        <link href="/css/morris.css" rel="stylesheet">
+    
+        <link rel="icon" href="/images/favicon.ico">
+        
+    </head>
+    <body data-spy="scroll" data-target=".fixed-top">
+    
+        <%- include("./components/loader") %>
+    
+        <%- include("./components/navbar-register",{assets: assets}) %> 
+
+        <%- include("./components/footer",{assets: assets}) %> 
+    
+    </body>
+    
+    <script src="/js/lib/moment-with-locales.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/popper.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/jquery.easing.min.js"></script>
+    <script src="/js/lib/swiper.min.js"></script>
+    <script src="/js/lib/jquery.magnific-popup.js"></script>
+    <script src="/js/lib/morphext.min.js"></script>
+    <script src="/js/lib/validator.min.js"></script>
+    <script src="/js/lib/scripts.js"></script>
+    <script src="/js/lib/raphael.js"></script>
+    <script src="/js/lib/morris.min.js"></script>
+    
+    <script>
+        const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+        moment.locale(assets.locale)
+    
+        document.getElementById("homeButton").setAttribute("href","/home")
+        document.getElementById("homeImageButton").setAttribute("href","/home")
+        document.getElementById("privacyButton").setAttribute("href","/privacy")
+        document.getElementById("termsButton").setAttribute("href","/terms")
+        document.getElementById("configButton").setAttribute("href","#")
+        document.getElementById("configButton").setAttribute("class","nav-link page-scroll active")
+        
+    </script>
+    
+</html>
+<% } %>

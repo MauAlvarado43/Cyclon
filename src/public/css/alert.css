@@ -122,8 +122,9 @@ button:hover {
           transform: translate(-50%, 0);
 }
 .alert-container {
+  margin-top: 6%;
   box-sizing: border-box;
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   top: 0;
   right: 0;

@@ -250,6 +250,14 @@ router.post('/api/updateInfo', async (req,res) => {
         else
             res.json({'code': 401, 'msg': 'BAD_INPUT'})
     }
+    else if(req.user.register==1 || req.user.register==2){
+        User.updateOne({email: req.user.email}, {$set: { lastName: newApat, name: newName } }, (err,raw) => {
+            if(err) 
+                res.json({'code': 401, 'msg': '500'})
+            else
+                res.json({'code': 200, 'msg': 'UPDATE_SUCCESS' })
+        }) 
+    }
 
     req.session.allowChanges = false
 

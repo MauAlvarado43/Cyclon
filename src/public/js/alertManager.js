@@ -39,8 +39,6 @@ const getActiveCyclones = async () => {
 
     activeCyclones = res.data.activeCyclones
 
-    console.log(activeCyclones)
-
     if(addPanelInfo) addPanelInfo()
 
 }

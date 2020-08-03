@@ -20,14 +20,14 @@ const loadClient = () => {
         }, (err) => { 
             console.log(err) 
         }
-    ).catch((reject) => { });
+    ).catch((reject) => { })
 }
 
-gapi.load('client:auth2', function () {
+gapi.load('client:auth2', () => {
     gapi.auth2.init({ client_id: CLIENT_ID })
 })
 
-function sendEmail() {
+const sendEmail = () => {
     sendMessage(
         {
             To: 'hypersoftcode@gmail.com',
@@ -42,8 +42,8 @@ function sendEmail() {
     return false
 }
 
-function sendMessage(headers_obj, message, callback) {
-    var email = '';
+const sendMessage = (headers_obj, message, callback) => {
+    var email = ''
 
     for (var header in headers_obj)
         email += header += ': ' + headers_obj[header] + '\r\n'
@@ -55,7 +55,7 @@ function sendMessage(headers_obj, message, callback) {
         resource: {
             raw: window.btoa(email).replace(/\+/g, '-').replace(/\//g, '_'),
         },
-    });
+    })
 
     return sendRequest.execute(callback)
 }

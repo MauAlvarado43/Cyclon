@@ -30,9 +30,3 @@ minifyAll(path.join(__dirname,'../utils'), { silent: true }, function(err){
         console.log(err)
     }
 })
-
-minifyAll(path.join(__dirname,'../views'), { silent: true }, function(err){
-    if(err){
-        console.log(err)
-    }
-})

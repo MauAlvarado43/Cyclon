@@ -39,6 +39,7 @@ passport.use('google-auth',new GoogleStrategy({
                     newUser.type = 0
                     newUser.verify = true
                     newUser.register = 2
+                    newUser.dateRegister = new Date()
                 
                     await newUser.save()
 

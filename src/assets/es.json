@@ -25,7 +25,32 @@
         "year":                 "Año",
         "cyclone":              "Huracán",
         "trajectory":           "Trayectoria",
-        "graph":                "Gráfica"
+        "graph":                "Gráfica",
+        "page":                 "Página",
+        "status": {
+            "label":            "Estado",
+            "type": [
+                                "Sin verificar", 
+                                "Verificado"
+            ]
+        },
+        "register": {
+            "label":            "Tipo de registro",
+            "type": [
+                                "Local",
+                                "Facebook",
+                                "Google"
+            ]
+        },
+        "user_type": {
+            "label":            "Tipo de usuario",
+            "type":  [
+                                "Normal",
+                                "Investigador",
+                                "Administrador"
+            ]
+        },
+        "persons":              "Personas"
     },
     "buttons": {
         "login" :               "Iniciar Sesión",
@@ -49,30 +74,32 @@
         "search":               "Buscar",
         "cyclones":             "Huracanes",
         "config_server":        "Configuración de Cyclon",
-        "users":                "Usuarios"
+        "users":                "Usuarios",
+        "get":                  "Obtener",
+        "delete":               "Eliminar"
     },
     "units": {
         "windSpeed": {
-            "label": "Vientos",
-            "unit": "km/h"
+            "label":            "Vientos",
+            "unit":             "km/h"
         },
         "hurrSpeed": {
-            "label": "Velocidad",
-            "unit": "km/h"
+            "label":            "Velocidad",
+            "unit":             "km/h"
         },
         "temperature": {
-            "label": "Temperatura",
-            "unit": "°C"
+            "label":            "Temperatura",
+            "unit":             "°C"
         },
         "pressure": {
-            "label": "Presión",
-            "unit": "mB"
+            "label":            "Presión",
+            "unit":             "mB"
         },
         "latitude":{
-            "label": "Latitud"
+            "label":            "Latitud"
         },
         "longitude":{
-            "label": "Longitud"
+            "label":            "Longitud"
         }
     },
     "simbology":{
@@ -158,6 +185,7 @@
     "LOGIN_AGAIN":              "Inicie sesión de nuevo",
     "UPDATE_SUCCESS":           "Los datos han sido modificados exitosamente!",
     "UPDATED_LOCATION":         "Ubicación actualizada exitosamente!",
+    "DELETED_SUCCESSFULLY":     "Eliminado exitosamente!",
     "RESENDED_VEMAIL":          "Correo enviado exitosamente!",
     "TOKEN_EXPIRED":            "El vínculo de autenticación ha caducado, vuelva a mandar la solicitud",
     "recover_acepted":          "Se ha enviado un correo de recuperación a su cuenta",
