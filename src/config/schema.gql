@@ -2,10 +2,10 @@ type User{
 	name: String
 	lastName: String
 	email: String
-	location: Geolocation
+	location: CryptedGeolocation
 	password: String
-	type: Int,
-	verify: Boolean,
+	type: Int
+	verify: Boolean
 	register: Int
 }
 
@@ -41,7 +41,43 @@ type Geolocation{
 	lng: Float
 }
 
+type CryptedGeolocation{
+	lat: String
+	lng: String
+}
+
+type CountUser{
+	count: Int
+}
+
+type Graph {
+	date: String,
+	count: Int
+}
+
+type GraphUserType {
+	normal: [Graph]
+	scientist: [Graph]
+}
+
+type GraphUserRegister {
+	facebook : [Graph]
+	google : [Graph]
+	local : [Graph]
+}
+
+type GraphUserVerified {
+	verified: [Graph]
+	unverified: [Graph]
+}
+
 type Query {
     activeCyclones: [Cyclone]
 	searchCyclone (year: Int): [Cyclone]
+	pageUser (page: Int, type: Int): [User]
+	countUser (type: Int): CountUser
+	getGraphUserType: GraphUserType
+	getGraphUserRegister: GraphUserRegister
+	getGraphUserVerified: GraphUserVerified
+	searchUser (email: String): [User]
 }

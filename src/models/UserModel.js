@@ -28,7 +28,8 @@ const UserSchema = new Schema({
     password: String,
     type: Number,
     verify: Boolean,
-    register: Number
+    register: Number,
+    dateRegister: Date
 })
 
 UserSchema.methods.validateUser = (name, lastName, email, password, type) => {

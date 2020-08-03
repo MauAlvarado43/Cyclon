@@ -88,6 +88,8 @@ app.use(requestIP.mw())
 app.use(limiter)
 app.set('view engine','ejs')
 app.set('views','src/views')
+app.use('/graphql',  passport.initialize())
+app.use('/graphql',  passport.session())
 
 //Routes
 app.use(require('./routes/unregister'))

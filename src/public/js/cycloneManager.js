@@ -117,7 +117,7 @@ const app = new Vue({
                 $("#cycloneTable").text("")
                 $("#cycloneTable").html(`<center">
                     <br><br><br><br><br><br>
-                    <h3>No hay datos registrados</h3>
+                    <h3>${assets.not_registered}</h3>
                 </center>`)
                 
             }
@@ -177,7 +177,7 @@ const app = new Vue({
                     outlineWidth: 1
                 }).addTo(map_const)
 
-                lastLayer.on('click', function (e) {
+                lastLayer.on('click', (e) => {
 
                     let latClicked = e.latlng.lat
                     let lngClicked = e.latlng.lng
@@ -208,13 +208,13 @@ const app = new Vue({
         
                 })
 
-                lastLayer.on('mouseover', function () {
+                lastLayer.on('mouseover', () => {
                     lastLayer.setStyle({
                     weight: 4,
                     })
                 })
         
-                lastLayer.on('mouseout', function () {
+                lastLayer.on('mouseout', () => {
                     lastLayer.setStyle({
                     weight: 3,
                     })
@@ -239,20 +239,20 @@ const app = new Vue({
                         popupAnchor: [-3, -76]
                     })
 
-                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: iconMarker }).addTo(map_const);
+                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: iconMarker }).addTo(map_const)
                 
-                    marker.on('click', function (e) {
-                        map_const.fitBounds(layerRealTrayectory.getBounds());
+                    marker.on('click', (e) => {
+                        map_const.fitBounds(layerRealTrayectory.getBounds())
                         L.popup()
                             .setLatLng([e.latlng.lat, e.latlng.lng])
                             .setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
                             .openOn(map_const)
                     })  
 
-                    var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
+                    var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const)
                     
-                    marker.on('click', function (e) {
-                        map_const.fitBounds(layerRealTrayectory.getBounds());
+                    marker.on('click', (e) => {
+                        map_const.fitBounds(layerRealTrayectory.getBounds())
                         L.popup()
                             .setLatLng([e.latlng.lat, e.latlng.lng])
                             .setContent(`<h4 style="color:black;">${this.cyclones[(this.selectedCyclone.split(" ")[0])-1].name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
@@ -301,7 +301,7 @@ const app = new Vue({
             else 
                 $("#graph").html(`<center>
                     <br><br><br><br><br><br>
-                    <h3>No hay datos registrados</h3>
+                    <h3>${assets.not_registered}</h3>
                 </center>`)
 
         },

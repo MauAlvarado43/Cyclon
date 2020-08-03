@@ -140,13 +140,39 @@ const assets = JSON.parse('<%- JSON.stringify(assets) %>')
                 if(!checkWords(this.lastName)) this.infoErrors["lastName"].push(assets.errors["ONLY_LETTERS_LASTNAME"])
                 if(this.lastName.length==0) this.infoErrors["lastName"].push(assets.errors["EMPTY_LASTNAME"])
                 if(this.lastName.length>50) this.infoErrors["lastName"].push(assets.errors["MAX_LASTNAME"])
-            
-                if(!checkEmail(this.email) && this.email.length>0) this.infoErrors["email"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
-                if(this.email.length==0) this.infoErrors["email"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
-                if(this.email.length>50) this.infoErrors["email"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
-                
-                if(this.infoErrors.name.length==0 && this.infoErrors.lastName.length==0 && this.infoErrors.email.length==0)
-                    $("#modalPasswordVerification").modal('show')
+
+                <% if(context.register==0){ %>
+                    if(!checkEmail(this.email) && this.email.length>0) this.infoErrors["email"].push(assets.errors["BAD_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                    if(this.email.length==0) this.infoErrors["email"].push(assets.errors["EMPTY_FORMAT"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+                    if(this.email.length>50) this.infoErrors["email"].push(assets.errors["MAX_LENGTH"].replace("$",assets.inputs.email.toLowerCase().split(" ")[0]))
+
+                    if(this.infoErrors.name.length==0 && this.infoErrors.lastName.length==0 && this.infoErrors.email.length==0)
+                        $("#modalPasswordVerification").modal('show')
+                <% } else { %>
+                    if(this.infoErrors.name.length==0 && this.infoErrors.lastName.length==0){
+                        let url = "/api/updateInfo"
+                        let config = {
+                            method: 'POST',
+                            headers:{
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name: encrypt(this.name),
+                                lastName: encrypt(this.lastName),
+                                email: encrypt(this.email)
+                            })
+                        }
+
+                        let response = await fetch(url, config)
+                        let res = await response.json()
+
+                        if(res.code==401)
+                            alert.error(assets.errors[res.msg],"Error")
+                        else 
+                            alert.success(assets[res.msg],"")
+                    }
+                <% } %>
 
             },
             async changePassword(){

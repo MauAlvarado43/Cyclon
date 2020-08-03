@@ -97,6 +97,7 @@ router.get('/auth/facebook/callback', (req, res, next) => {
         req.logIn(user, function(err) {
             if (err) return next({'code':401,'msg':err})
             req.session.error = []
+            req.session.type = user.type
             return res.redirect('/home') 
         })
         
@@ -119,6 +120,7 @@ router.get('/auth/google/callback', (req, res, next) => {
         req.logIn(user, function(err) {
             if (err) return next({'code':401,'msg':err})
             req.session.error = []
+            req.session.type = user.type
             return res.redirect('/home') 
         })
         
@@ -240,6 +242,7 @@ router.post('/auth/register', (req, res, next) => {
 
         req.logIn(user, function(err) {
             if (err) return next(err)
+            req.session.type = user.type
             return res.json({'code':200,'msg':'SIGNUP_SUCCESS'})
         })
 
@@ -253,6 +256,7 @@ router.post('/auth/login', (req,res,next) => {
 
         req.logIn(user, function(err) {
           if (err) return next({'code':401,'msg':err})
+          req.session.type = user.type
           res.cookie('auth', encryptAES(JSON.stringify(user)))
           return res.json({'code':200,'msg':['LOGIN_SUCCESS']})
         })
