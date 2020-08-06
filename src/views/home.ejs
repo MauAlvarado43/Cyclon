@@ -99,16 +99,18 @@
     <script>
         const addPanelInfo = () => {
 
+            let alerts = []
+
             latUser = parseFloat('<%- functions.decryptAES(context.location.lat) %>')
             lngUser =  parseFloat('<%- functions.decryptAES(context.location.lng) %>')
 
             if(activeCyclones.length == 0)
                 $("#panelAlert").html(`
-                <br><br><br><br><br><br><br><br><br><br><br>
-                <center>
-                    <h4>${assets.alertMessages.no_alerts}</h4>
-                </center>
-            `)
+                    <br><br><br><br><br><br><br><br><br><br><br>
+                    <center>
+                        <h4>${assets.alertMessages.no_alerts}</h4>
+                    </center>
+                `)
         
             activeCyclones.forEach(element => {
         
@@ -234,20 +236,83 @@
 
                 var marker = L.marker([element.realTrajectory[element.realTrajectory.length-1].position.lat, element.realTrajectory[element.realTrajectory.length-1].position.lng], { icon: iconMarker }).addTo(map_const);
                 
-                marker.on('click', function (e) {
-                    map_const.fitBounds(layerRealTrayectory.getBounds());
-                    L.popup()
-                        .setLatLng([e.latlng.lat, e.latlng.lng])
-                        .setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${element.realTrajectory[element.realTrajectory.length-1].position.lat}N,  ${element.realTrajectory[element.realTrajectory.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
-                        .openOn(map_const)
-                })            
+                marker.on('click', (e) => {
+                    map_const.fitBounds(layerRealTrayectory.getBounds())
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${element.realTrajectory[element.realTrajectory.length-1].position.lat}N,  ${element.realTrajectory[element.realTrajectory.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`).openOn(map_const)
+                })
                 
-                if(radious<distance<radious+250)
-                    $("#panelAlert").html(`
+                if(distance<radious+250){
+
+                    alerts.push({
+                        cyclone: element,
+                        distance,
+                        category,
+                    })
+
+                    L.polyline([
+                        [latUser, lngUser],
+                        [element.realTrajectory[element.realTrajectory.length-1].position.lat, element.realTrajectory[element.realTrajectory.length-1].position.lng]
+                    ], {
+                        color: 'red',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: '4,12,20,12',
+                        lineJoin: 'miter',
+                        lineCap: 'square'
+                    }).addTo(map_const)
+
+                }
                     
-                    `)
-        
+
+                L.marker([latUser, lngUser], { icon: L.icon({
+                    iconUrl: "/images/location.png",
+                    iconSize: [30, 30],
+                    popupAnchor: [-3, -76]
+                }) }).addTo(map_const).on('click', (e) => {
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(`<h6 style="color:black;">${assets.you}</h6>`).openOn(map_const)
+                })
+
             })
+
+            if(alerts.length != 0){
+
+                alert.show(assets.check_alerts,assets.simbology.alerts_close)
+
+                let html = `<br><br><br><div style="align-items: center; vertical-align: middle;">
+                                <h3>${assets.simbology.alerts_close.toUpperCase()}</h3>`
+
+                alerts.forEach(element => {
+                    html += `<div class="row">
+                                    <div class="col">
+                                        ${assets.simbology.name}: ${element.cyclone.name}    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        ${assets.simbology.category}: ${element.category}    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        ${assets.units.distance.label}: ${Math.round(element.distance*100)/100} ${assets.units.distance.unit}    
+                                    </div>
+                                </div>
+                                `
+                    if(element!=alerts[alerts.length - 1])
+                        html += `<hr style="background-color: white;">`      
+                })  
+
+                html += `</div>`
+
+                $("#panelAlert").html(html)
+            }
+            else 
+                $("#panelAlert").html(`
+                        <br><br><br><br><br><br><br><br><br><br><br>
+                        <center>
+                            <h4>${assets.no_alerts_close}</h4>
+                        </center>
+                    `)
         }
     </script>
 <% } %>

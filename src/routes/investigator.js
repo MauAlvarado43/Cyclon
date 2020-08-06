@@ -19,7 +19,7 @@ router.get('/records', (req,res) => {
         res.redirect('/')
     else
         res.render('records', {
-            title: `Cyclon - ${assets.titles.home}`, 
+            title: `Cyclon - ${assets.titles.records}`, 
             assets: assets,
             path: '/records',
             context: req.user

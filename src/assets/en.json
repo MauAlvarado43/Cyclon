@@ -8,7 +8,9 @@
         "update_info":          "Update information",
         "verify":               "Verification",
         "recoverPassword":      "Recover password",
-        "records":              "Hurricaine records"
+        "records":              "Hurricaine records",
+        "users":                "Users",
+        "config":               "Settings"
     },
     "inputs":{
         "email":                "Email",
@@ -76,7 +78,8 @@
         "config_server":        "Cyclon Settings",
         "users":                "Users",
         "get":                  "Get",
-        "delete":               "Delete"
+        "delete":               "Delete",
+        "upgrade":              "Upgrade"
     },
     "units": {
         "windSpeed": {
@@ -100,6 +103,10 @@
         },
         "longitude":{
             "label":            "Longitude"
+        },
+        "distance": {
+            "label":            "Distance",
+            "unit":             "km"
         }
     },
     "simbology":{
@@ -116,7 +123,9 @@
         "map":                  "Map",
         "tab":                  "Tabs",
         "category":             "Category",
-        "position":             "Position"
+        "position":             "Position",
+        "name":                 "Name",
+        "alerts_close":         "Alerts close on you"
     },
     "alertMessages":{
         "DT":                   "Tropical Depression",
@@ -185,6 +194,7 @@
     "UPDATE_SUCCESS":           "The data has been successfully modified!",
     "UPDATED_LOCATION":         "Location updated successfully!",
     "DELETED_SUCCESSFULLY":     "Deleted successfully!",
+    "UPGRADED_SUCCESSFULLY":    "User has become administrator",
     "RESENDED_VEMAIL":          "Email resended successfully!",
     "TOKEN_EXPIRED":            "Authentication token has expired, resend the request again",
     "recover_acepted":          "A recover email has been sent to your account",
@@ -211,5 +221,8 @@
     "not_registered":           "Not registered",
     "date":                     "Date",
     "parameters":               "Search parameters",
-    "EMAIL_SENDED":             "Email sended"
+    "EMAIL_SENDED":             "Email sended",
+    "no_alerts_close":          "There is not alerts close on you",
+    "check_alerts":             "Check the alerts close on you",
+    "you":                      "You"
 }
