@@ -234,6 +234,7 @@ const app = new Vue({
                         <th>${assets.inputs.user_type.label}</th>
                         <th>${assets.inputs.status.label}</th>
                         <th>${assets.inputs.register.label}</th>
+                        <th>${assets.buttons.upgrade}</th>
                         <th>${assets.buttons.delete}</th>
                     </tr>`
     
@@ -248,6 +249,7 @@ const app = new Vue({
                                 <td>${assets.inputs.user_type.type[element.type]}</td>
                                 <td>${assets.inputs.status.type[(element.verify) ? 1 : 0]}</td>
                                 <td>${assets.inputs.register.type[element.register]}</td>
+                                <td><input class="btn btn-primary" type="button" value="${assets.buttons.upgrade}" onclick="upgradeUser('${element.email}')"></td>
                                 <td><input class="btn btn-primary" type="button" value="${assets.buttons.delete}" onclick="deleteUser('${element.email}')"></td>
                             </tr>`
     
@@ -327,6 +329,31 @@ const deleteUser = async (email) => {
         alert.error(assets.errors[res.msg],"Error")
     else
         alert.success(assets["DELETED_SUCCESSFULLY"],"")
+
+    app.searchUser()
+}
+
+const upgradeUser = async (email) => {
+    let config = {  
+        method: 'POST',
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: encrypt(decrypt(email)),
+        })
+    }
+
+    const response = await fetch("/api/upgradeUser", config)
+    const res = await response.json()
+    
+    if(res.code == 402)
+        window.location.href = "/"
+    else if(res.code == 401)
+        alert.error(assets.errors[res.msg],"Error")
+    else
+        alert.success(assets["UPGRADED_SUCCESSFULLY"],"")
 
     app.searchUser()
 }

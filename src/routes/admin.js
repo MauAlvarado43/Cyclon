@@ -30,7 +30,7 @@ module.exports = (server) => {
             res.redirect('/')
         else
             res.render('users', {
-                title: `Cyclon - ${assets.titles.home}`, 
+                title: `Cyclon - ${assets.titles.users}`, 
                 assets: assets,
                 path: '/users',
                 context: req.user
@@ -47,7 +47,7 @@ module.exports = (server) => {
             res.redirect('/')
         else
             res.render('cycloneSettings', {
-                title: `Cyclon - ${assets.titles.home}`, 
+                title: `Cyclon - ${assets.titles.config}`, 
                 assets: assets,
                 path: '/cycloneSettings',
                 context: req.user
@@ -58,9 +58,24 @@ module.exports = (server) => {
                      API
     ***************************************/
 
+   router.post('/api/upgradeUser', (req,res) => {
+        if(!req.user || req.user.type!=2)
+            res.json({'code': 402, 'msg': ''})
+        else{
+            UserModel.updateOne({email: encryptAES(decryptFront(req.body.email)) }, {$set: { type: 2 } }, (err,raw) => {
+                if(err) {
+                    errorLog.error(err)
+                    res.json({'code': 401, 'msg': '500'})
+                }
+                else
+                    res.json({'code': 200, 'msg': 'DELETED_SUCCESSFULLY'})
+            }) 
+        }
+    })
+
     router.post('/api/deleteUser', (req,res) => {
         if(!req.user || req.user.type!=2)
-            res.json({'code': 401, 'msg': ''})
+            res.json({'code': 402, 'msg': ''})
         else{
             UserModel.findOne({ email: encryptAES(decryptFront(req.body.email)) }, (err,doc) => {
                 if (err){

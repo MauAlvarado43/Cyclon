@@ -8,7 +8,9 @@
         "update_info":          "Actualizar datos",
         "verify":               "Verificación",
         "recoverPassword":      "Recuperar contraseña",
-        "records":              "Registro de huracanes"
+        "records":              "Registro de huracanes",
+        "users":                "Usuarios",
+        "config":               "Configuración"
     },
     "inputs":{
         "email":                "Correo electrónico",
@@ -76,7 +78,8 @@
         "config_server":        "Configuración de Cyclon",
         "users":                "Usuarios",
         "get":                  "Obtener",
-        "delete":               "Eliminar"
+        "delete":               "Eliminar",
+        "upgrade":              "Privilegiar"
     },
     "units": {
         "windSpeed": {
@@ -95,11 +98,15 @@
             "label":            "Presión",
             "unit":             "mB"
         },
-        "latitude":{
+        "latitude": {
             "label":            "Latitud"
         },
-        "longitude":{
+        "longitude": {
             "label":            "Longitud"
+        },
+        "distance": {
+            "label":         "Distancia",
+            "unit":             "km"
         }
     },
     "simbology":{
@@ -116,7 +123,9 @@
         "map":                  "Mapa",
         "tab":                  "Tabulación",
         "category":             "Categoría",
-        "position":             "Posición"
+        "position":             "Posición",
+        "name":                 "Nombre",
+        "alerts_close":         "Alertas cerca de ti"
     },
     "alertMessages":{
         "DT":                   "Depresión Tropical",
@@ -186,6 +195,7 @@
     "UPDATE_SUCCESS":           "Los datos han sido modificados exitosamente!",
     "UPDATED_LOCATION":         "Ubicación actualizada exitosamente!",
     "DELETED_SUCCESSFULLY":     "Eliminado exitosamente!",
+    "UPGRADED_SUCCESSFULLY":    "El usuario se ha vuelto administrador",
     "RESENDED_VEMAIL":          "Correo enviado exitosamente!",
     "TOKEN_EXPIRED":            "El vínculo de autenticación ha caducado, vuelva a mandar la solicitud",
     "recover_acepted":          "Se ha enviado un correo de recuperación a su cuenta",
@@ -213,5 +223,8 @@
     "not_registered":           "Sin registro",
     "date":                     "Fecha",
     "parameters":               "Parametros de Búsqueda",
-    "EMAIL_SENDED":             "Correo electrónico enviado"
+    "email_sended":             "Correo electrónico enviado",
+    "no_alerts_close":          "No hay alertas cerca de tí",
+    "check_alerts":             "Revisa las alertas que hay cerca de ti",
+    "you":                      "Tu"
 }
