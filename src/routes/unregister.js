@@ -4,7 +4,7 @@ import {UserModel as User} from '../models/UserModel'
 import geoip from 'geoip-lite'
 import path from 'path'
 import fs from 'fs'
-import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid } from '../utils/cipher'
+import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, decryptAndroid, encryptFromFront} from '../utils/cipher'
 import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
 
@@ -140,11 +140,7 @@ router.post('/auth/mobile/facebook', (req,res) => {
 		if(docs.length==0){
             const newUser = new User()
             
-            let geo = geoip.lookup(req.ip)
-
-            // geo = {
-            //     ll: [19, -99]
-            // }
+            let geo = geoip.lookup(req.clientIp)
 			
 			if(geo){
 
@@ -187,7 +183,7 @@ router.post('/auth/mobile/google', (req,res) => {
 		if(docs.length==0){
 			const newUser = new User()
 
-			let geo = geoip.lookup(req.ip)
+			let geo = geoip.lookup(req.clientIp)
 			
 			if(geo){
 
@@ -221,6 +217,59 @@ router.post('/auth/mobile/google', (req,res) => {
 		
 
 	})
+
+})
+
+router.post('/auth/mobile/register', (req,res, next) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    req.body.email = encryptFromFront(decryptAndroid(req.body.email))
+    req.body.password = encryptFromFront(decryptAndroid(req.body.password))
+    req.body.name = encryptFromFront(decryptAndroid(req.body.name))
+    req.body.lastName = encryptFromFront(decryptAndroid(req.body.lastName))
+
+    passport.authenticate('local-signup', function(err, user, info) {
+        
+        if (err)
+            return res.json({'code':401,'msg':err})
+        
+        if (!user)
+            return res.json({'code':401,'msg':['BAD_INPUT']})
+        
+
+        sendEmail(decryptAES(user.email), 'verification', language, user.name + ' ' + user.lastName, user.type, user.email)
+
+        req.logIn(user, function(err) {
+            if (err) return next(err)
+            req.session.type = user.type
+            return res.json({'code':200,'msg':'SIGNUP_SUCCESS'})
+        })
+
+    })(req, res, next)
+
+})
+
+router.post('/auth/mobile/login', (req,res, next) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    req.body.email = encryptFromFront(decryptAndroid(req.body.email))
+    req.body.password = encryptFromFront(decryptAndroid(req.body.password))
+
+    passport.authenticate('local-signin', function(err, user, info) {
+        if (err)  return res.send({'code':401,'msg':err})
+        if (!user) return res.json({'code':401,'msg':['BAD_INPUT']})
+
+        req.logIn(user, function(err) {
+          if (err) return next({'code':401,'msg':err})
+          req.session.type = user.type
+          res.cookie('auth', encryptAES(JSON.stringify(user)))
+          return res.json({'code':200,'msg':['LOGIN_SUCCESS']})
+        })
+    })(req, res, next)
 
 })
 
