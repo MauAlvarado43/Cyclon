@@ -25,6 +25,7 @@ class NoaaSocket(Thread):
         print("Monitoring NOAA inicializated...")
 
     def run(self, socketio):
+        time.sleep(30)
         while True:
             try:
                 response = requests.get(self._url,headers={"Content-type":"application/json"})                
