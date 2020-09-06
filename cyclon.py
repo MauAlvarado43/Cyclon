@@ -15,7 +15,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials= True)
 def main():
     return 'Running'
 
-socketio = SocketIO(app, logger=False, engineio_logger=False, debug=False, host = '0.0.0.0', cors_allowed_origins='*')
+socketio = SocketIO(app, logger=False, engineio_logger=False, debug=False, cors_allowed_origins='*')
 
 @socketio.on('connect', namespace='/api')
 def test_connect():
@@ -30,4 +30,4 @@ socket = NoaaSocket()
 thread = threading.Thread(target=socket.run, args=(socketio,))
 
 # thread.start()
-socketio.run(app, port = os.environ.get("PORT", 5000))
+socketio.run(app, port = os.environ.get("PORT", 5000), host = '0.0.0.0')
