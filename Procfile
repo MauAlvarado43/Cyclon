@@ -1,1 +1,1 @@
-gunicorn -t 150 -c cyclon.py main:app --bind 0.0.0.0:${PORT}
+web: gunicorn -t 150 -c cyclon.py main:app --bind 0.0.0.0:${PORT}
