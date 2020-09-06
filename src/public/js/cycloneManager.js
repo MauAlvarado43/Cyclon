@@ -154,7 +154,6 @@ const app = new Vue({
                     }
 
                 trajectorySelected.forEach(element => {
-
                     table += `<tr>
                                 <td>${element.position.lat}</td>
                                 <td>${element.position.lng}</td>
@@ -239,23 +238,16 @@ const app = new Vue({
                         popupAnchor: [-3, -76]
                     })
 
-                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: iconMarker }).addTo(map_const)
-                
+                    if(this.selectedTrajectory == 'realTrajectory')
+                        var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: icon }).addTo(map_const)
+                    else 
+                    var marker = L.marker([trajectorySelected[0].position.lat, trajectorySelected[0].position.lng], { icon: icon }).addTo(map_const)
+
                     marker.on('click', (e) => {
                         map_const.fitBounds(layerRealTrayectory.getBounds())
                         L.popup()
                             .setLatLng([e.latlng.lat, e.latlng.lng])
                             .setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
-                            .openOn(map_const)
-                    })  
-
-                    var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const)
-                    
-                    marker.on('click', (e) => {
-                        map_const.fitBounds(layerRealTrayectory.getBounds())
-                        L.popup()
-                            .setLatLng([e.latlng.lat, e.latlng.lng])
-                            .setContent(`<h4 style="color:black;">${this.cyclones[(this.selectedCyclone.split(" ")[0])-1].name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
                             .openOn(map_const)
                     })  
 

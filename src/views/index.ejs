@@ -80,6 +80,7 @@
 <script src="/js/lib/client.js"></script>
 <script src="/js/lib/platform.js" async defer></script>
 <script src="/js/lib/base64.min.js"></script>
+<script src="/js/lib/cycloneUtils.js"></script>
 <script src="/js/regex.js"></script>
 <script src="/js/index.js"></script>
 <script src="/js/alertManager.js"></script>
@@ -104,7 +105,7 @@
     document.getElementById("termsButton").setAttribute("href","/terms");
 
 
-    $(document).ready(()=>{
+    $(document).ready( async ()=>{
         var searchParams = new URLSearchParams(window.location.search);
         if(searchParams.get("action")=="register"){
             $('#registro').modal('show');
@@ -112,6 +113,16 @@
         if(searchParams.get("action")=="login"){
             $('#loginModal').modal('show');
         }
+
+        await getActiveCyclones()
+
+        let interval = setInterval(() => {
+            if(map_const != undefined){
+                drawCyclones()
+                clearInterval(interval)
+            }
+        }, 500)
+
     })
 
     if("geolocation" in navigator)

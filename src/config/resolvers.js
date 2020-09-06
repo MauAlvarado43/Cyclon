@@ -5,10 +5,7 @@ import { encryptFront, encryptAES, decryptAES } from '../utils/cipher'
 export const resolvers = {
     Query:{
         async activeCyclones(root, args, context, info){
-            if(context.type==0 || context.type && context.passport.user)
-                return await CycloneModel.find({active: true})
-            else 
-                return null
+            return await CycloneModel.find({active: true})
         },
         async searchCyclone(root, args, context, info){
             if(context.type && context.passport.user)
