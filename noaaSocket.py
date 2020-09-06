@@ -146,9 +146,8 @@ class NoaaSocket(Thread):
                     print("Conection refused")
                     sys.exit()
 
-            except ZeroDivisionError as err:
-                print(err)
-                print("REFUSED with error: {0}".format(err))
+            except:
+                print("Error with files")
             
             gc.collect()
             time.sleep(self._delay)
