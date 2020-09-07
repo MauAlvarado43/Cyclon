@@ -65,6 +65,8 @@ class NoaaSocket(Thread):
                             path = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/kml/"+alert["id"]+".zip")
                             pathExtracted = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/kml/"+alert["id"])
 
+                            print(path)
+
                             #Write file downloaded
                             with open(path, "wb") as f:
                                 f.write(file.content)
