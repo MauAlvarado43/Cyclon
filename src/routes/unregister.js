@@ -8,8 +8,6 @@ import { encryptFront, decryptFront, encryptAES, decryptAES, encryptAndroid, dec
 import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
 
-import fetch from 'node-fetch'
-
 const router = Router()
 
 /***************************************
@@ -312,11 +310,15 @@ router.post('/auth/login', (req,res,next) => {
     })(req, res, next)
 })
 
-router.get('/logout', function(req, res){
+router.get('/logout', (req, res) => {
     req.session.destroy()
     req.logout()
     res.clearCookie('auth')
     res.redirect('/')
+})
+
+router.get('/keepAlive' , (req,res) => {
+    res.send('Running')
 })
 
 module.exports = router

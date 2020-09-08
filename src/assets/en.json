@@ -120,6 +120,7 @@
         "title":                "Sibology",
         "subtitle":             "Check current weather phenomenals",
         "graphs":               "Graphs",
+        "noaa_files":           "NOAA Information",
         "map":                  "Map",
         "tab":                  "Tabs",
         "category":             "Category",
