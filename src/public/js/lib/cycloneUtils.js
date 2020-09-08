@@ -19,7 +19,7 @@ const getIcon = (category) => {
     if(category=="DT")
         return "/images/DT.png"
     if(category=="TT")
-        return "/images/DT.png"
+        return "/images/TT.png"
     if(category=="H1" || category=="H2" ||category=="H3" ||category=="H4" ||category=="H5")
         return "/images/HN.png"
     if(category=="RT")

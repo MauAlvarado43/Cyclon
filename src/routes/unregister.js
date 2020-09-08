@@ -317,6 +317,10 @@ router.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
+router.get('/mapRender', (req,res) => {
+    res.render('mapRender')
+})
+
 router.get('/keepAlive' , (req,res) => {
     res.send('Running')
 })
