@@ -30,4 +30,4 @@ socket = NoaaSocket()
 thread = threading.Thread(target=socket.run, args=(socketio,))
 
 thread.start()
-# socketio.run(app, port = os.environ.get("PORT", 5000), host = '0.0.0.0')
+socketio.run(app, port = os.environ.get("PORT", 5000), host = '0.0.0.0')
