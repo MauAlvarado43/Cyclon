@@ -15,13 +15,15 @@ export default class CyclonSocket {
     }
 
     connectPython(){
-        this.client = ioClient('https://mlcyclonsocket.herokuapp.com/')
+        this.client = ioClient(process.env.PYTHON_URL + '/api')
 
         this.client.on('connect', function(){
             console.log("CONNECTED")
         })
 
-        this.client.on('/alert', function(data){})
+        this.client.on('/alert', function(data){
+            this.io.emit('/alert', data)
+        })
         
         this.client.on('disconnect', function(){
             console.log("DISCONNECTED")

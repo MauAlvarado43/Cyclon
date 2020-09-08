@@ -120,6 +120,7 @@
         "title":                "Simbología",
         "subtitle":             "Consulta los fenómenos meteorológicos actuales",
         "graphs":               "Gráficas",
+        "noaa_files":           "Información de la NOAA",
         "map":                  "Mapa",
         "tab":                  "Tabulación",
         "category":             "Categoría",

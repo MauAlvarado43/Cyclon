@@ -92,6 +92,12 @@ const app = new Vue({
                     <h3>Escoja un huracán primero</h3>
                 </center>`)
 
+                $("#noaaPanel").text("")
+                $("#noaaPanel").html(`<center">
+                    <br><br><br><br><br><br>
+                    <h3>Escoja un huracán primero</h3>
+                </center>`)
+
                 $("#cycloneTableContent").css("overflow-y","hidden")
 
             }
@@ -270,6 +276,8 @@ const app = new Vue({
         },
         showGraph(){
 
+            if(this.selectedCyclone == '') return
+
             if(this.selectedGraph == "") this.selectedGraph = 'windSpeed'
             if(this.selectedTrajectory == "") this.selectedTrajectory = 'realTrajectory'
 
@@ -312,3 +320,5 @@ const app = new Vue({
         this.searhCyclones()
     }
 })
+
+// https://www.nhc.noaa.gov/index-at-sp.xml

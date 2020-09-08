@@ -17,6 +17,7 @@ import schema from './config/schema'
 import { infoLog } from './utils/logger'
 import { decryptAES } from './utils/cipher'
 import requestIP from 'request-ip'
+import fetch from 'node-fetch'
 
 // Initialzing packages
 const app = express()
@@ -101,5 +102,10 @@ app.use(require('./routes/investigator'))
 server.listen(app.get('port'),'0.0.0.0', () => {
     console.log('Server on port', app.get('port'))
 })
+
+setInterval(() => {
+    fetch(process.env.PYTHON_URL).then( res => { res.text().then( text => { console.log(text) }) })
+    fetch(process.env.URL + '/keepAlive').then( res => { res.text().then( text => { console.log(text) }) })
+}, 2000 * 60)
 
 export default server
