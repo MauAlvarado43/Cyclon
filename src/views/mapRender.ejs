@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <script src="/js/lib/leaflet.js"></script>
+    <script src="/js/lib/libBoot.js"></script>
+    <script src="/js/lib/heat_layer.js"></script>
+    <script src="/js/lib/cycloneUtils.js"></script>
+</head>
+<body>
+    <div id="windy" class="map" style="height: 100%; width: 100%;"></div>
+
+    <style>
+        #logo{
+            visibility: hidden;
+        }
+        #mobile-ovr-select{
+            visibility: hidden;
+        }
+        #embed-zoom{
+            visibility: hidden;
+        }
+        #playpause{
+            visibility: hidden;
+        }
+        #progress-bar{
+            visibility: hidden;
+        }
+        .leaflet-zoom-animated{
+            border-color: black;
+            color: black;
+        }
+        #windy{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        html{
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    
+    <script>
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        windyInit({
+            key: 'c02HANLNCaQ4PjmWnj0pSauI4mbWZLHf',
+            verbose: false,
+            lat: urlParams.get("lat"),
+            lon: urlParams.get("lng"),
+            zoom: 4,
+            }, windyAPI => {
+    
+            const { map, store , picker, utils, broadcast} = windyAPI
+    
+            var icon = L.icon({
+                iconUrl: getIcon(urlParams.get("cat")),
+                iconSize:     [38, 38],
+                popupAnchor:  [-3, -76] 
+            })
+    
+            var  marker = L.marker([urlParams.get("lat"), urlParams.get("lng")], {icon: icon}).addTo(map)
+    
+            var i = 0
+    
+            store.set("graticule",true)
+    
+            var overlays = ["wind","temp","clouds","pressure"]
+    
+            var interval = setInterval(()=>{
+                if(i==4){
+                    clearInterval(interval)
+                }
+                if(i==0|| i == 2){
+                    store.set('isolines', "off")
+                }
+                else{
+                    store.set('isolines', overlays[i])
+                }
+                
+                store.set('overlay', overlays[i])
+                i++
+    
+            }, 4000)
+    
+        })
+        
+    </script>
+</body>
+</html>
