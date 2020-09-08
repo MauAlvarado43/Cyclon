@@ -1,17 +1,20 @@
 from threading import Thread
 from databaseManager import DBManager
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from time import strptime
-import kml2geojson
-import zipfile
+from io import BytesIO
+from zipfile import ZipFile
+import kmlConverter
+import xml.dom.minidom as md
+import urllib.request
 import time
 import requests
 import json
-import geojson
 import sys
 import os
 import shutil
 import gc
+import logging
 
 class NoaaSocket(Thread):
 
@@ -25,7 +28,6 @@ class NoaaSocket(Thread):
         print("Monitoring NOAA inicializated...")
 
     def run(self, socketio):
-        time.sleep(30)
         while True:
             try:
                 response = requests.get(self._url,headers={"Content-type":"application/json"})                
@@ -61,41 +63,32 @@ class NoaaSocket(Thread):
 
                             #Download KMZ file from NOAA and change to ZIP
                             kmlURL = alert["forecastTrack"]["kmzFile"]
-                            file =  requests.get(kmlURL)
-                            path = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/kml/"+alert["id"]+".zip")
-                            pathExtracted = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/kml/"+alert["id"])
 
-                            print(path)
+                            url = urllib.request.urlopen(kmlURL)
 
-                            #Write file downloaded
-                            with open(path, "wb") as f:
-                                f.write(file.content)
-                            
-                            #Extract ZIP file
-                            with zipfile.ZipFile(path, 'r') as unzip:
-                                unzip.extractall(pathExtracted)
+                            with ZipFile(BytesIO(url.read())) as my_zip_file:
+                                for contained_file in my_zip_file.namelist():
+                                    if contained_file.lower() == (kmlURL.split("/")[5].split(".")[0] + ".kml").lower():
 
-                            #Read and convert KML to GEOJSON
-                            kml2geojson.main.convert(pathExtracted + "/"+ kmlURL.split("/")[5].split(".")[0] + ".kml", pathExtracted)
+                                        root = md.parseString(str(my_zip_file.open(contained_file).read().decode('utf8')))
 
-                            #Read GEOJSON
-                            with open(pathExtracted + "/"+ kmlURL.split("/")[5].split(".")[0] +".geojson") as file:
-                                data = geojson.load(file)
-                                trajectory = data["features"]
+                                        data = kmlConverter.build_layers(root)
+                                    
+                                        trajectory = data[0]["features"]
 
-                                #Drop indexes without date (has all coordinates and is not util)
-                                trajectory.pop(0) 
-                                trajectory.pop(0) 
+                                        #Drop indexes without date (has all coordinates and is not util)
+                                        trajectory.pop(0)
+                                        trajectory.pop(0)
 
-                                #Put in an array each point predicted by NOAA
-                                for point in trajectory:
-                                    predictedTrack.append({
-                                        "center": {
-                                            "lat": point["geometry"]["coordinates"][1],
-                                            "lng": point["geometry"]["coordinates"][0]
-                                        },
-                                        "date": self.dateConvert(point["properties"]["description"].split("<td>")[3].split("<td nowrap>")[2].replace("Valid at:", "").split("</td>")[0].strip())
-                                    })
+                                        #Put in an array each point predicted by NOAA
+                                        for point in trajectory:
+                                            predictedTrack.append({
+                                                "center": {
+                                                    "lat": point["geometry"]["coordinates"][1],
+                                                    "lng": point["geometry"]["coordinates"][0]
+                                                },
+                                                "date": self.dateConvert(point["properties"]["description"].split("<td>")[3].split("<td nowrap>")[2].replace("Valid at:", "").split("</td>")[0].strip())
+                                            })
                                 
                             #Add storm to storm's array
                             self._json_data.append(
@@ -128,19 +121,6 @@ class NoaaSocket(Thread):
                         #Clean storms
                         self._json_data = []
 
-                        #Clear folder 
-                        folder = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/kml/")
-
-                        for filename in os.listdir(folder):
-                            file_path = os.path.join(folder, filename)
-                            try:
-                                if os.path.isfile(file_path) or os.path.islink(file_path):
-                                    os.unlink(file_path)
-                                elif os.path.isdir(file_path):
-                                    shutil.rmtree(file_path)
-                            except Exception as e:
-                                print('Failed to delete %s. Reason: %s' % (file_path, e))
-
                     #Save the history state 
                     self._json_history = self._json_dataTemp
 
@@ -148,8 +128,8 @@ class NoaaSocket(Thread):
                     print("Conection refused")
                     sys.exit()
 
-            except:
-                print("Error with files")
+            except Exception as e:
+                logging.exception(e)
             
             gc.collect()
             time.sleep(self._delay)
@@ -163,13 +143,9 @@ class NoaaSocket(Thread):
 
         full_date = datetime.strptime(date, '%I:%M %p %B %d, %Y')
 
-        delta = timedelta()
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("""\\""", "/") + "/files/timezones.json")) as timezones:
+                        
+            delta = timedelta(hours = - int(json.load(timezones)[split[2]]))
+            dateUTC = full_date + delta
 
-        if split[2] == "CDT":
-            delta = timedelta(hours = 5)
-        elif split[2] == "MDT":
-            delta = timedelta(hours = 6)
-
-        dateUTC = full_date + delta
-
-        return str(dateUTC)
+            return str(dateUTC)
