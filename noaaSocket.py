@@ -110,13 +110,8 @@ class NoaaSocket(Thread):
                         
                         print("New data detected")
 
-                        #Emit alert
-                        socketio.emit('/alert', { "data": self._json_data } , namespace='/api')
-
-                        print("Alert emited")
-
                         #Use the storms
-                        self._cycloneManager.compare(self._json_data)
+                        self._cycloneManager.compare(self._json_data, socketio)
 
                         #Clean storms
                         self._json_data = []
