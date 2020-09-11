@@ -3,7 +3,7 @@ import passport from 'passport'
 import {Strategy as LocalStrategy} from 'passport-local'
 import geoip from 'geoip-lite'
 import {UserModel as User} from '../models/UserModel'
-import { encryptAES, decryptFront } from '../utils/cipher'
+import { encryptAES, decryptFront, decryptAndroid } from '../utils/cipher'
 
 passport.serializeUser((user, done) => {
   done(null, user.id)
@@ -36,6 +36,8 @@ passport.use('local-signup', new LocalStrategy({
         if(userValidation.length==0){
 
             let geo = geoip.lookup(req.clientIp)
+
+            if(!geo) geo = { ll: [decryptAndroid(req.body.lat), decryptAndroid(req.body.lng)] }
 
             if(geo){
 
