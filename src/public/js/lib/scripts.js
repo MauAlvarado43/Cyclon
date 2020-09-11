@@ -35,11 +35,9 @@
 	$(function() {
 		$(document).on('click', 'a.page-scroll', function(event) {
             var $anchor = $(this);
-            if(this.id == "" || this.id == "contactButton"){
-                $('html, body').stop().animate({
-                    scrollTop: $($anchor.attr('href')).offset().top
-                }, 600, 'easeInOutExpo');
-            }
+            $('html, body').stop().animate({
+                scrollTop: $($anchor.attr('href')).offset().top
+            }, 600, 'easeInOutExpo');
 			event.preventDefault();
 		});
 	});
