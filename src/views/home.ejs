@@ -83,6 +83,27 @@
 
     document.getElementById("homeButton").setAttribute("class","nav-link page-scroll active")
 
+    const socket = io("/")
+
+    socket.on("/alert", (data) => {
+        let distance =  getDistance(latUser, lngUser, data.data.location.lat, data.data.location.lng)
+        let radious = getCategoryRadiousByCAT(data.data.category)
+        let message = ''
+        
+        if(data.update)
+            message = assets.alertMessages.update + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+        else
+            message = assets.alertMessages.detected + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+
+        if(radious < distance < 250 + radious)
+            alert.error(message,assets.updated_alerts)
+        else
+            alert.show(message,assets.updated_alerts)
+
+        getActiveCyclones()
+        
+    })
+
 </script>
 
 <% if(!context.verify){ %>
