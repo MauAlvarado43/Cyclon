@@ -136,16 +136,17 @@ router.post('/auth/mobile/facebook', (req,res) => {
         if(err) errorLog.error(err)
 
 		if(docs.length==0){
+
             const newUser = new User()
             
-            let geo = geoip.lookup(req.clientIp)
-			
+            let geo = [decryptAndroid(req.body.lat), decryptAndroid(req.body.lng)]
+            
 			if(geo){
 
 				let userObject = newUser.encryptUser(
 					decryptAndroid(req.body.email),
-					geo.ll[0],
-					geo.ll[1],
+					geo[0],
+					geo[1],
 					decryptAndroid(req.body.id)
 				)
 			
@@ -159,14 +160,14 @@ router.post('/auth/mobile/facebook', (req,res) => {
                 newUser.verify = true
 			
 				newUser.save()
-				res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
+				res.json({'code':200,'msg':'ACCOUNT_CREATED'})
 			}
 			else
-                res.json({'code': 401, 'msg': 'BAD_LOCATION'})
+                res.json({'code':401,'msg':'BAD_LOCATION'})
 			    		
 		}
 		else
-			res.json({'code': 200, 'msg': 'LOGIN_SUCCESS'})
+			res.json({'code':200,'msg':'LOGIN_SUCCESS'})
 
 	})
 
@@ -181,14 +182,14 @@ router.post('/auth/mobile/google', (req,res) => {
 		if(docs.length==0){
 			const newUser = new User()
 
-			let geo = geoip.lookup(req.clientIp)
-			
-			if(geo){
+            let geo = [decryptAndroid(req.body.lat), decryptAndroid(req.body.lng)]
+
+            if(geo){
 
 				let userObject = newUser.encryptUser(
 					decryptAndroid(req.body.email),
-					geo.ll[0],
-					geo.ll[1],
+					geo[0],
+					geo[1],
 					decryptAndroid(req.body.id)
 				)
 			
@@ -203,16 +204,15 @@ router.post('/auth/mobile/google', (req,res) => {
                 
 				newUser.save()
                 
-                res.json({'code':200,'msg':['ACCOUNT_CREATED']})
+                res.json({'code':200,'msg':'ACCOUNT_CREATED'})
                 
 			}
 			else
-				res.json({'code':401,'msg':['BAD_LOCATION']})
+				res.json({'code':401,'msg':'BAD_LOCATION'})
 			     		
 		}
 		else
-			res.json({'code':200,'msg':['LOGIN_SUCCESS']})
-		
+			res.json({'code':200,'msg':'LOGIN_SUCCESS'})
 
 	})
 
@@ -319,6 +319,31 @@ router.get('/logout', (req, res) => {
 
 router.get('/mapRender', (req,res) => {
     res.render('mapRender')
+})
+
+router.get('/mapMobile', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en'
+    res.render('MapMobile', {
+        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8')),
+        path: '/home',
+        context: {
+            location:{
+                lat: encryptAES((19).toString()),
+                lng: encryptAES((-99).toString())
+            }
+        },
+        functions: {
+            decryptAES
+        }
+    })
+})
+
+router.get('/twitterMobile', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en'
+    res.render('TwitterMobile', {
+        assets: JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))    })
 })
 
 router.get('/keepAlive' , (req,res) => {

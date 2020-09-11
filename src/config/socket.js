@@ -59,9 +59,9 @@ export default class CyclonSocket {
         else 
             data.category = 'el huracán'
 
-        if(resolve.suggestion!=undefined){
+        if(json.suggestion!=undefined){
             
-            if(Object.keys(json.suggestion.north.distance).length === 0){
+            if(json.suggestion.north && Object.keys(json.suggestion.north.distance).length === 0){
                 let nearestCity = json.suggestion.south.city
                 let distanceN = json.suggestion.south.distance
                 message = `Se ha detectado ${category} `+data.name+" a "+distanceN+" km de "+nearestCity
@@ -93,7 +93,18 @@ export default class CyclonSocket {
         })
 
         this.client.on('/alert', function(data){
-            this.io.emit('/alert', data)
+            this.io.emit('/alert', {
+                data:{
+                    id: data.data.id,
+                    location: {
+                        lat: data.data.lastPoint[0],
+                        lng: data.data.lastPoint[1]
+                    },
+                    name: data.data.name,
+                    category: data.data.category
+                },
+                update: data.update
+            })
             
             if(!data.update)
                 this.generateTweet(data.data)

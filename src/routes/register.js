@@ -1,7 +1,8 @@
 import {Router} from 'express'
 import path from 'path'
 import fs from 'fs'
-import { validateToken, decryptAES, decryptFront, encryptAES } from '../utils/cipher'
+import { validateToken, decryptAES, decryptFront, encryptAES, decryptAndroid } from '../utils/cipher'
+import {checkWords, checkEmail} from '../utils/regex'
 import { UserModel as User } from '../models/UserModel'
 import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
@@ -335,6 +336,123 @@ router.get('/api/upgradeUser', async (req,res) => {
             req.session.destroy()
         }
     })
+})
+
+/***************************************
+              Mobile API
+***************************************/
+
+router.post('/api/mobile/updateLocation', async (req,res) => {
+    User.updateOne({email: encryptAES(decryptAndroid(req.body.email)) }, {$set: { lat: encryptAES(decryptAndroid(req.body.lat)), lng : encryptAES(decryptAndroid(req.body.lng)) } }, (err,raw) => {
+        if(err) 
+            res.json({'code': 401, 'msg': '500'})
+        else
+            res.json({'code': 200, 'msg': 'SUCCESS' }) 
+    })
+})
+
+router.post('/api/mobile/updatePassword', async (req,res) => {
+
+    let errors = []
+
+    if(password.length<8) errors.push({field:'password', error: 'EMPTY_PASSWORD'})
+    if(password.length>50) errors.push({field:'password', error: 'MAX_PASSWORD'})
+
+    if(errors.length != 0)
+        res.json({'code': 401, 'msg': '500'})
+    else
+        User.updateOne({email: encryptAES(decryptAndroid(req.body.email)) }, {$set: { password: encryptAES(decryptAndroid(req.body.password)) } }, (err,raw) => {
+            if(err) 
+                res.json({'code': 401, 'msg': '500'})
+            else
+                res.json({'code': 200, 'msg': 'SUCCESS' }) 
+        })
+        
+})
+
+router.post('/api/mobile/updateInfo', async (req,res) => {
+
+    let errors = []
+
+    let name = decryptAndroid(req.body.name)
+    let lastName = decryptAndroid(req.body.lastName)
+    let email = decryptAndroid(req.body.actualEmail)
+
+    if(!checkWords(name)) errors.push({field:'name', error: 'BAD_FORMAT'})
+    if(name.length<0) errors.push({field:'name', error: 'EMPTY_FORMAT'})
+    if(name.length>50) errors.push({field:'name', error: 'MAX_LENGTH'})
+
+    if(!checkWords(lastName)) errors.push({field:'lastName', error: 'ONLY_LETTERS_LASTNAME'})
+    if(lastName.length==0) errors.push({field:'lastName', error: 'EMPTY_LASTNAME'})
+    if(lastName.length>50) errors.push({field:'lastName', error: 'MAX_LASTNAME'})
+
+    if(!checkEmail(email)) errors.push({field:'email', error: 'BAD_FORMAT'})
+    if(email.length==0) errors.push({field:'email', error: 'EMPTY_FORMAT'})
+    if(email.length>50) errors.push({field:'email', error: 'MAX_LENGTH'})
+
+    if(errors.length != 0)
+        res.json({'code': 401, 'msg': '500'})
+    
+    else
+        User.updateOne({email: encryptAES(email) }, {$set: { name: name, lastName: lastName } }, (err,raw) => {
+            if(err) 
+                res.json({'code': 401, 'msg': '500'})
+            else
+                res.json({'code': 200, 'msg': 'SUCCESS' }) 
+        })
+
+})
+
+router.post('/api/mobile/updateAllInfo', async (req,res) => {
+
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    let errors = []
+
+    let name = decryptAndroid(req.body.name)
+    let lastName = decryptAndroid(req.body.lastName)
+    let email = decryptAndroid(req.body.actualEmail)
+    let actualEmail = decryptAndroid(req.body.actualEmail)
+    let newEmail = decryptAndroid(req.body.email)
+
+    if(!checkWords(name)) errors.push({field:'name', error: 'BAD_FORMAT'})
+    if(name.length<0) errors.push({field:'name', error: 'EMPTY_FORMAT'})
+    if(name.length>50) errors.push({field:'name', error: 'MAX_LENGTH'})
+
+    if(!checkWords(lastName)) errors.push({field:'lastName', error: 'ONLY_LETTERS_LASTNAME'})
+    if(lastName.length==0) errors.push({field:'lastName', error: 'EMPTY_LASTNAME'})
+    if(lastName.length>50) errors.push({field:'lastName', error: 'MAX_LASTNAME'})
+
+    if(!checkEmail(email)) errors.push({field:'email', error: 'BAD_FORMAT'})
+    if(email.length==0) errors.push({field:'email', error: 'EMPTY_FORMAT'})
+    if(email.length>50) errors.push({field:'email', error: 'MAX_LENGTH'})
+
+    if(!checkEmail(actualEmail)) errors.push({field:'email', error: 'BAD_FORMAT'})
+    if(actualEmail.length==0) errors.push({field:'email', error: 'EMPTY_FORMAT'})
+    if(actualEmail.length>50) errors.push({field:'email', error: 'MAX_LENGTH'})
+
+    let doc = await User.find({email: encryptAES(actualEmail), verify: true })
+
+    if(doc.length == 0)
+        res.json({'code': 401, 'msg': '500'})
+    else if(errors.length != 0)
+        res.json({'code': 401, 'msg': '500'})
+    else
+        User.updateOne({email: encryptAES(actualEmail), verify: true }, {$set: { name: name, lastName: lastName, email: encryptAES(actualEmail), verify: false } }, (err,raw) => {
+            if(err) 
+                res.json({'code': 401, 'msg': '500'})
+            else{
+                res.json({'code': 200, 'msg': 'SUCCESS' }) 
+                sendEmail(newEmail, 'verification', language, name + ' ' + lastName, doc[0].type, encryptAES(newEmail))
+            }
+        })
+
+})
+
+router.post('/api/mobile/getUser', async (req,res) => {
+    let doc = await User.find({email: encryptAES(decryptAndroid(req.body.email))})
+    res.send(doc[0].name+"/"+doc[0].lastName)
 })
 
 module.exports = router
