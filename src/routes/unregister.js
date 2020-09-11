@@ -340,7 +340,7 @@ router.get('/mapMobile', (req,res) => {
 })
 
 router.get('/downloadAPK', (req,res) => {
-    res.download(path.join(__dirname,'../assets/cyclon.json'))
+    res.download(path.join(__dirname,'../assets/Cyclon.apk'))
 })
 
 router.get('/twitterMobile', (req,res) => {
