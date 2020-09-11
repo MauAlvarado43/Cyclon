@@ -26,6 +26,40 @@ const getIcon = (category) => {
         return "/images/RT.png"
 }
 
+const getCategoryRadiousByCAT = (category) => {
+    if(category=="DT")
+        return 75
+    if(category=="TT")
+        return 200
+    if(category=="H1") 
+        return 400
+    if(category=="H2") 
+        return 700
+    if(category=="H3")
+        return 900
+    if(category=="H4") 
+        return 1100
+    if(category=="H5")
+        return 1300
+}
+
+const getCategoryMessage = (category) => {
+    if(category=="DT")
+        return assets.alertMessages._DT
+    if(category=="TT")
+        return assets.alertMessages._TT
+    if(category=="H1") 
+        return assets.alertMessages._H1
+    if(category=="H2") 
+        return assets.alertMessages._H2
+    if(category=="H3")
+        return assets.alertMessages._H3
+    if(category=="H4") 
+        return assets.alertMessages._H4
+    if(category=="H5")
+        return assets.alertMessages._H5
+}
+
 const getDistance = (lat1, lon1, lat2, lon2) => {
 
     rad = function(x) {return x*Math.PI/180}

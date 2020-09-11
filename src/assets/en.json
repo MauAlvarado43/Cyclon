@@ -136,6 +136,16 @@
         "H3":                   "Hurricaine Category 3",
         "H4":                   "Hurricaine Category 4",
         "H5":                   "Hurricaine Category 5",
+        "_DT":                  "the tropical depression $",
+        "_ST":                  "the tropical storm $",
+        "_H1":                  "the hurricaine $ category 1",
+        "_H2":                  "the hurricaine $ category 2",
+        "_H3":                  "the hurricaine $ category 3",
+        "_H4":                  "the hurricaine $ category 4",
+        "_H5":                  "the hurricaine $ category 5",
+        "update":               "Updated data for",
+        "detected":             "Be detected",
+        "closeness":            "located to $ km from you.",          
         "no_alerts":            "There is not alerts"
     },
     "features":{
@@ -225,5 +235,6 @@
     "EMAIL_SENDED":             "Email sended",
     "no_alerts_close":          "There is not alerts close on you",
     "check_alerts":             "Check the alerts close on you",
-    "you":                      "You"
+    "you":                      "You",
+    "account_verified":         "Account verified!"
 }

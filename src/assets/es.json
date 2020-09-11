@@ -130,12 +130,22 @@
     },
     "alertMessages":{
         "DT":                   "Depresión Tropical",
-        "ST":                   "Tormenta Tropical",
+        "TT":                   "Tormenta Tropical",
         "H1":                   "Huracán Categoría 1",
         "H2":                   "Huracán Categoría 2",
         "H3":                   "Huracán Categoría 3",
         "H4":                   "Huracán Categoría 4",
         "H5":                   "Huracán Categoría 5",
+        "_DT":                  "la depresión tropical $",
+        "_TT":                  "la tormenta tropical $",
+        "_H1":                  "el huracán $ categoría 1",
+        "_H2":                  "el huracán $ categoría 2",
+        "_H3":                  "el huracán $ categoría 3",
+        "_H4":                  "el huracán $ categoría 4",
+        "_H5":                  "el huracán $ categoría 5",
+        "update":               "Se han actualizado los datos de",
+        "detected":             "Se detectado",      
+        "closeness":            "a $ km de ti.",  
         "no_alerts":            "No hay alertas"
     },
     "features":{
@@ -227,5 +237,7 @@
     "email_sended":             "Correo electrónico enviado",
     "no_alerts_close":          "No hay alertas cerca de tí",
     "check_alerts":             "Revisa las alertas que hay cerca de ti",
-    "you":                      "Tu"
+    "updated_alerts":           "¡Hay nuevos datos!",
+    "you":                      "Tu",
+    "account_verified":         "¡Cuenta verificada!"
 }

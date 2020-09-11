@@ -14,7 +14,7 @@
 
 					<div class="form-group">
 						<label for="emailLogin"><%= assets.inputs.email %></label>
-						<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="login">
+						<input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="login" autocomplete="email">
 						<ul>
                             <li v-for="msg of loginErrors.email" style="color: red; margin-left: 5%;">{{msg}}</li>
                         </ul>
@@ -22,7 +22,7 @@
 
 					<div class="form-group">
 						<label for="passwordLogin"><%= assets.inputs.password %></label>
-						<input type="password" class="form-control" id="passwordLogin" placeholder="********" v-model="password" @keyup.enter="login">
+						<input type="password" class="form-control" id="passwordLogin" placeholder="********" v-model="password" @keyup.enter="login" autocomplete="current-password">
 						<ul>
                             <li v-for="msg of loginErrors.password" style="color: red; margin-left: 5%;">{{msg}}</li>
                         </ul>
