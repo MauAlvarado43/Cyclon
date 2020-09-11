@@ -339,6 +339,10 @@ router.get('/mapMobile', (req,res) => {
     })
 })
 
+router.get('/downloadAPK', (req,res) => {
+    res.download(path.join(__dirname,'../assets/cyclon.json'))
+})
+
 router.get('/twitterMobile', (req,res) => {
     let language = req.acceptsLanguages('es', 'en')
     if (!language) language = 'en'

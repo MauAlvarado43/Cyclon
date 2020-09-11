@@ -76,6 +76,20 @@ router.get('/recoverPassword', async (req,res) => {
     
 })
 
+router.get('/verified', (req,res) => {
+    let language = req.acceptsLanguages('es', 'en')
+    if (!language) language = 'en' 
+
+    let assets = JSON.parse(fs.readFileSync(path.join(__dirname,'../assets/'+language+'.json'),'utf-8'))
+        
+    res.render('accountVerified', {
+        title: `Cyclon - ${assets.titles.verify}`, 
+        assets: assets,
+        context: req.user,
+        path: '/verified'
+    })
+})
+
 router.get('/verifyAccount', async (req,res) => {
 
     if(req.query.v && req.query.u){
@@ -92,7 +106,7 @@ router.get('/verifyAccount', async (req,res) => {
                         res.redirect('/')
                     }
                     else {
-                        res.redirect('/home') 
+                        res.redirect('/verified') 
                     }
                 })         
             }
