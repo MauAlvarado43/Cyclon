@@ -4,10 +4,15 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 import threading
 import os
+import logging
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['DEBUG'] = False
+
+log = logging.getLogger('werkzeug')
+log.disabled = True
 
 cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials= True)
 
