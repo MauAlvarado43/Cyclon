@@ -32,7 +32,7 @@ router.get('/', (req,res) => {
             title: `Cyclon - ${assets.titles.index}`,
             assets: assets, 
             path: '/',
-            errors: req.session.error
+            errors: (req.session.error)?req.session.error:[]
         })
     }
     
