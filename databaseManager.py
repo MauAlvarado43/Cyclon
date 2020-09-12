@@ -54,6 +54,7 @@ class DBManager:
         return [dataReal, dataPredicted]
 
     def compare(self, activeStorms, socketio):
+    
         docs = self._model.find({ "active" : True })
 
         #Search old storms in new storms and stopping not actives
