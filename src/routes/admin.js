@@ -50,7 +50,8 @@ module.exports = (server) => {
                 title: `Cyclon - ${assets.titles.config}`, 
                 assets: assets,
                 path: '/cycloneSettings',
-                context: req.user
+                context: req.user,
+                pythonRunning: pythonRunning
             })
     })
 
@@ -101,22 +102,24 @@ module.exports = (server) => {
         else if(pythonRunning == false){
 
             pythonRunning = true
-            
-            heroku.request({
-                method: 'DELETE',
-                path: '/apps/'+socketAppID+'/dynos/web.1',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/vnd.heroku+json; version=3'        
-                },
-                parseJSON: false
-            }).then(response => {
-                  
-                setTimeout(() => {
-                    cyclonSocket.connectPython()
-                }, 300000)
 
-            })
+            cyclonSocket.connectPython()
+            
+            // heroku.request({
+            //     method: 'DELETE',
+            //     path: '/apps/'+socketAppID+'/dynos/web.1',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Accept': 'application/vnd.heroku+json; version=3'        
+            //     },
+            //     parseJSON: false
+            // }).then(response => {
+                  
+            //     setTimeout(() => {
+            //         cyclonSocket.connectPython()
+            //     }, 300000)
+
+            // })
 
             res.json({})
 
@@ -135,17 +138,17 @@ module.exports = (server) => {
 
             cyclonSocket.disconnectPython()
 
-            heroku.request({
-                method: 'POST',
-                path: '/apps/'+socketAppID+'/dynos/web.1/actions/stop',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/vnd.heroku+json; version=3'        
-                },
-                parseJSON: false
-            }).then(response => {
-                console.log(response)
-            })
+            // heroku.request({
+            //     method: 'POST',
+            //     path: '/apps/'+socketAppID+'/dynos/web.1/actions/stop',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Accept': 'application/vnd.heroku+json; version=3'        
+            //     },
+            //     parseJSON: false
+            // }).then(response => {
+            //     console.log(response)
+            // })
 
             res.json({})
         }

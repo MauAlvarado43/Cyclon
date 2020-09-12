@@ -86,6 +86,7 @@ export default class CyclonSocket {
     }
 
     connectPython(){
+
         this.client = ioClient(process.env.PYTHON_URL + '/api')
 
         this.client.on('connect', function(){
