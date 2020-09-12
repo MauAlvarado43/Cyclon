@@ -79,7 +79,10 @@
         "users":                "Usuarios",
         "get":                  "Obtener",
         "delete":               "Eliminar",
-        "upgrade":              "Privilegiar"
+        "upgrade":              "Privilegiar",
+        "activateIsolines":     "Isolíneas",
+        "activateGrid":         "Cuadrícula",
+        "activateAnimations":   "Animaciones"
     },
     "units": {
         "windSpeed": {

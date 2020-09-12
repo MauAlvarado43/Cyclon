@@ -15,6 +15,28 @@ const getCategoryRadious = (speed) => {
         return [assets.alertMessages.H5, 1300]
 }
 
+const getRealLayerPallet = () => {
+    return {
+        0.248: '#48ce7d',
+        0.472: '#6de825',
+        0.612: '#d3ed28',
+        0.708: '#e8ae27',
+        0.84: '#e36d29',
+        1.0: '#e33529'
+    }
+}
+
+const getPredictedLayerPallet = () => {
+    return {
+        0.248: '#4cbdd3',
+        0.472: '#2b6fe3',
+        0.612: '#592be3',
+        0.708: '#af28e0',
+        0.84: '#e324b6',
+        1.0: '#e3242e'
+    }
+}
+
 const getIcon = (category) => {
     if(category=="DT")
         return "/images/DT.png"

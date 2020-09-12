@@ -59,11 +59,7 @@ const drawCyclones = () => {
         let layerRealTrayectory = new L.Hotline(latlngsReal, {
             min: 119,
             max: 250,
-            palette: {
-                0.0: '#00bc79',
-                0.5: '#887c73',
-                1.0: '#a9136c'
-            },
+            palette: getRealLayerPallet(),
             weight: 6,
             outlineColor: '#000000',
             outlineWidth: 1
@@ -113,11 +109,7 @@ const drawCyclones = () => {
         let layerPredictedTrayectory = new L.Hotline(latlngsPredicted, {
             min: 119,
             max: 250,
-            palette: {
-                0.0: '#0081b6',
-                0.5: '#895762',
-                1.0: '#a41214'
-            },
+            palette: getPredictedLayerPallet(),
             weight: 6,
             outlineColor: '#000000',
             outlineWidth: 1

@@ -148,7 +148,10 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div>
-                                            <%- include("./components/map",{assets: assets}) %> 
+
+                                            <%- include("./components/map",{assets: assets}) %>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -216,6 +219,7 @@
         document.getElementById("recordsButton").setAttribute("href","#")
         document.getElementById("recordsButton").setAttribute("class","nav-link page-scroll active")
         document.getElementById("selectYear").setAttribute("max",(new Date()).getFullYear())
+        
     </script>
     
 </html>

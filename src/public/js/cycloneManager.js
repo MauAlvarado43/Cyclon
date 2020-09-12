@@ -147,17 +147,9 @@ const app = new Vue({
                                 </tr>`
 
                 if(this.selectedTrajectory!='realTrajectory') 
-                    palette = {
-                        0.0: '#0081b6',
-                        0.5: '#895762',
-                        1.0: '#a41214'
-                    }
+                    palette = getPredictedLayerPallet()
                 else
-                    palette = {
-                        0.0: '#00bc79',
-                        0.5: '#887c73',
-                        1.0: '#a9136c'
-                    }
+                    palette = getRealLayerPallet()
 
                 trajectorySelected.forEach(element => {
                     table += `<tr>
