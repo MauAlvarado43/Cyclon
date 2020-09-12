@@ -157,6 +157,7 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
                 newUser.type = 0
+                newUser.register = 1
                 newUser.verify = true
 			
 				newUser.save()
@@ -199,7 +200,8 @@ router.post('/auth/mobile/google', (req,res) => {
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
 				newUser.password = userObject.password
-				newUser.type = 0
+                newUser.type = 0
+                newUser.register = 2
                 newUser.verify = true
                 
 				newUser.save()

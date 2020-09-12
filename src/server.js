@@ -99,8 +99,6 @@ app.use(require('./routes/register'))
 app.use(require('./routes/admin')(server))
 app.use(require('./routes/investigator'))
 
-new CyclonSocket().connectPython()
-
 // Start the server
 server.listen(app.get('port'),'0.0.0.0', () => {
     console.log('Server on port', app.get('port'))
