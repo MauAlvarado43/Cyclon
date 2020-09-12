@@ -79,7 +79,10 @@
         "users":                "Users",
         "get":                  "Get",
         "delete":               "Delete",
-        "upgrade":              "Upgrade"
+        "upgrade":              "Upgrade",
+        "activateIsolines":     "Isolines",
+        "activateGrid":         "Graticule",
+        "activateAnimations":   "Animations"
     },
     "units": {
         "windSpeed": {

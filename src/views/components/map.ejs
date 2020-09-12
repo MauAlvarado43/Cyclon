@@ -126,14 +126,65 @@
         </div>
     </div>
 
+    <br>
+
+    <div style="display: inline; vertical-align: middle;">
+
+        <div style="display: inline-block; margin-right: 1%;">
+            <label><%= assets.buttons.activateIsolines %></label>
+            <label class="switch" style="top: 4px !important;">
+                <input type="checkbox" onclick="activateIsolines(this)">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div style="display: inline-block; margin-right: 1%;">
+            <label><%= assets.buttons.activateGrid %></label>
+            <label class="switch" style="top: 4px !important;">
+                <input type="checkbox" onclick="activateGrid(this)">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div style="display: inline-block; margin-right: 1%;">
+            <label><%= assets.buttons.activateAnimations %></label>
+            <label class="switch" style="top: 4px !important;">
+                <input type="checkbox" onclick="activateAnimations(this)">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        
+    </div>
 
 <script>
 
     let map_const
+    let store_const
     let lastLayer
     let lastmarker
     let latUser = 19
     let lngUser = -99
+
+    const activateIsolines = (item) => {
+        if(item.checked)
+            store_const.set("isolines", "pressure")
+        else
+            store_const.set("isolines", "off")
+    }
+
+    const activateGrid = (item) => {
+        if(item.checked)
+            store_const.set("graticule", true)
+        else
+            store_const.set("graticule", false)
+    }
+
+    const activateAnimations = (item) => {
+        if(item.checked)
+            store_const.set("particlesAnim", "on")
+        else
+            store_const.set("particlesAnim", "off")
+    }
 
     const closeSimbology = () => {
         $("#containerSibologyIcons").css("visibility","hidden");
@@ -163,20 +214,27 @@
         }, windyAPI => {
 
             let simbologyButton = $("#simbologyButtonContainer").clone()
+
             let simbologyContainer =  $("#simbologyContainer").clone()
+            let activateSwitches = $("#activateSwitches").clone()
 
             $("#simbologyButtonContainer").remove()
-            $("#windy").append(simbologyButton)
+            $("#map-container").append(simbologyButton)
 
             $("#simbologyContainer").remove()
             $("#windy").append(simbologyContainer)
            
             $("#simbologyButtonContainer").css("visibility","visible")
-            $("#simbologyContainer").css("visibility","visible");
+            $("#simbologyContainer").css("visibility","visible")
 
             $("#simbologyContainer").hide()
 
-            const { map, store, utils, broadcast } = windyAPI
+            $("#activateSwitches").remove()
+            $("#layers-levels").append(activateSwitches)
+
+            const { map, store, utils, broadcast, overlays } = windyAPI
+
+            store_const = store
 
             map_const = map
 
