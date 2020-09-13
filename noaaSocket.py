@@ -25,7 +25,11 @@ class NoaaSocket(Thread):
         self._json_history = {}
         self._json_data = []
         self._delay = 2
+        self._alertsGenerated = []
         print("Monitoring NOAA inicializated...")
+
+    def getAlertsGenerated(self):
+        return json.dumps(self._alertsGenerated)
 
     def run(self, socketio):
         while True:
@@ -111,7 +115,7 @@ class NoaaSocket(Thread):
                         print("New data detected")
 
                         #Use the storms
-                        self._cycloneManager.compare(self._json_data, socketio)
+                        self._alertsGenerated = self._cycloneManager.compare(self._json_data, socketio)
 
                         #Clean storms
                         self._json_data = []
