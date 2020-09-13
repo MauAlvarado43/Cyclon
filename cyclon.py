@@ -22,9 +22,8 @@ socket = NoaaSocket()
 def main():
     return 'Running'
 
-@app.route('/data')
+@app.route('/api/data')
 def dataRequest():
-    socketio.emit(socket.getAlertsGenerated())
     return socket.getAlertsGenerated()
 
 socketio = SocketIO(app, logger=False, engineio_logger=False, debug=False, cors_allowed_origins='*')
