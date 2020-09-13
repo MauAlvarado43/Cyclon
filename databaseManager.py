@@ -56,6 +56,7 @@ class DBManager:
     def compare(self, activeStorms, socketio):
     
         docs = self._model.find({ "active" : True })
+        alertsToReturn = []
 
         #Search old storms in new storms and stopping not actives
         for doc in docs:
@@ -89,6 +90,16 @@ class DBManager:
                     self._model.update_one( { "id" : doc["id"]}, { "$set": { "realTrajectory" : realTrajectory, "predictedTrajectory": data[1], "lastUpdate":  parser.parse(storm["date"]) } })
 
                     print("Cyclone updated")
+
+                    alertsToReturn.append({ 
+                        "data": { 
+                            "id": doc["id"],
+                            "lastPoint": data[0][0],
+                            "name": doc["name"],
+                            "category": doc["category"]
+                        }, 
+                        "update": True 
+                    })
 
                     #Emit alert
                     socketio.emit('/alert', { 
@@ -128,6 +139,16 @@ class DBManager:
 
                 print("New cyclone saved")
 
+                alertsToReturn.append({ 
+                    "data": { 
+                        "id": storm["id"],
+                        "lastPoint": data[0][0],
+                        "name": storm["name"],
+                        "category": storm["category"]
+                    }, 
+                    "update": False 
+                })
+
                 #Emit alert
                 socketio.emit('/alert', { 
                     "data": { 
@@ -138,5 +159,5 @@ class DBManager:
                     }, 
                     "update": False 
                 } , namespace='/api')
-                
-                
+
+        return alertsToReturn          

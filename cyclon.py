@@ -16,9 +16,16 @@ log.disabled = True
 
 cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials= True)
 
+socket = NoaaSocket()
+
 @app.route('/')
 def main():
     return 'Running'
+
+@app.route('/data')
+def dataRequest():
+    socketio.emit(socket.getAlertsGenerated())
+    return socket.getAlertsGenerated()
 
 socketio = SocketIO(app, logger=False, engineio_logger=False, debug=False, cors_allowed_origins='*')
 
@@ -29,8 +36,6 @@ def test_connect():
 @socketio.on('disconnect', namespace='/api')
 def test_disconnect():
     print('Client disconnected')
-
-socket = NoaaSocket()
 
 thread = threading.Thread(target=socket.run, args=(socketio,))
 
