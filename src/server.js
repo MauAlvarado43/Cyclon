@@ -105,8 +105,8 @@ server.listen(app.get('port'),'0.0.0.0', () => {
 })
 
 setInterval(() => {
-    fetch(process.env.PYTHON_URL).then( res => { res.text().then( text => { console.log(text) }) })
-    fetch(process.env.URL + '/keepAlive').then( res => { res.text().then( text => { console.log(text) }) })
+    fetch(process.env.PYTHON_URL).then( res => { res.text().then( text => {  }) })
+    fetch(process.env.URL + '/keepAlive').then( res => { res.text().then( text => {  }) })
 }, 2000 * 60)
 
 export default server

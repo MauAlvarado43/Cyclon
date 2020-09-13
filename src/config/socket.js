@@ -94,6 +94,7 @@ export default class CyclonSocket {
         })
 
         this.client.on('/alert', function(data){
+
             this.io.emit('/alert', {
                 data:{
                     id: data.data.id,
