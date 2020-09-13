@@ -95,6 +95,8 @@ export default class CyclonSocket {
 
         this.client.on('/alert', function(data){
 
+            console.log(data)
+
             this.io.emit('/alert', {
                 data:{
                     id: data.data.id,
@@ -108,7 +110,7 @@ export default class CyclonSocket {
                 update: data.update
             })
             
-            if(!data.update)
+            // if(!data.update)
                 this.generateTweet(data.data)
         })
         
