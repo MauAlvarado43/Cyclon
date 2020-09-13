@@ -87,7 +87,7 @@ class DBManager:
                     realTrajectory = doc["realTrajectory"]
                     realTrajectory.append(data[0][0])
 
-                    self._model.update_one( { "id" : doc["id"]}, { "$set": { "realTrajectory" : realTrajectory, "predictedTrajectory": data[1], "lastUpdate":  parser.parse(storm["date"]) } })
+                    self._model.update_one( { "id" : doc["id"]}, { "$set": { "name": stormData["name"], "realTrajectory" : realTrajectory, "predictedTrajectory": data[1], "lastUpdate":  parser.parse(storm["date"]) } })
 
                     print("Cyclone updated")
 
