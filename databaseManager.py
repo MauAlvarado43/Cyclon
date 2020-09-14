@@ -14,6 +14,23 @@ class DBManager:
         self._model = self._database["hurricaines"]
         self._openWeather = QueryOpenWeather()
 
+    def getCategory(speed):
+        if speed < 62:
+            return "DT"  #Tropical Depression
+        elif speed < 118:
+            return "TT"  #Tropical Storm
+        elif speed < 153:
+            return "H1"  #Hurricaine 1
+        elif speed < 177:
+            return "H2"  #Hurricaine 2
+        elif speed < 210:
+            return "H3"  #Hurricaine 3
+        elif speed < 250:
+            return "H4"  #Hurricaine 4
+        else:
+            return "H5"  #Hurricaine 5
+
+
     def formatPoint(self, storm):
 
         dataReal = self._openWeather.getRealPoint(storm["center"])
@@ -84,6 +101,8 @@ class DBManager:
                 if (str(doc["lastUpdate"].isoformat()) + ".000Z") != str(storm["date"]):
                     data = self.formatPoint(storm)
 
+                    category = getCategory(data[0][0]["windSpeed"])
+
                     realTrajectory = doc["realTrajectory"]
                     realTrajectory.append(data[0][0])
 
@@ -96,7 +115,7 @@ class DBManager:
                             "id": doc["id"],
                             "lastPoint": data[0][0],
                             "name": doc["name"],
-                            "category": doc["category"]
+                            "category": category
                         }, 
                         "update": True 
                     })
@@ -107,7 +126,7 @@ class DBManager:
                             "id": doc["id"],
                             "lastPoint": data[0][0],
                             "name": doc["name"],
-                            "category": doc["category"]
+                            "category": category
                         }, 
                         "update": True 
                     } , namespace='/api')
@@ -123,6 +142,8 @@ class DBManager:
 
                 data = self.formatPoint(storm)
 
+                category = getCategory(data[0][0]["windSpeed"])
+
                 cyclone = {
                     "id": storm["id"],
                     "origin": storm["center"],
@@ -130,7 +151,7 @@ class DBManager:
                     "appearance": parser.parse(storm["date"]),
                     "lastUpdate": parser.parse(storm["date"]),
                     "active": True,
-                    "category": storm["category"],
+                    "category": category,
                     "predictedTrajectory": data[1],
                     "realTrajectory": data[0]
                 }
@@ -144,7 +165,7 @@ class DBManager:
                         "id": storm["id"],
                         "lastPoint": data[0][0],
                         "name": storm["name"],
-                        "category": storm["category"]
+                        "category": category
                     }, 
                     "update": False 
                 })
@@ -155,7 +176,7 @@ class DBManager:
                         "id": storm["id"],
                         "lastPoint": data[0][0],
                         "name": storm["name"],
-                        "category": storm["category"]
+                        "category": category
                     }, 
                     "update": False 
                 } , namespace='/api')

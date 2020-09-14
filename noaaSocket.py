@@ -44,24 +44,8 @@ class NoaaSocket(Thread):
                     if(self._json_history != self._json_dataTemp):      
 
                         for alert in self._json_dataTemp["activeStorms"]:
-                            category = ""
                             speed = float(alert["movementSpeed"]) * 1.60934    #mph to km/h
                             pressure = alert["pressure"]   #mB
-
-                            if speed < 62:
-                                category = "DT"  #Tropical Depression
-                            elif speed < 118:
-                                category = "TT"  #Tropical Storm
-                            elif speed < 153:
-                                category = "H1"  #Hurricaine 1
-                            elif speed < 177:
-                                category = "H2"  #Hurricaine 2
-                            elif speed < 210:
-                                category = "H3"  #Hurricaine 3
-                            elif speed < 250:
-                                category = "H4"  #Hurricaine 4
-                            else:
-                                category = "H5"  #Hurricaine 5
 
                             predictedTrack = []
 
@@ -99,7 +83,6 @@ class NoaaSocket(Thread):
                                 {
                                     "id": alert["id"],
                                     "name": alert["name"],
-                                    "category": category,
                                     "data": {
                                         "hurrSpeed": speed,
                                     },
