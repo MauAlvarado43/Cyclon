@@ -75,8 +75,8 @@ export default class CyclonSocket {
         }
         else{
 
-            let nearestCity = resolve.city
-            let distanceN = resolve.distance
+            let nearestCity = json.city
+            let distanceN = json.distance
 
             message = `Se ha detectado ${category} `+data.name+" a "+distanceN+" km de "+nearestCity;
         }
@@ -110,7 +110,7 @@ export default class CyclonSocket {
                 update: data.update
             })
             
-            // if(!data.update)
+            if(!data.update)
                 generateTweet(data.data)
                 
         })
