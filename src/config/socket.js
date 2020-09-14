@@ -76,7 +76,7 @@ export default class CyclonSocket {
         else{
 
             let nearestCity = json.city
-            let distanceN = json.distance
+            let distanceN = json.distancegit
 
             message = `Se ha detectado ${category} `+data.name+" a "+distanceN+" km de "+nearestCity;
         }
