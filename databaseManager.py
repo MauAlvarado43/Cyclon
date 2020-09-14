@@ -14,7 +14,7 @@ class DBManager:
         self._model = self._database["hurricaines"]
         self._openWeather = QueryOpenWeather()
 
-    def getCategory(speed):
+    def getCategory(self, speed):
         if speed < 62:
             return "DT"  #Tropical Depression
         elif speed < 118:
@@ -101,7 +101,7 @@ class DBManager:
                 if (str(doc["lastUpdate"].isoformat()) + ".000Z") != str(storm["date"]):
                     data = self.formatPoint(storm)
 
-                    category = getCategory(data[0][0]["windSpeed"])
+                    category = self.getCategory(data[0][0]["windSpeed"])
 
                     realTrajectory = doc["realTrajectory"]
                     realTrajectory.append(data[0][0])
@@ -142,7 +142,7 @@ class DBManager:
 
                 data = self.formatPoint(storm)
 
-                category = getCategory(data[0][0]["windSpeed"])
+                category = self.getCategory(data[0][0]["windSpeed"])
 
                 cyclone = {
                     "id": storm["id"],
