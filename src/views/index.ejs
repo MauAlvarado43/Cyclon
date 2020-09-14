@@ -137,9 +137,9 @@
         let message = ''
         
         if(data.update)
-            message = assets.alertMessages.update + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+            message = assets.alertMessages.update + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + "."
         else
-            message = assets.alertMessages.detected + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+            message = assets.alertMessages.detected + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + "."
 
         if(radious < distance < 250 + radious)
             alert.error(message,assets.updated_alerts)
