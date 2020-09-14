@@ -22,7 +22,7 @@ class DBManager:
                 "lat": storm["center"]["lat"],
                 "lng": storm["center"]["lng"]
             },
-            "windSpeed": dataReal["wind"]["speed"],
+            "windSpeed": dataReal["wind"]["speed"] * 3.6, #m/s to km/h
             "hurrSpeed": storm["data"]["hurrSpeed"],
             "temperature": dataReal["main"]["temp"],
             "pressure": dataReal["main"]["pressure"],
@@ -42,7 +42,7 @@ class DBManager:
                             "lat": point["center"]["lat"],
                             "lng": point["center"]["lng"]
                         },
-                        "windSpeed": forecast["wind"]["speed"],
+                        "windSpeed": forecast["wind"]["speed"] * 3.6,
                         "hurrSpeed": storm["data"]["hurrSpeed"],
                         "temperature": forecast["main"]["temp"],
                         "pressure": forecast["main"]["pressure"],
