@@ -87,15 +87,15 @@ export default class CyclonSocket {
 
     connectPython(){
 
+        let generateTweet = this.generateTweet
+
         this.client = ioClient(process.env.PYTHON_URL + '/api')
 
-        this.client.on('connect', function(){
+        this.client.on('connect', () => {
             console.log("CONNECTED")
         })
 
-        this.client.on('/alert', function(data){
-
-            console.log(data)
+        this.client.on('/alert', (data) => {
 
             this.io.emit('/alert', {
                 data:{
@@ -111,10 +111,11 @@ export default class CyclonSocket {
             })
             
             // if(!data.update)
-                this.generateTweet(data.data)
+                generateTweet(data.data)
+                
         })
         
-        this.client.on('disconnect', function(){
+        this.client.on('disconnect', () => {
             console.log("DISCONNECTED")
         })
     }
