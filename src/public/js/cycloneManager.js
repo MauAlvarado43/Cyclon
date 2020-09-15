@@ -129,12 +129,7 @@ const app = new Vue({
             }
             else{
 
-                let table = `
-                            <div>
-                                Appearance Date: ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].appearance).format("MMMM D YYYY, h:mm:ss a")}<br>
-                                Last Update: ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].lastUpdate, "YYYYMMDD").fromNow()}
-                            </div>
-                
+                let table = `            
                             <table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
                                 <tr>
                                     <th>${assets.units.latitude.label}</th>
@@ -151,7 +146,17 @@ const app = new Vue({
                 else
                     palette = getRealLayerPallet()
 
+                    let maxWind = 0
+                    let minPressure = 10000000000
+
                 trajectorySelected.forEach(element => {
+
+                    if(maxWind < element.windSpeed)
+                        maxWind = element.windSpeed
+
+                    if(minPressure > element.pressure)
+                        minPressure = element.pressure
+
                     table += `<tr>
                                 <td>${element.position.lat}</td>
                                 <td>${element.position.lng}</td>
@@ -163,7 +168,51 @@ const app = new Vue({
                             </tr>`
 
                     latlngs.push([element.position.lat, element.position.lng, element.windSpeed])
-                })      
+                }) 
+                
+                let div = `<center>
+                                <table>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.appearance}:
+                                        </td>
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].appearance).format("MMMM D YYYY, h:mm:ss a")}
+                                        </td>
+                                    </tr>  
+                                        <td style="text-align: left;">  
+                                            ${assets.simbology.lastUpdate}: 
+                                        </td>
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].lastUpdate, "YYYYMMDD").fromNow()}
+                                        </td>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.category}: 
+                                        </td>   
+                                        <td style="text-align: left; padding-left: 5px;">
+                                           ${category.toLowerCase()}
+                                        </td>   
+                                    </tr>
+                                    <tr> 
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.maxWind}:
+                                        </td>       
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${maxWind} ${assets.units.windSpeed.unit}
+                                        </td>  
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.minPressure}:
+                                        </td>    
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${minPressure} ${assets.units.pressure.unit}
+                                        </td> 
+                                    </tr>
+                                </table>
+                            </center>
+                            <br>`
                 
                 lastLayer = new L.Hotline(latlngs, {
                     min: 119,
@@ -228,40 +277,36 @@ const app = new Vue({
                         trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lng], 4)
                 }
                 
-                if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
+                var icon = L.icon({
+                    iconUrl: getIcon(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category),
+                    iconSize: [35, 35],
+                    popupAnchor: [-3, -76]
+                })
 
-                    var icon = L.icon({
-                        iconUrl: getIcon(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category),
-                        iconSize: [35, 35],
-                        popupAnchor: [-3, -76]
-                    })
-
-                    if(this.selectedTrajectory == 'realTrajectory')
-                        var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: icon }).addTo(map_const)
-                    else 
+                if(this.selectedTrajectory == 'realTrajectory')
+                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: icon }).addTo(map_const)
+                else 
                     var marker = L.marker([trajectorySelected[0].position.lat, trajectorySelected[0].position.lng], { icon: icon }).addTo(map_const)
 
-                    marker.on('click', (e) => {
-                        map_const.fitBounds(layerRealTrayectory.getBounds())
-                        L.popup()
-                            .setLatLng([e.latlng.lat, e.latlng.lng])
-                            .setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
-                            .openOn(map_const)
-                    })  
+                marker.on('click', (e) => {
+                    map_const.fitBounds(lastLayer.getBounds())
+                    L.popup()
+                        .setLatLng([e.latlng.lat, e.latlng.lng])
+                        .setContent(`<h4 style="color:black;">${ this.cyclones[(this.selectedCyclone.split(" ")[0])-1].name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
+                        .openOn(map_const)
+                })  
 
-                    lastmarker = marker
-
-                }
+                lastmarker = marker             
 
                 map_const.fitBounds(lastLayer.getBounds())
 
                 table += `</table>`
                 $("#cycloneTable").text("")
-                $("#cycloneTable").html(table)
+                $("#cycloneTable").html(div + table)
 
                 $("#cycloneTableContent").css("overflow-y","hidden")
 
-                if(trajectorySelected.length>15)
+                if(trajectorySelected.length>10)
                     $("#cycloneTableContent").css("overflow-y","scroll")
             }
             
