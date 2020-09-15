@@ -48,8 +48,8 @@ const drawCyclones = () => {
     activeCyclones.forEach(element => {
 
         let lastPoint =  element.realTrajectory[element.realTrajectory.length - 1]
-        let [category, radious] = getCategoryRadious(lastPoint.windSpeed)
-        let icon = getIcon(category)
+        let [category, radious, categoryTxt] = getCategoryRadious(lastPoint.windSpeed)
+        let icon = getIcon(categoryTxt)
         let latlngsReal = []
 
         element.realTrajectory.forEach(point => {
