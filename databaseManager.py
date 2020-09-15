@@ -92,7 +92,16 @@ class DBManager:
             
             #Close inactive cyclone
             if not exist:
-                self._model.update_one( { "id" : doc["id"]}, { "$set": { "active" : False } })
+
+                speedMax = 0
+
+                for point in doc["realTrajectory"]:
+                    if point["windSpeed"] > speedMax :
+                        speedMax = point["windSpeed"]
+
+                lastCategory = self.getCategory(speedMax)
+
+                self._model.update_one( { "id" : doc["id"]}, { "$set": { "active" : False, "category": lastCategory } })
                 print("Cyclone closed")
             else:
                 realTrajectory = doc["realTrajectory"]
