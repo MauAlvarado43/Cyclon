@@ -1,18 +1,18 @@
 const getCategoryRadious = (speed) => {
     if (speed < 62)
-        return [assets.alertMessages.DT, 75]
+        return [assets.alertMessages.DT, 75, "DT"]
     else if (speed < 118)
-        return [assets.alertMessages.TT, 200]
+        return [assets.alertMessages.TT, 200, "TT"]
     else if (speed < 153)
-        return [assets.alertMessages.H1, 400] 
+        return [assets.alertMessages.H1, 400, "H1"] 
     else if (speed < 177)
-        return [assets.alertMessages.H2, 700]
+        return [assets.alertMessages.H2, 700, "H2"]
     else if (speed < 210)
-        return [assets.alertMessages.H3, 900]
+        return [assets.alertMessages.H3, 900, "H3"]
     else if (speed < 250)
-        return [assets.alertMessages.H4, 1100]
+        return [assets.alertMessages.H4, 1100, "H4"]
     else
-        return [assets.alertMessages.H5, 1300]
+        return [assets.alertMessages.H5, 1300, "H5"]
 }
 
 const getRealLayerPallet = () => {
