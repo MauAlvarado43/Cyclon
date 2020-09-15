@@ -129,7 +129,11 @@
         "category":             "Category",
         "position":             "Position",
         "name":                 "Name",
-        "alerts_close":         "Alerts close on you"
+        "alerts_close":         "Alerts close on you",
+        "appearance":           "Appearance",
+        "lastUpdate":           "Last update",
+        "maxWind":              "Maximum wind speed",
+        "minPressure":          "Minimum pressure"
     },
     "alertMessages":{
         "DT":                   "Tropical Depression",
