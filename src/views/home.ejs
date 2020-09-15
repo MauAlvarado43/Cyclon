@@ -137,8 +137,8 @@
             activeCyclones.forEach(element => {
         
                 let lastPoint =  element.realTrajectory[element.realTrajectory.length - 1]
-                let [category, radious] = getCategoryRadious(lastPoint.windSpeed)
-                let icon = getIcon(category)
+                let [category, radious, categoryTxt] = getCategoryRadious(lastPoint.windSpeed)
+                let icon = getIcon(categoryTxt)
 
                 let distance = getDistance(latUser, lngUser, lastPoint.position.lat, lastPoint.position.lng)
 
