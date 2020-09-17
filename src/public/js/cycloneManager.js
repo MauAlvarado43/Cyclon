@@ -118,6 +118,9 @@ const app = new Vue({
             let trajectorySelected =  this.cyclones[(this.selectedCyclone.split(" ")[0])-1][this.selectedTrajectory]
             let [category, radious] = getCategoryRadious(trajectorySelected[trajectorySelected.length - 1].windSpeed)
 
+            if(!this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active)
+                category = assets.alertMessages[this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category]
+
             if(trajectorySelected.length==0){
 
                 $("#cycloneTable").text("")
