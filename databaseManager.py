@@ -102,7 +102,9 @@ class DBManager:
                 lastCategory = self.getCategory(speedMax)
 
                 self._model.update_one( { "id" : doc["id"]}, { "$set": { "active" : False, "category": lastCategory } })
+                
                 print("Cyclone closed")
+
             else:
                 realTrajectory = doc["realTrajectory"]
                 
