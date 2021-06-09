@@ -6,8 +6,8 @@ import geoip from 'geoip-lite'
 import { errorLog } from '../utils/logger'
 
 passport.use('google-auth',new GoogleStrategy({
-        clientID: '155001320669-kd32n0gk5u8le64bbmtie7d2ebvfujot.apps.googleusercontent.com',
-        clientSecret: 'KAOYHF3jiEHKco7qDSGQ5frg',
+        clientID: '527371050470-3p8l2gkuubnf79dr7j2tr2g5cknepv8b.apps.googleusercontent.com',
+        clientSecret: '--JD-kizC2X9oJsvgdmWZWbq',
         callbackURL: process.env.URL + '/auth/google/callback',
         passReqToCallback: true
 }, async (req, accessToken, refreshToken, profile, done) => {
