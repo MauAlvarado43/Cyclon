@@ -8,7 +8,6 @@ import { errorLog } from '../utils/logger'
 import { sendEmail } from '../utils/email'
 import geoip from 'geoip-lite'
 
-
 const router = Router()
 
 /***************************************
@@ -368,6 +367,7 @@ router.post('/api/mobile/updateLocation', async (req,res) => {
 router.post('/api/mobile/updatePassword', async (req,res) => {
 
     let errors = []
+    let password = decryptAndroid(req.body.password)
 
     if(password.length<8) errors.push({field:'password', error: 'EMPTY_PASSWORD'})
     if(password.length>50) errors.push({field:'password', error: 'MAX_PASSWORD'})
@@ -375,7 +375,7 @@ router.post('/api/mobile/updatePassword', async (req,res) => {
     if(errors.length != 0)
         res.json({'code': 401, 'msg': '500'})
     else
-        User.updateOne({email: encryptAES(decryptAndroid(req.body.email)) }, {$set: { password: encryptAES(decryptAndroid(req.body.password)) } }, (err,raw) => {
+        User.updateOne({email: encryptAES(decryptAndroid(req.body.email)) }, {$set: { password: encryptAES(password) } }, (err,raw) => {
             if(err) 
                 res.json({'code': 401, 'msg': '500'})
             else
@@ -465,6 +465,7 @@ router.post('/api/mobile/updateAllInfo', async (req,res) => {
 })
 
 router.post('/api/mobile/getUser', async (req,res) => {
+
     let doc = await User.find({email: encryptAES(decryptAndroid(req.body.email))})
     res.send(doc[0].name+"/"+doc[0].lastName)
 })

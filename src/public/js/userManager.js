@@ -220,37 +220,39 @@ const app = new Vue({
             if(1<=this.page<=this.maxPage){
                 const response = await fetch("/graphql?query="+(pageUserQuery.replace("$(0)", (this.page - 1) ).replace("$(1)", this.selectedType)))
                 const res = await response.json()
+
+                console.log("/graphql?query="+(pageUserQuery.replace("$(0)", (this.page - 1) ).replace("$(1)", this.selectedType)))
     
                 this.users = res.data.pageUser
 
                 let table = `
                 <table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
                     <tr>
-                        <th>${assets.inputs.name}</th>
-                        <th>${assets.inputs.lastname}</th>
-                        <th>${assets.inputs.email}</th>
-                        <th>${assets.units.latitude.label}</th>
-                        <th>${assets.units.longitude.label}</th>
-                        <th>${assets.inputs.user_type.label}</th>
-                        <th>${assets.inputs.status.label}</th>
-                        <th>${assets.inputs.register.label}</th>
-                        <th>${assets.buttons.upgrade}</th>
-                        <th>${assets.buttons.delete}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.name}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.lastname}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.email}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.units.latitude.label}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.units.longitude.label}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.user_type.label}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.status.label}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.inputs.register.label}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.buttons.upgrade}</th>
+                        <th style="text-align: center; vertical-align: middle;">${assets.buttons.delete}</th>
                     </tr>`
     
                 this.users.forEach(element => {
 
                     table += `<tr>
-                                <td>${decrypt(element.name)}</td>
-                                <td>${decrypt(element.lastName)}</td>
-                                <td>${decrypt(element.email)}</td>
-                                <td>${decrypt(element.location.lat)}</td>
-                                <td>${decrypt(element.location.lng)}</td>
-                                <td>${assets.inputs.user_type.type[element.type]}</td>
-                                <td>${assets.inputs.status.type[(element.verify) ? 1 : 0]}</td>
-                                <td>${assets.inputs.register.type[element.register]}</td>
-                                <td><input class="btn btn-primary" type="button" value="${assets.buttons.upgrade}" onclick="upgradeUser('${element.email}')"></td>
-                                <td><input class="btn btn-primary" type="button" value="${assets.buttons.delete}" onclick="deleteUser('${element.email}')"></td>
+                                <td style="text-align: center; vertical-align: middle;">${decrypt(element.name)}</td>
+                                <td style="text-align: center; vertical-align: middle;">${decrypt(element.lastName)}</td>
+                                <td style="text-align: center; vertical-align: middle;">${decrypt(element.email)}</td>
+                                <td style="text-align: center; vertical-align: middle;">${decrypt(element.location.lat)}</td>
+                                <td style="text-align: center; vertical-align: middle;">${decrypt(element.location.lng)}</td>
+                                <td style="text-align: center; vertical-align: middle;">${assets.inputs.user_type.type[element.type]}</td>
+                                <td style="text-align: center; vertical-align: middle;">${assets.inputs.status.type[(element.verify) ? 1 : 0]}</td>
+                                <td style="text-align: center; vertical-align: middle;">${assets.inputs.register.type[element.register]}</td>
+                                <td style="text-align: center; vertical-align: middle;"><input class="btn btn-primary" type="button" value="${assets.buttons.upgrade}" onclick="upgradeUser('${element.email}')"></td>
+                                <td style="text-align: center; vertical-align: middle;"><input class="btn btn-primary" type="button" value="${assets.buttons.delete}" onclick="deleteUser('${element.email}')"></td>
                             </tr>`
     
                 })

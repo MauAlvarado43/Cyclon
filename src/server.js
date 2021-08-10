@@ -18,7 +18,6 @@ import { infoLog } from './utils/logger'
 import { decryptAES } from './utils/cipher'
 import requestIP from 'request-ip'
 import fetch from 'node-fetch'
-import CyclonSocket from './config/socket'
 
 // Initialzing packages
 const app = express()
@@ -98,6 +97,8 @@ app.use(require('./routes/unregister'))
 app.use(require('./routes/register'))
 app.use(require('./routes/admin')(server))
 app.use(require('./routes/investigator'))
+
+const cyclonSocket = require("./config/socket")(server)
 
 // Start the server
 server.listen(app.get('port'),'0.0.0.0', () => {
