@@ -94,6 +94,7 @@ class HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: SizeConfig.blockSizeVertical * 3),
                   SizedBox(
                       width: SizeConfig.blockSizeVertical * 42,
                       child: Text(AppLocalizations.of(context).your_data, style: labelSubTitleStyle)
@@ -250,9 +251,10 @@ class HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [Text("Cyclon v1.1")]
+                        children: [Text("Cyclon Beta v1.1")]
                       )
-                  )
+                  ),
+                  SizedBox(height: SizeConfig.blockSizeVertical * 3)
                 ]
             )
           )

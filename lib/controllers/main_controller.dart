@@ -85,11 +85,9 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
                                 "email": encryptAPI(graphResponse["email"]),
                                 "name": encryptAPI(graphResponse["first_name"]),
                                 "last_name": encryptAPI(graphResponse["last_name"]),
-                                "location": {
-                                  "lat": encryptAPI(geolocation.latitude.toString()),
-                                  "lng": encryptAPI(geolocation.longitude.toString())
-                                },
-                                "password": encryptAPI(graphResponse["id"])
+                                "lat": encryptAPI(geolocation.latitude.toString()),
+                                "lng": encryptAPI(geolocation.longitude.toString()),
+                                "id": encryptAPI(graphResponse["id"])
                               };
 
                               var response = await HttpHandler.postRequest(IP + "/auth/mobile/facebook", data, {"Content-Type": "application/json"}, 20000);
@@ -105,9 +103,9 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
                                 await prefs.setString('name', encryptAPI(_response.toString().split("/")[0]));
                                 await prefs.setString('last_name', encryptAPI(_response.toString().split("/")[1]));
                                 await prefs.setString('email', data["email"]);
-                                await prefs.setString('password', data["password"]);
-                                await prefs.setString('lat', data["location"]["lat"]);
-                                await prefs.setString('lng', data["location"]["lng"]);
+                                await prefs.setString('password', data["id"]);
+                                await prefs.setString('lat', data["lat"]);
+                                await prefs.setString('lng', data["lng"]);
                                 await prefs.setInt('type_login', 3);
                                 await prefs.setBool('darkMode', false);
                                 await prefs.setBool('notifications', true);
@@ -172,11 +170,9 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
                                 "email": encryptAPI(googleSignInAccount.email),
                                 "name": encryptAPI(googleSignInAccount.displayName.split(" ")[0]),
                                 "last_name": encryptAPI(googleSignInAccount.displayName.split(" ")[1]),
-                                "location": {
-                                  "lat": encryptAPI(geolocation.latitude.toString()),
-                                  "lng": encryptAPI(geolocation.longitude.toString())
-                                },
-                                "password": encryptAPI(googleSignInAccount.id)
+                                "lat": encryptAPI(geolocation.latitude.toString()),
+                                "lng": encryptAPI(geolocation.longitude.toString()),
+                                "id": encryptAPI(googleSignInAccount.id)
                               };
 
                               var response = await HttpHandler.postRequest(IP + "/auth/mobile/google", data, {"Content-Type": "application/json"}, 1000);
@@ -194,9 +190,9 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin{
                                 await prefs.setString('name', encryptAPI(_response.toString().split("/")[0]));
                                 await prefs.setString('last_name', encryptAPI(_response.toString().split("/")[1]));
                                 await prefs.setString('email', data["email"]);
-                                await prefs.setString('password', data["password"]);
-                                await prefs.setString('lat', data["location"]["lat"]);
-                                await prefs.setString('lng', data["location"]["lng"]);
+                                await prefs.setString('password', data["id"]);
+                                await prefs.setString('lat', data["lat"]);
+                                await prefs.setString('lng', data["lng"]);
                                 await prefs.setInt('type_login', 2);
                                 await prefs.setBool('darkMode', false);
                                 await prefs.setBool('notifications', true);

@@ -11,7 +11,7 @@
     <application
         android:usesCleartextTraffic="true"
         android:label="Cyclon"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_foreground">
 
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>
