@@ -135,7 +135,7 @@ router.post('/auth/mobile/facebook', (req,res) => {
 
         if(err) errorLog.error(err)
 
-		if(docs.length==0){
+		if(docs.length==0) {
 
             const newUser = new User()
             
@@ -233,10 +233,10 @@ router.post('/auth/mobile/register', (req,res, next) => {
     passport.authenticate('local-signup', function(err, user, info) {
         
         if (err)
-            return res.json({'code':401,'msg':err})
+            return res.json({'code':401,'msg': err})
         
         if (!user)
-            return res.json({'code':401,'msg':['BAD_INPUT']})
+            return res.json({'code':401,'msg': ['BAD_INPUT']})
         
 
         sendEmail(decryptAES(user.email), 'verification', language, user.name + ' ' + user.lastName, user.type, user.email)

@@ -59,11 +59,14 @@
         }
     </style>
 
-    <%- include("./components/loader") %>
-
     <div id="windy" class="map" style="height: 100%; width: 100%;"></div>
  
 </body>
+
+
+<script>
+    const assets = JSON.parse(`<%- JSON.stringify(assets) %>`)
+</script>
 
 <script src="/js/lib/jquery.min.js"></script>
 <script src="/js/lib/popper.min.js"></script>
@@ -80,12 +83,6 @@
 <script src="/js/lib/leaflet.js"></script>
 <script src="/js/lib/libBoot.js"></script>
 <script src="/js/lib/heat_layer.js"></script>
-
-<script>
-
-    const assets = JSON.parse('<%- JSON.stringify(assets) %>')
-
-</script>
 
 <script>
 
@@ -120,7 +117,6 @@
 
             latUser = urlParams.get("lat")
             lngUser =  urlParams.get("lng")
-
         
             activeCyclones.forEach(element => {
         
@@ -267,7 +263,7 @@
                     
                 L.marker([latUser, lngUser], { icon: L.icon({
                     iconUrl: "/images/location.png",
-                    iconSize: [30, 30],
+                    iconSize: [32, 32],
                     popupAnchor: [-3, -76]
                 }) }).addTo(map_const).on('click', (e) => {
                     L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(`<h6 style="color:black;">${assets.you}</h6>`).openOn(map_const)

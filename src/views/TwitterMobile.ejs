@@ -19,13 +19,21 @@
     <link rel="icon" href="/images/favicon.ico">
     
 </head>
-<body data-spy="scroll" data-target=".fixed-top">
 
-    <%- include("./components/loader") %>
+<style type="text/css">
+    html, body {
+        width:100% !important;
+        height: 100% !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+</style>
+
+<body id="body" data-spy="scroll" data-target=".fixed-top">
 
     <style>
         .twitter-timeline {
-            width: 100vw !important;
+            width: 100% !important;
         }
     </style>
 
@@ -39,8 +47,18 @@
     
 </body>
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if(urlParams.get("dark") == "true") {
+        document.getElementById("body").style.backgroundColor = "#292F33"
+        document.getElementsByClassName("twitter-timeline")[0].setAttribute("data-theme", "dark")
 
+    }
+
+</script>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <script src="/js/lib/jquery.min.js"></script>
 <script src="/js/lib/popper.min.js"></script>
