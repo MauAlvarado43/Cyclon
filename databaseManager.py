@@ -4,15 +4,69 @@ from dateutil import parser
 import pymongo
 import requests
 import json
+from math import radians, cos, sin, asin, sqrt
 
 class DBManager:
 
     def __init__(self):
         super(DBManager, self).__init__()
+        # self._mongoClient = pymongo.MongoClient("mongodb://localhost:27017/cyclon")
         self._mongoClient = pymongo.MongoClient("mongodb+srv://CyC1:kybmim-hoqhob-2Doswo@cyc1-p6vhd.mongodb.net/cyclon?retryWrites=true&w=majority")
         self._database = self._mongoClient["cyclon"]
         self._model = self._database["hurricaines"]
         self._openWeather = QueryOpenWeather()
+
+    def getNearestCity(self, lat, lng):
+        f = open('files/cities.json', encoding="utf8")
+        data = json.load(f)
+        distance = 10000000000
+        city = ""
+        country_code = ""
+
+        for _city in data:
+
+            _distance = self.getDistance(lat, lng, float(_city["lat"]), float(_city["lng"]))
+
+            if _distance < distance:
+                city = _city["name"]
+                country_code = _city["country"]
+                distance = _distance
+
+        f.close()
+
+        f = open('files/codes.json', encoding="utf8")
+
+        codes = json.load(f)
+
+        for code in codes:
+
+            if code["code"] == country_code:
+                city = city + ", " + code["name"]
+
+        f.close()
+
+        return {
+            "city": city,
+            "distance": round(distance, 2)
+        }
+
+    def getDistance(self, lat1, lon1, lat2, lon2):
+        
+        lon1 = radians(lon1)
+        lon2 = radians(lon2)
+        lat1 = radians(lat1)
+        lat2 = radians(lat2)
+        
+        # Haversine formula
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    
+        c = 2 * asin(sqrt(a))
+        
+        r = 6371
+        
+        return(c * r)
 
     def getCategory(self, speed):
         if speed < 62:
@@ -137,7 +191,8 @@ class DBManager:
                             "id": doc["id"],
                             "lastPoint": data[0][0],
                             "name": doc["name"],
-                            "category": category
+                            "category": category,
+                            "nearest": self.getNearestCity(data[0][0]["position"]["lat"], data[0][0]["position"]["lng"])
                         }, 
                         "update": True 
                     } , namespace='/api')
@@ -152,7 +207,6 @@ class DBManager:
             if doc.count() == 0:
 
                 data = self.formatPoint(storm)
-
                 category = self.getCategory(data[0][0]["windSpeed"])
 
                 cyclone = {
@@ -187,9 +241,12 @@ class DBManager:
                         "id": storm["id"],
                         "lastPoint": data[0][0],
                         "name": storm["name"],
-                        "category": category
+                        "category": category,
+                        "nearest": self.getNearestCity(data[0][0]["position"]["lat"], data[0][0]["position"]["lng"])
                     }, 
                     "update": False 
                 } , namespace='/api')
+
+                print("Alert emitted")
 
         return alertsToReturn          
