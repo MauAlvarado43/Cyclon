@@ -1,9 +1,16 @@
-#Cyclon
+# cyclon
 
-Cyclon is a project that seeks to alert the coastal population to the appearance of hurricanes.
-The project is developmenting with two programming languages: JavaScript (Node.js) and Python. The first is in charge of
-carry out the rendering of the web page and the API-REST with which the entire system communicates, the
-the second is used to carry out the predictive (K-Means) and mathematical (Vector Sum) models.
+Cyclon project
 
-All the data we work with is true and is obtained from NOAA, through HTTP requests to its API mounted on the URL 
-"https://www.nhc.noaa.gov/CurrentStorms.json". The database was compiled from the same agency.
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
