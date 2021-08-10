@@ -151,7 +151,7 @@ router.post('/auth/mobile/facebook', (req,res) => {
 				)
 			
 				newUser.name = decryptAndroid(req.body.name)
-				newUser.lastName = decryptAndroid(req.body.lastName)
+				newUser.lastName = decryptAndroid(req.body.last_name)
 				newUser.email = userObject.email
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
@@ -194,8 +194,8 @@ router.post('/auth/mobile/google', (req,res) => {
 					decryptAndroid(req.body.id)
 				)
 			
-				newUser.name = decryptAndroid(req.body.givenName)
-				newUser.lastName = decryptAndroid(req.body.familyName)
+				newUser.name = decryptAndroid(req.body.name)
+				newUser.lastName = decryptAndroid(req.body.last_name)
 				newUser.email = userObject.email
 				newUser.location.lat = userObject.lat
 				newUser.location.lng = userObject.lng
