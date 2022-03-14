@@ -37,7 +37,8 @@ passport.use('local-signup', new LocalStrategy({
 
             let geo = geoip.lookup(req.clientIp)
 
-            if(!geo) geo = { ll: [decryptAndroid(req.body.lat), decryptAndroid(req.body.lng)] }
+            if(!geo && req.body.lat) geo = { ll: [decryptAndroid(req.body.lat), decryptAndroid(req.body.lng)] }
+            else geo = {ll: [19, -99]}
 
             if(geo){
 
