@@ -46,6 +46,7 @@ const makeTweetWithImages = (image,status) => {
                         }
 
                         client.post('statuses/update',tweet,(err2,data,response)=>{
+                            console.log("tweeted")
                             if(err2){
                                 console.log(err2)
                             }
