@@ -92,6 +92,12 @@ const app = new Vue({
                     <h3>Escoja un huracán primero</h3>
                 </center>`)
 
+                $("#noaaPanel").text("")
+                $("#noaaPanel").html(`<center">
+                    <br><br><br><br><br><br>
+                    <h3>Escoja un huracán primero</h3>
+                </center>`)
+
                 $("#cycloneTableContent").css("overflow-y","hidden")
 
             }
@@ -110,19 +116,24 @@ const app = new Vue({
             let palette = {}
             let latlngs = []
             let trajectorySelected =  this.cyclones[(this.selectedCyclone.split(" ")[0])-1][this.selectedTrajectory]
+            let [category, radious] = getCategoryRadious(trajectorySelected[trajectorySelected.length - 1].windSpeed)
+
+            if(!this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active)
+                category = assets.alertMessages[this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category]
 
             if(trajectorySelected.length==0){
 
                 $("#cycloneTable").text("")
                 $("#cycloneTable").html(`<center">
                     <br><br><br><br><br><br>
-                    <h3>No hay datos registrados</h3>
+                    <h3>${assets.not_registered}</h3>
                 </center>`)
                 
             }
             else{
 
-                let table = `<table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
+                let table = `            
+                            <table class="table table-sm borderless table-hover" style="background-color: #292736; color: white;">
                                 <tr>
                                     <th>${assets.units.latitude.label}</th>
                                     <th>${assets.units.longitude.label}</th>
@@ -134,19 +145,20 @@ const app = new Vue({
                                 </tr>`
 
                 if(this.selectedTrajectory!='realTrajectory') 
-                    palette = {
-                        0.0: '#0081b6',
-                        0.5: '#895762',
-                        1.0: '#a41214'
-                    }
+                    palette = getPredictedLayerPallet()
                 else
-                    palette = {
-                        0.0: '#00bc79',
-                        0.5: '#887c73',
-                        1.0: '#a9136c'
-                    }
+                    palette = getRealLayerPallet()
+
+                    let maxWind = 0
+                    let minPressure = 10000000000
 
                 trajectorySelected.forEach(element => {
+
+                    if(maxWind < element.windSpeed)
+                        maxWind = element.windSpeed
+
+                    if(minPressure > element.pressure)
+                        minPressure = element.pressure
 
                     table += `<tr>
                                 <td>${element.position.lat}</td>
@@ -155,11 +167,55 @@ const app = new Vue({
                                 <td>${((element.hurrSpeed == 0) ? assets.not_registered : Math.round(element.hurrSpeed * 100) / 100)}</td>
                                 <td>${((element.temperature == 0) ? assets.not_registered : Math.round(element.temperature * 100) / 100)}</td>
                                 <td>${((element.pressure == 0) ? assets.not_registered : Math.round(((element.pressure<100) ? element.pressure*100 : element.pressure) * 100) / 100)}</td>
-                                <td>${new Date (element.date).toLocaleString()}</td>
+                                <td>${moment(element.date).format("MMMM D YYYY, h:mm:ss a")}</td>
                             </tr>`
 
                     latlngs.push([element.position.lat, element.position.lng, element.windSpeed])
-                })      
+                }) 
+                
+                let div = `<center>
+                                <table>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.appearance}:
+                                        </td>
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].appearance).format("MMMM D YYYY, h:mm:ss a")}
+                                        </td>
+                                    </tr>  
+                                        <td style="text-align: left;">  
+                                            ${assets.simbology.lastUpdate}: 
+                                        </td>
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${moment(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].lastUpdate, "YYYYMMDD").fromNow()}
+                                        </td>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.category}: 
+                                        </td>   
+                                        <td style="text-align: left; padding-left: 5px;">
+                                           ${category.toLowerCase()}
+                                        </td>   
+                                    </tr>
+                                    <tr> 
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.maxWind}:
+                                        </td>       
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${Math.round(maxWind * 100) / 100} ${assets.units.windSpeed.unit}
+                                        </td>  
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            ${assets.simbology.minPressure}:
+                                        </td>    
+                                        <td style="text-align: left; padding-left: 5px;">
+                                            ${minPressure} ${assets.units.pressure.unit}
+                                        </td> 
+                                    </tr>
+                                </table>
+                            </center>
+                            <br>`
                 
                 lastLayer = new L.Hotline(latlngs, {
                     min: 119,
@@ -170,7 +226,7 @@ const app = new Vue({
                     outlineWidth: 1
                 }).addTo(map_const)
 
-                lastLayer.on('click', function (e) {
+                lastLayer.on('click', (e) => {
 
                     let latClicked = e.latlng.lat
                     let lngClicked = e.latlng.lng
@@ -180,8 +236,8 @@ const app = new Vue({
                     trajectorySelected.forEach(item => {
                         let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
                         if(distanceTemp<distance){
-                            distance = distanceTemp;
-                            toShow = item;
+                            distance = distanceTemp
+                            toShow = item
                         }
                     }) 
 
@@ -201,13 +257,13 @@ const app = new Vue({
         
                 })
 
-                lastLayer.on('mouseover', function () {
+                lastLayer.on('mouseover', () => {
                     lastLayer.setStyle({
                     weight: 4,
                     })
                 })
         
-                lastLayer.on('mouseout', function () {
+                lastLayer.on('mouseout', () => {
                     lastLayer.setStyle({
                     weight: 3,
                     })
@@ -223,44 +279,44 @@ const app = new Vue({
                         trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lat,
                         trajectorySelected[Math.round(trajectorySelected.length / 2)].position.lng], 4)
                 }
-
                 
-                // if(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].active){
+                var icon = L.icon({
+                    iconUrl: getIcon(this.cyclones[(this.selectedCyclone.split(" ")[0])-1].category),
+                    iconSize: [35, 35],
+                    popupAnchor: [-3, -76]
+                })
 
-                //     var icon = L.icon({
-                //         iconUrl: '../../img/cyclone.png',
-                //         iconSize: [35, 35],
-                //         popupAnchor: [-3, -76]
-                //     })
+                if(this.selectedTrajectory == 'realTrajectory')
+                    var marker = L.marker([trajectorySelected[trajectorySelected.length-1].position.lat, trajectorySelected[trajectorySelected.length-1].position.lng], { icon: icon }).addTo(map_const)
+                else 
+                    var marker = L.marker([trajectorySelected[0].position.lat, trajectorySelected[0].position.lng], { icon: icon }).addTo(map_const)
 
-                //     var marker = L.marker([json[0].realTrajectory[json[0].realTrajectory.length-1].lat, json[0].realTrajectory[json[0].realTrajectory.length-1].lng], { icon: icon }).addTo(map_const);
-                    
-                //     marker.on('click', function (e) {
-                //         map_const.fitBounds(hotlineLayer.getBounds());
-                //         L.popup()
-                //             .setLatLng([e.latlng.lat, e.latlng.lng])
-                //             .setContent(`<article class="Popup" onclick="ElementoClick(\"Maria_2017\",this)"><header><h4 class="Titulo">${json[0].name}</h4></header><br><div class="Datos MostrarDatosHuracan"><h6 style=\"color:black;\">Posición: ${json[0].realTrajectory[json[0].realTrajectory.length-1].lat}N,  ${json[0].realTrajectory[json[0].realTrajectory.length-1].lng}W</h6><br></div></article>`)
-                //             .openOn(map_const)
-                //     })
+                marker.on('click', (e) => {
+                    map_const.fitBounds(lastLayer.getBounds())
+                    L.popup()
+                        .setLatLng([e.latlng.lat, e.latlng.lng])
+                        .setContent(`<h4 style="color:black;">${ this.cyclones[(this.selectedCyclone.split(" ")[0])-1].name}</h4><h6 style="color:black;">${assets.simbology.position}: ${trajectorySelected[trajectorySelected.length-1].position.lat}N,  ${trajectorySelected[trajectorySelected.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`)
+                        .openOn(map_const)
+                })  
 
-                //     lastmarker = marker
-
-                // }
+                lastmarker = marker             
 
                 map_const.fitBounds(lastLayer.getBounds())
 
                 table += `</table>`
                 $("#cycloneTable").text("")
-                $("#cycloneTable").html(table)
+                $("#cycloneTable").html(div + table)
 
                 $("#cycloneTableContent").css("overflow-y","hidden")
 
-                if(trajectorySelected.length>15)
+                if(trajectorySelected.length>10)
                     $("#cycloneTableContent").css("overflow-y","scroll")
             }
             
         },
         showGraph(){
+
+            if(this.selectedCyclone == '') return
 
             if(this.selectedGraph == "") this.selectedGraph = 'windSpeed'
             if(this.selectedTrajectory == "") this.selectedTrajectory = 'realTrajectory'
@@ -285,7 +341,7 @@ const app = new Vue({
             else 
                 $("#graph").html(`<center>
                     <br><br><br><br><br><br>
-                    <h3>No hay datos registrados</h3>
+                    <h3>${assets.not_registered}</h3>
                 </center>`)
 
         },
@@ -304,3 +360,5 @@ const app = new Vue({
         this.searhCyclones()
     }
 })
+
+// https://www.nhc.noaa.gov/index-at-sp.xml

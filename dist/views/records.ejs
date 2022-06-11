@@ -1,216 +1,226 @@
+<% if(context.type==null || context.type==undefined || context.type==0){ %>
+    <script> window.location.href="/" </script>
+<% } else { %>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <meta name="description" content="Free cyclone's alerts">
+        <meta name="author" content="Cyclon">
     
-    <meta name="description" content="Free cyclone's alerts">
-    <meta name="author" content="Cyclon">
-
-    <title> <%= title %> </title>
-
-    <meta property="og:site_name" content="Cyclon" />
-	<meta property="og:site" content="http://cyclon.com.mx/"/>
-	<meta property="og:title" content="<%= title %>"/>
-	<meta property="og:description" content="Main page" />
-	<meta property="og:image" content="/images/favicon.ico"/>
-	<meta property="og:url" content="http://cyclon.com.mx/"/>
-	<meta property="og:type" content="article" />
-
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/fontawesome-all.css" rel="stylesheet">
-    <link href="/css/swiper.css" rel="stylesheet">
-	<link href="/css/magnific-popup.css" rel="stylesheet">
-    <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/alert.css" rel="stylesheet">
-    <link href="/css/morris.css" rel="stylesheet">
-
-    <link rel="icon" href="/images/favicon.ico">
+        <title> <%= title %> </title>
     
-</head>
-<body data-spy="scroll" data-target=".fixed-top">
-
-    <%- include("./components/loader") %>
-
-    <%- include("./components/navbar-register",{assets: assets}) %> 
-
-    <div id="app" class="tabs" style="height: 58rem;">
-        <div class="container">
-            <div class="row justify-content-center" style="margin-top: 3%; text-align: center;">
-
-                <div class="col-12 text-center" style="margin: 0 auto;">
-
-                    <h2><%= assets.parameters %></h2>
-                    
-                    <form class="form-inline justify-content-center" style="width: 100% !important; margin: none !important;">
+        <meta property="og:site_name" content="Cyclon" />
+        <meta property="og:site" content="http://cyclon.com.mx/"/>
+        <meta property="og:title" content="<%= title %>"/>
+        <meta property="og:description" content="Main page" />
+        <meta property="og:image" content="/images/favicon.ico"/>
+        <meta property="og:url" content="http://cyclon.com.mx/"/>
+        <meta property="og:type" content="article" />
+    
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+        <link href="/css/bootstrap.css" rel="stylesheet">
+        <link href="/css/fontawesome-all.css" rel="stylesheet">
+        <link href="/css/swiper.css" rel="stylesheet">
+        <link href="/css/magnific-popup.css" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet">
+        <link href="/css/alert.css" rel="stylesheet">
+        <link href="/css/morris.css" rel="stylesheet">
+    
+        <link rel="icon" href="/images/favicon.ico">
+        
+    </head>
+    <body data-spy="scroll" data-target=".fixed-top">
+    
+        <%- include("./components/loader") %>
+    
+        <%- include("./components/navbar-register",{assets: assets}) %> 
+    
+        <div id="app" class="tabs" style="height: 58rem;">
+            <div class="container">
+                <div class="row justify-content-center" style="margin-top: 3%; text-align: center;">
+    
+                    <div class="col-12 text-center" style="margin: 0 auto;">
+    
+                        <h2><%= assets.parameters %></h2>
+                        
+                        <form class="form-inline justify-content-center" style="width: 100% !important; margin: none !important;">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+    
+                                        <div style="margin-right: 1%;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <label for="selectYear"><%= assets.inputs.year %>: </label>
+                                                </div>
+                                                <div class="row">
+                                                    <input class="form-control form-control-sm" style="width: 5rem;" type="number" min="1860" id="selectYear" v-model="year" @keyup.enter="searhCyclones">
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div style="margin-right: 1%;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <label for="searchButton">&nbsp;</label>
+                                                </div>
+                                                <div class="row">
+                                                    <input class="form-control form-control-sm" id="searchButton" style="width: 5rem;" type="button" value="<%= assets.buttons.search %>" @click="searhCyclones">
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div style="margin-right: 1%;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <label for="selectCyclone"><%= assets.inputs.cyclone %>: </label>
+                                                </div>
+                                                <div class="row">
+                                                    <select class="form-control form-control-sm" style="width: 12rem;" @change="showCyclone" v-model="selectedCyclone" id="selectCyclone">
+                                                        <option disabled value=""><%= assets.inputs.select %></option>
+                                                        <option v-for="(cyclone, index) in cyclones" v-bind:class="{ cycloneActive: cyclone.active }">{{index+1}} {{cyclone.name}}</option>
+                                                    </select>                                            
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div style="margin-right: 1%;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <label for="selectTrajectory"><%= assets.inputs.trajectory %>: </label>
+                                                </div>
+                                                <div class="row">
+                                                    <select class="form-control form-control-sm" style="width: 12rem;" @change="showCyclone" v-model="selectedTrajectory" :disabled="selectedCyclone==''" id="selectTrajectory">
+                                                        <option disabled value=""><%= assets.inputs.select %></option>
+                                                        <option value="realTrajectory"><%= assets.simbology.real %></option>
+                                                        <option value="predictedTrajectory"><%= assets.simbology.predicted %></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <label for="selectGraph"><%= assets.inputs.graph %>: </label>
+                                                </div>
+                                                <div class="row">
+                                                    <select class="form-control form-control-sm" style="width: 12rem;" @change="showGraph" v-model="selectedGraph" :disabled="selectedCyclone==''" id="selectGraph">
+                                                        <option disabled value=""><%= assets.inputs.select %></option>
+                                                        <option value="windSpeed"><%= assets.units.windSpeed.label %></option>
+                                                        <option value="hurrSpeed"><%= assets.units.hurrSpeed.label %></option>
+                                                        <option value="temperature"><%= assets.units.temperature.label %></option>
+                                                        <option value="pressure"><%= assets.units.pressure.label %></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </div>
+                        </form>
+    
+                        <br><br>
+    
+                        <div class="justify-content-center">
+                            <ul class="nav nav-tabs" id="lenoTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="nav-tab-1" @click="reloadMap" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true"><i class="fas fa-map"></i><%= assets.simbology.map %></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="nav-tab-2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false"><i class="fas fa-table"></i><%= assets.simbology.tab %></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="nav-tab-3" @click="resizeMorris" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false"><i class="fas fa-chart-area"></i><%= assets.simbology.graphs %></a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+    
+                    <div class="tab-content" id="lenoTabsContent">
+                        
+                        <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
                             <div class="container">
-                                <div class="row justify-content-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div>
 
-                                    <div style="margin-right: 1%;">
-                                        <div class="container">
-                                            <div class="row">
-                                                <label for="selectYear"><%= assets.inputs.year %>: </label>
-                                            </div>
-                                            <div class="row">
-                                                <input class="form-control form-control-sm" style="width: 5rem;" type="number" min="1860" id="selectYear" v-model="year" @keyup.enter="searhCyclones">
-                                            </div>
+                                            <%- include("./components/map",{assets: assets}) %>
+
+
                                         </div>
                                     </div>
-
-                                    <div style="margin-right: 1%;">
-                                        <div class="container">
-                                            <div class="row">
-                                                <label for="searchButton">&nbsp;</label>
-                                            </div>
-                                            <div class="row">
-                                                <input class="form-control form-control-sm" id="searchButton" style="width: 5rem;" type="button" value="<%= assets.buttons.search %>" @click="searhCyclones">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="margin-right: 1%;">
-                                        <div class="container">
-                                            <div class="row">
-                                                <label for="selectCyclone"><%= assets.inputs.cyclone %>: </label>
-                                            </div>
-                                            <div class="row">
-                                                <select class="form-control form-control-sm" style="width: 12rem;" @change="showCyclone" v-model="selectedCyclone" id="selectCyclone">
-                                                    <option disabled value=""><%= assets.inputs.select %></option>
-                                                    <option v-for="(cyclone, index) in cyclones" v-bind:class="{ cycloneActive: cyclone.active }">{{index+1}} {{cyclone.name}}</option>
-                                                </select>                                            
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="margin-right: 1%;">
-                                        <div class="container">
-                                            <div class="row">
-                                                <label for="selectTrajectory"><%= assets.inputs.trajectory %>: </label>
-                                            </div>
-                                            <div class="row">
-                                                <select class="form-control form-control-sm" style="width: 12rem;" @change="showCyclone" v-model="selectedTrajectory" :disabled="selectedCyclone==''" id="selectTrajectory">
-                                                    <option disabled value=""><%= assets.inputs.select %></option>
-                                                    <option value="realTrajectory"><%= assets.simbology.real %></option>
-                                                    <option value="predictedTrajectory"><%= assets.simbology.predicted %></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div class="container">
-                                            <div class="row">
-                                                <label for="selectGraph"><%= assets.inputs.graph %>: </label>
-                                            </div>
-                                            <div class="row">
-                                                <select class="form-control form-control-sm" style="width: 12rem;" @change="showGraph" v-model="selectedGraph" :disabled="selectedCyclone==''" id="selectGraph">
-                                                    <option disabled value=""><%= assets.inputs.select %></option>
-                                                    <option value="windSpeed"><%= assets.units.windSpeed.label %></option>
-                                                    <option value="hurrSpeed"><%= assets.units.hurrSpeed.label %></option>
-                                                    <option value="temperature"><%= assets.units.temperature.label %></option>
-                                                    <option value="pressure"><%= assets.units.pressure.label %></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
-                    </form>
-
-                    <br><br>
-
-                    <div class="justify-content-center">
-                        <ul class="nav nav-tabs" id="lenoTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="nav-tab-1" @click="reloadMap" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true"><i class="fas fa-map"></i><%= assets.simbology.map %></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="nav-tab-2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false"><i class="fas fa-table"></i><%= assets.simbology.tab %></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="nav-tab-3" @click="resizeMorris" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false"><i class="fas fa-chart-area"></i><%= assets.simbology.graphs %></a>
-                            </li>
-                        </ul>
+                        </div>
+    
+                        <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab-2">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12" id="cycloneTableContent">
+                                        <div id="cycloneTable" style="height: 30rem; color: white;">
+                                        </div>
+                                    </div>          
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="tab-3">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="graph" style="height: 30rem; color: white;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
-                    
+    
                 </div>
-
-                <div class="tab-content" id="lenoTabsContent">
-                    
-                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div>
-                                        <%- include("./components/map",{assets: assets}) %> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab-2">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12" id="cycloneTableContent">
-                                    <div id="cycloneTable" style="height: 30rem; color: white;">
-                                    </div>
-                                </div>          
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="tab-3">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div id="graph" style="height: 30rem; color: white;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-
             </div>
         </div>
-    </div>
+        
+        <%- include("./components/footer",{assets: assets}) %> 
     
-    <%- include("./components/footer",{assets: assets}) %> 
-
-</body>
-
-<script src="/js/lib/jquery.min.js"></script>
-<script src="/js/lib/popper.min.js"></script>
-<script src="/js/lib/bootstrap.min.js"></script>
-<script src="/js/lib/jquery.easing.min.js"></script>
-<script src="/js/lib/swiper.min.js"></script>
-<script src="/js/lib/jquery.magnific-popup.js"></script>
-<script src="/js/lib/morphext.min.js"></script>
-<script src="/js/lib/validator.min.js"></script>
-<script src="/js/lib/scripts.js"></script>
-<script src="/js/lib/raphael.js"></script>
-<script src="/js/lib/morris.min.js"></script>
-<script src="/js/lib/vue.js"></script>
-<script src="/js/lib/heat_layer.js"></script>
-<script src="/js/lib/cycloneUtils.js"></script>
-<script src="/js/cycloneManager.js"></script>
-<script src="/js/graphGenerator.js"></script>
-
-<script>
-    const assets = JSON.parse('<%- JSON.stringify(assets) %>')
-
-    document.getElementById("homeButton").setAttribute("href","/home")
-    document.getElementById("homeImageButton").setAttribute("href","/home")
-    document.getElementById("privacyButton").setAttribute("href","/privacy")
-    document.getElementById("termsButton").setAttribute("href","/terms")
-    document.getElementById("recordsButton").setAttribute("href","#")
-    document.getElementById("recordsButton").setAttribute("class","nav-link page-scroll active")
-    document.getElementById("selectYear").setAttribute("max",(new Date()).getFullYear())
-</script>
-
+    </body>
+    
+    <script src="/js/lib/moment-with-locales.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/popper.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/jquery.easing.min.js"></script>
+    <script src="/js/lib/swiper.min.js"></script>
+    <script src="/js/lib/jquery.magnific-popup.js"></script>
+    <script src="/js/lib/morphext.min.js"></script>
+    <script src="/js/lib/validator.min.js"></script>
+    <script src="/js/lib/scripts.js"></script>
+    <script src="/js/lib/raphael.js"></script>
+    <script src="/js/lib/morris.min.js"></script>
+    <script src="/js/lib/vue.js"></script>
+    <script src="/js/lib/heat_layer.js"></script>
+    <script src="/js/lib/cycloneUtils.js"></script>
+    <script src="/js/cycloneManager.js"></script>
+    <script src="/js/graphGenerator.js"></script>
+    
+    <script>
+        const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+        moment.locale(assets.locale)
+    
+        document.getElementById("homeButton").setAttribute("href","/home")
+        document.getElementById("homeImageButton").setAttribute("href","/home")
+        document.getElementById("privacyButton").setAttribute("href","/privacy")
+        document.getElementById("termsButton").setAttribute("href","/terms")
+        document.getElementById("recordsButton").setAttribute("href","#")
+        document.getElementById("recordsButton").setAttribute("class","nav-link page-scroll active")
+        document.getElementById("selectYear").setAttribute("max",(new Date()).getFullYear())
+        
+    </script>
+    
 </html>
+<% } %>

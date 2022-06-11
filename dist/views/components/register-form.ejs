@@ -29,7 +29,7 @@
 
                     <div class="form-group">
                         <label for="emailRegister"><%= assets.inputs.email %></label>
-                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="register">
+                        <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="example@example.com" v-model="email" @keyup.enter="register" autocomplete="email">
                         <ul>
                             <li v-for="msg of registerErrors.email" style="color: red; margin-left: 5%;">{{msg}}</li>
                         </ul>
@@ -37,12 +37,12 @@
 
                     <div class="form-group">
                         <label for="passwordRegister"><%= assets.inputs.password %></label>
-                        <input type="password" class="form-control" id="passwordRegister" placeholder="********" v-model="password" @keyup.enter="register">
+                        <input type="password" class="form-control" id="passwordRegister" placeholder="********" v-model="password" @keyup.enter="register" autocomplete="new-password">
                     </div>
 
                     <div class="form-group">
                         <label for="confirmPasswordRegister"><%= assets.inputs.confirmp %></label>
-                        <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="********" v-model="confirmPassword" @keyup.enter="register">
+                        <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="********" v-model="confirmPassword" @keyup.enter="register" autocomplete="new-password">
                         <ul>
                             <li v-for="msg of registerErrors.password" style="color: red; margin-left: 5%;">{{msg}}</li>
                         </ul>

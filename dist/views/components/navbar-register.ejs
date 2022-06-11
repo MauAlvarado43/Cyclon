@@ -17,7 +17,7 @@
 
             <% if(context.type==0){ %>
                 <li class="nav-item dropdown" id="configuration">
-                    <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.config).toUpperCase() %></a>
+                    <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.config).toUpperCase() %></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/update" id="update"><span class="item-text"><%= (assets.buttons.update).toUpperCase() %></span></a>
                         <div class="dropdown-items-divide-hr"></div>
@@ -30,7 +30,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.config).toUpperCase() %></a>
+                    <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.config).toUpperCase() %></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/update" id="update"><span class="item-text"><%= (assets.buttons.update).toUpperCase() %></span></a>
                         <div class="dropdown-items-divide-hr"></div>
@@ -39,7 +39,22 @@
                 </li>
             <% } else if(context.type==2){ %>
 
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" style="cursor: pointer;" id="recordsButton" href="/records"><%= (assets.buttons.cyclone_history).toUpperCase() %></a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" style="cursor: pointer;" id="usersButton" href="/users"><%= (assets.buttons.users).toUpperCase() %></a>
+                </li>
+
+                <li class="nav-item dropdown" id="configuration">
+                    <a class="nav-link dropdown-toggle page-scroll" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= (assets.buttons.config).toUpperCase() %></a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/update" id="update"><span class="item-text"><%= (assets.buttons.update).toUpperCase() %></span></a>
+                        <div class="dropdown-items-divide-hr"></div>
+                        <a class="dropdown-item" href="/logout"><span class="item-text"><%= (assets.buttons.logout).toUpperCase() %></span></a>
+                    </div>
+                </li>
                 
             <% } else { %>
                 <script>

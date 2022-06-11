@@ -1,0 +1,211 @@
+<% if(context.type==null || context.type==undefined || context.type==0 || context.type==1){ %>
+    <script> window.location.href="/" </script>
+<% } else { %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <meta name="description" content="Free cyclone's alerts">
+        <meta name="author" content="Cyclon">
+    
+        <title> <%= title %> </title>
+    
+        <meta property="og:site_name" content="Cyclon" />
+        <meta property="og:site" content="http://cyclon.com.mx/"/>
+        <meta property="og:title" content="<%= title %>"/>
+        <meta property="og:description" content="Main page" />
+        <meta property="og:image" content="/images/favicon.ico"/>
+        <meta property="og:url" content="http://cyclon.com.mx/"/>
+        <meta property="og:type" content="article" />
+    
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+        <link href="/css/bootstrap.css" rel="stylesheet">
+        <link href="/css/fontawesome-all.css" rel="stylesheet">
+        <link href="/css/swiper.css" rel="stylesheet">
+        <link href="/css/magnific-popup.css" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet">
+        <link href="/css/alert.css" rel="stylesheet">
+        <link href="/css/morris.css" rel="stylesheet">
+    
+        <link rel="icon" href="/images/favicon.ico">
+        
+    </head>
+    <body data-spy="scroll" data-target=".fixed-top">
+    
+        <%- include("./components/loader") %>
+    
+        <%- include("./components/navbar-register",{assets: assets}) %> 
+
+        <div id="app" class="tabs" style="max-height: 90rem;">
+
+            <div class="container">
+                <div class="row justify-content-center" style="margin-top: 3%; text-align: center;">
+    
+                    <div class="col-12 text-center" style="margin: 0 auto;">
+
+                        <div class="row justify-content-center">
+
+                            <h2><%= assets.parameters %></h2>
+
+                        <form class="form-inline justify-content-center" style="width: 100% !important; margin: none !important;">
+                            <div class="container">
+                                <div class="row justify-content-center">
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="selectYear"><%= assets.inputs.page %>: </label>
+                                            </div>
+                                            <div class="row">
+                                                <input class="form-control form-control-sm" style="width: 5rem; text-align: center;" type="number" min="1" id="page" @keyup.enter="getUserPage">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="searchButton">&nbsp;</label>
+                                            </div>
+                                            <div class="row">
+                                                <input class="form-control form-control-sm" id="searchButton" style="width: 5rem;" type="button" value="<%= assets.buttons.get %>" @click="getUserPage">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="selectCyclone"><%= assets.inputs.user_type.label %>: </label>
+                                            </div>
+                                            <div class="row">
+                                                <select v-model="selectedType" class="form-control form-control-sm" style="width: 8rem;" @change="getUserPage">
+                                                    <option value="0" selected>Normales</option>
+                                                    <option value="1">Investigadores</option>
+                                                </select>                                       
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="selectTrajectory"><%= assets.inputs.page %>: </label>
+                                            </div>
+                                            <div class="row">
+                                                <input class="form-control form-control-sm" type="button" value="<" @click="decreasePage">&nbsp;
+                                                <input style="width: 3rem; text-align: center;" class="form-control form-control-sm" type="text" v-model="page" disabled>&nbsp;
+                                                <input class="form-control form-control-sm" type="button" value=">" @click="increasePage">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row justify-content-center">
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="selectYear"><%= assets.inputs.email %>: </label>
+                                            </div>
+                                            <div class="row">
+                                                <input class="form-control form-control-sm" style="width: 21.3rem;" type="text" id="selectYear" v-model="email" @keyup.enter="searchUser">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-right: 1%;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <label for="searchButton">&nbsp;</label>
+                                            </div>
+                                            <div class="row">
+                                                <input class="form-control form-control-sm" id="searchButton" style="width: 5rem;" type="button" value="<%= assets.buttons.search %>" @click="searchUser">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                        </div>
+
+                        <div class="row justify-content-center" style="margin-top: 3% !important; vertical-align: middle;">
+                            <div id="usersTable" style="overflow:scroll; overflow-x: hidden; max-height: 26rem; width: 70rem; color: white; min-height: 8rem; vertical-align: middle;">
+                            </div>
+                        </div>
+
+                        <br><br>
+
+                        <h2>Distrubución de usuarios</h2>
+
+                        <div class="row justify-content-center" style="margin-top: 3% !important; vertical-align: middle;">
+                            <div class="row justify-content-center">
+                                <div class="col-6">
+                                    <h4>Por tipo</h4>
+                                    <div id="graphUserType" style="height: 15rem; width: 30rem; color: white;"></div>
+                                </div>
+    
+                                <div class="col-6">
+                                    <h4>Por registro</h4>
+                                    <div id="graphUserRegister" style="height: 15rem; width: 30rem; color: white;"></div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">  
+                                <div class="col-12">
+                                    <h4>Por verificación</h4>
+                                    <div id="graphUserVerified" style="height: 15rem; width: 30rem; color: white;"></div>
+                                </div>                          
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <%- include("./components/footer",{assets: assets}) %> 
+    
+    </body>
+    
+    <script src="/js/lib/moment-with-locales.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/popper.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/jquery.easing.min.js"></script>
+    <script src="/js/lib/swiper.min.js"></script>
+    <script src="/js/lib/jquery.magnific-popup.js"></script>
+    <script src="/js/lib/morphext.min.js"></script>
+    <script src="/js/lib/validator.min.js"></script>
+    <script src="/js/lib/scripts.js"></script>
+    <script src="/js/lib/raphael.js"></script>
+    <script src="/js/lib/morris.min.js"></script>
+    <script src="/js/lib/JSEncrypt.js"></script>
+    <script src="/js/cipher.js"></script>
+    <script src="/js/lib/vue.js"></script>
+    <script src="/js/graphGenerator.js"></script>
+    <script src="/js/userManager.js"></script>
+    <script src="/js/lib/alert.js"></script>
+    
+    <script>
+        const assets = JSON.parse('<%- JSON.stringify(assets) %>')
+        moment.locale(assets.locale)
+    
+        document.getElementById("homeButton").setAttribute("href","/home")
+        document.getElementById("homeImageButton").setAttribute("href","/home")
+        document.getElementById("privacyButton").setAttribute("href","/privacy")
+        document.getElementById("termsButton").setAttribute("href","/terms")
+        document.getElementById("usersButton").setAttribute("href","#")
+        document.getElementById("usersButton").setAttribute("class","nav-link page-scroll active")
+        
+    </script>
+    
+</html>
+<% } %>

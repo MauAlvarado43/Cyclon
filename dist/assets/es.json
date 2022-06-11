@@ -8,7 +8,9 @@
         "update_info":          "Actualizar datos",
         "verify":               "Verificación",
         "recoverPassword":      "Recuperar contraseña",
-        "records":              "Registro de huracanes"
+        "records":              "Registro de huracanes",
+        "users":                "Usuarios",
+        "config":               "Configuración"
     },
     "inputs":{
         "email":                "Correo electrónico",
@@ -25,7 +27,32 @@
         "year":                 "Año",
         "cyclone":              "Huracán",
         "trajectory":           "Trayectoria",
-        "graph":                "Gráfica"
+        "graph":                "Gráfica",
+        "page":                 "Página",
+        "status": {
+            "label":            "Estado",
+            "type": [
+                                "Sin verificar", 
+                                "Verificado"
+            ]
+        },
+        "register": {
+            "label":            "Tipo de registro",
+            "type": [
+                                "Local",
+                                "Facebook",
+                                "Google"
+            ]
+        },
+        "user_type": {
+            "label":            "Tipo de usuario",
+            "type":  [
+                                "Normal",
+                                "Investigador",
+                                "Administrador"
+            ]
+        },
+        "persons":              "Personas"
     },
     "buttons": {
         "login" :               "Iniciar Sesión",
@@ -46,30 +73,43 @@
         "resend_email":         "Reenviar correo de verificación",
         "send_recover":         "Enviar correo de recuperación",
         "convert_scientist":    "Ser Investigador",
-        "search":               "Buscar"
+        "search":               "Buscar",
+        "cyclones":             "Huracanes",
+        "config_server":        "Configuración de Cyclon",
+        "users":                "Usuarios",
+        "get":                  "Obtener",
+        "delete":               "Eliminar",
+        "upgrade":              "Privilegiar",
+        "activateIsolines":     "Isolíneas",
+        "activateGrid":         "Cuadrícula",
+        "activateAnimations":   "Animaciones"
     },
     "units": {
         "windSpeed": {
-            "label": "Vientos",
-            "unit": "km/h"
+            "label":            "Vientos",
+            "unit":             "km/h"
         },
         "hurrSpeed": {
-            "label": "Velocidad",
-            "unit": "km/h"
+            "label":            "Velocidad",
+            "unit":             "km/h"
         },
         "temperature": {
-            "label": "Temperatura",
-            "unit": "°C"
+            "label":            "Temperatura",
+            "unit":             "°C"
         },
         "pressure": {
-            "label": "Presión",
-            "unit": "mB"
+            "label":            "Presión",
+            "unit":             "mB"
         },
-        "latitude":{
-            "label": "Latitud"
+        "latitude": {
+            "label":            "Latitud"
         },
-        "longitude":{
-            "label": "Longitud"
+        "longitude": {
+            "label":            "Longitud"
+        },
+        "distance": {
+            "label":         "Distancia",
+            "unit":             "km"
         }
     },
     "simbology":{
@@ -83,17 +123,36 @@
         "title":                "Simbología",
         "subtitle":             "Consulta los fenómenos meteorológicos actuales",
         "graphs":               "Gráficas",
+        "noaa_files":           "Información de la NOAA",
         "map":                  "Mapa",
-        "tab":                  "Tabulación"
+        "tab":                  "Tabulación",
+        "category":             "Categoría",
+        "position":             "Posición",
+        "name":                 "Nombre",
+        "alerts_close":         "Alertas cerca de ti",
+        "appearance":           "Aparición",
+        "lastUpdate":           "Última actualización",
+        "maxWind":              "Vientos máximos",
+        "minPressure":          "Presión mínima"
     },
     "alertMessages":{
         "DT":                   "Depresión Tropical",
-        "ST":                   "Tormenta Tropical",
+        "TT":                   "Tormenta Tropical",
         "H1":                   "Huracán Categoría 1",
         "H2":                   "Huracán Categoría 2",
         "H3":                   "Huracán Categoría 3",
         "H4":                   "Huracán Categoría 4",
         "H5":                   "Huracán Categoría 5",
+        "_DT":                  "la depresión tropical $",
+        "_TT":                  "la tormenta tropical $",
+        "_H1":                  "el huracán $ categoría 1",
+        "_H2":                  "el huracán $ categoría 2",
+        "_H3":                  "el huracán $ categoría 3",
+        "_H4":                  "el huracán $ categoría 4",
+        "_H5":                  "el huracán $ categoría 5",
+        "update":               "Se han actualizado los datos de",
+        "detected":             "Se detectado",      
+        "closeness":            "a $ km de ti.",  
         "no_alerts":            "No hay alertas"
     },
     "features":{
@@ -153,6 +212,8 @@
     "LOGIN_AGAIN":              "Inicie sesión de nuevo",
     "UPDATE_SUCCESS":           "Los datos han sido modificados exitosamente!",
     "UPDATED_LOCATION":         "Ubicación actualizada exitosamente!",
+    "DELETED_SUCCESSFULLY":     "Eliminado exitosamente!",
+    "UPGRADED_SUCCESSFULLY":    "El usuario se ha vuelto administrador",
     "RESENDED_VEMAIL":          "Correo enviado exitosamente!",
     "TOKEN_EXPIRED":            "El vínculo de autenticación ha caducado, vuelva a mandar la solicitud",
     "recover_acepted":          "Se ha enviado un correo de recuperación a su cuenta",
@@ -179,5 +240,11 @@
     "scientistInfo":            "Un usuario investigador tiene más privilegios que una cuenta normal. Puedes ver registros de huracanes, datos estadísticos, etc.",
     "not_registered":           "Sin registro",
     "date":                     "Fecha",
-    "parameters":               "Parametros de Búsqueda"
+    "parameters":               "Parametros de Búsqueda",
+    "email_sended":             "Correo electrónico enviado",
+    "no_alerts_close":          "No hay alertas cerca de tí",
+    "check_alerts":             "Revisa las alertas que hay cerca de ti",
+    "updated_alerts":           "¡Hay nuevos datos!",
+    "you":                      "Tu",
+    "account_verified":         "¡Cuenta verificada!"
 }

@@ -1,147 +1,156 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _express = require('express');
+var _express = _interopRequireDefault(require("express"));
 
-var _express2 = _interopRequireDefault(_express);
+var _http = _interopRequireDefault(require("http"));
 
-var _http = require('http');
+var _compression = _interopRequireDefault(require("compression"));
 
-var _http2 = _interopRequireDefault(_http);
+var _expressSession = _interopRequireDefault(require("express-session"));
 
-var _compression = require('compression');
+var _expressRateLimit = _interopRequireDefault(require("express-rate-limit"));
 
-var _compression2 = _interopRequireDefault(_compression);
+var _helmet = _interopRequireDefault(require("helmet"));
 
-var _expressSession = require('express-session');
+var _bodyParser = _interopRequireDefault(require("body-parser"));
 
-var _expressSession2 = _interopRequireDefault(_expressSession);
+var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
-var _helmet = require('helmet');
+var _sessionMemoryStore = _interopRequireDefault(require("session-memory-store"));
 
-var _helmet2 = _interopRequireDefault(_helmet);
+var _cors = _interopRequireDefault(require("cors"));
 
-var _bodyParser = require('body-parser');
+var _passport = _interopRequireDefault(require("passport"));
 
-var _bodyParser2 = _interopRequireDefault(_bodyParser);
+var _morgan = _interopRequireDefault(require("morgan"));
 
-var _cookieParser = require('cookie-parser');
+var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
-var _cookieParser2 = _interopRequireDefault(_cookieParser);
+var _path = _interopRequireDefault(require("path"));
 
-var _sessionMemoryStore = require('session-memory-store');
+var _expressGraphql = _interopRequireDefault(require("express-graphql"));
 
-var _sessionMemoryStore2 = _interopRequireDefault(_sessionMemoryStore);
+var _schema = _interopRequireDefault(require("./config/schema"));
 
-var _cors = require('cors');
+var _logger = require("./utils/logger");
 
-var _cors2 = _interopRequireDefault(_cors);
+var _cipher = require("./utils/cipher");
 
-var _passport = require('passport');
+var _requestIp = _interopRequireDefault(require("request-ip"));
 
-var _passport2 = _interopRequireDefault(_passport);
+var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
-var _morgan = require('morgan');
-
-var _morgan2 = _interopRequireDefault(_morgan);
-
-var _connectFlash = require('connect-flash');
-
-var _connectFlash2 = _interopRequireDefault(_connectFlash);
-
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-var _expressGraphql = require('express-graphql');
-
-var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
-
-var _schema = require('./config/schema');
-
-var _schema2 = _interopRequireDefault(_schema);
-
-var _logger = require('./utils/logger');
-
-var _cipher = require('./utils/cipher');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // Initialzing packages
-var app = (0, _express2.default)();
-var server = _http2.default.createServer(app);
-var store = (0, _sessionMemoryStore2.default)(_expressSession2.default);
+var app = (0, _express["default"])();
+
+var server = _http["default"].createServer(app);
+
+var store = (0, _sessionMemoryStore["default"])(_expressSession["default"]);
 var corsOptions = {
-    origin: '*'
+  origin: '*'
 };
+var limiter = (0, _expressRateLimit["default"])({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  message: "DDOS detected"
+});
 
 require('dotenv').config();
+
 require('./config/database');
+
 require('./passport/local-auth');
+
 require('./passport/google-auth');
-require('./passport/facebook-auth');
 
-// Middlewares
-app.use((0, _expressSession2.default)({
-    name: 'JSESSION',
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-    store: new store({
-        expires: 60 * 60 * 12
-    })
+require('./passport/facebook-auth'); // Middlewares
+
+
+app.use((0, _expressSession["default"])({
+  name: 'JSESSION',
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+  store: new store({
+    expires: 60 * 60 * 12
+  })
 }));
-
 app.use('*', function (req, res, next) {
-    if (!req.user && req.cookies && req.cookies.user) {
-        req.logIn((0, _cipher.decryptAES)(JSON.parse(req.cookies.user)), function (err) {
-            next();
-        });
-    } else next();
+  if (!req.user && req.cookies && req.cookies.user) {
+    req.logIn((0, _cipher.decryptAES)(JSON.parse(req.cookies.user)), function (err) {
+      next();
+    });
+  } else next();
 });
-
 app.use('/graphql', function (req, res, next) {
-    (0, _expressGraphql2.default)({
-        graphiql: false,
-        schema: _schema2.default,
-        context: req.session
-    })(req, res, next);
+  (0, _expressGraphql["default"])({
+    graphiql: false,
+    schema: _schema["default"],
+    context: req.session
+  })(req, res, next);
 });
-
 app.use(function (req, res, next) {
-    res.set('Cache-Control', 'no-store');
-    next();
-});
+  res.set('Cache-Control', 'no-store');
+  next();
+}); // Settings
 
-// Settings
 app.set('port', process.env.PORT || 3000);
-app.use((0, _helmet2.default)());
-app.use((0, _compression2.default)());
-app.use(_bodyParser2.default.urlencoded({ extended: true }));
-app.use(_bodyParser2.default.json());
-app.use((0, _cookieParser2.default)('secret'));
-app.use(_passport2.default.initialize());
-app.use(_passport2.default.session());
-app.use((0, _morgan2.default)('combined', { 'stream': _logger.infoLog.stream }));
-app.use((0, _cors2.default)(corsOptions));
-app.use(_express2.default.static(_path2.default.join(__dirname, 'public')));
-app.use((0, _connectFlash2.default)());
+app.use((0, _helmet["default"])());
+app.use((0, _compression["default"])());
+app.use(_bodyParser["default"].urlencoded({
+  extended: true
+}));
+app.use(_bodyParser["default"].json());
+app.use((0, _cookieParser["default"])('secret'));
+app.use(_passport["default"].initialize());
+app.use(_passport["default"].session());
+app.use((0, _morgan["default"])('combined', {
+  'stream': _logger.infoLog.stream
+}));
+app.use((0, _cors["default"])(corsOptions));
+app.use(_express["default"]["static"](_path["default"].join(__dirname, 'public')));
+app.use((0, _connectFlash["default"])());
+app.use(_requestIp["default"].mw());
+app.use(limiter);
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
+app.use('/graphql', _passport["default"].initialize());
+app.use('/graphql', _passport["default"].session()); //Routes
 
-//Routes
 app.use(require('./routes/unregister'));
 app.use(require('./routes/register'));
 app.use(require('./routes/admin')(server));
 app.use(require('./routes/investigator'));
 
-// Start the server
-server.listen(app.get('port'), '0.0.0.0', function () {
-    console.log('Server on port', app.get('port'));
-});
+var cyclonSocket = require("./config/socket")(server); // Start the server
 
-exports.default = server;
+
+server.listen(app.get('port'), '0.0.0.0', function () {
+  console.log('Server on port', app.get('port'));
+});
+setInterval(function () {
+  (0, _nodeFetch["default"])(process.env.PYTHON_URL).then(function (res) {
+    res.text().then(function (text) {
+      console.log("Socket found");
+    });
+  })["catch"](function (reject) {
+    return console.log("Socket not found");
+  });
+  (0, _nodeFetch["default"])(process.env.URL + '/keepAlive').then(function (res) {
+    res.text().then(function (text) {
+      console.log("Server found");
+    });
+  })["catch"](function (reject) {
+    return console.log("Server not found");
+  });
+}, 2000 * 60);
+var _default = server;
+exports["default"] = _default;
 //# sourceMappingURL=server.js.map

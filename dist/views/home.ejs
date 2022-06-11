@@ -1,3 +1,6 @@
+<% if(context.type==null || context.type==undefined){ %>
+    <script> window.location.href="/" </script>
+<% } else { %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,19 +67,45 @@
 <script src="/js/lib/morphext.min.js"></script>
 <script src="/js/lib/validator.min.js"></script>
 <script src="/js/lib/scripts.js"></script>
+<script src="/js/lib/socket.io.js"></script>
 <script src="/js/alertManager.js"></script>
 <script src="/js/lib/alert.js"></script>
+<script src="/js/lib/cycloneUtils.js"></script>
 
 <script>
 
     const assets = JSON.parse('<%- JSON.stringify(assets) %>')
 
-    document.getElementById("homeButton").setAttribute("href","#");
-    document.getElementById("homeImageButton").setAttribute("href","#");
-    document.getElementById("privacyButton").setAttribute("href","/privacy");
-    document.getElementById("termsButton").setAttribute("href","/terms");
+    document.getElementById("homeButton").setAttribute("href","#")
+    document.getElementById("homeImageButton").setAttribute("href","#")
+    document.getElementById("privacyButton").setAttribute("href","/privacy")
+    document.getElementById("termsButton").setAttribute("href","/terms")
 
     document.getElementById("homeButton").setAttribute("class","nav-link page-scroll active")
+
+    const socket = io("/")
+
+    socket.on("/alert", (data) => {
+
+        data = data.data
+
+        let distance =  getDistance(latUser, lngUser, data.data.lastPoint.position.lat, data.data.lastPoint.position.lng)
+        let radious = Math.round(getCategoryRadiousByCAT(data.data.category) * 100) / 100
+        let message = ''
+        
+        if(data.update)
+            message = assets.alertMessages.update + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+        else
+            message = assets.alertMessages.detected + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + " " + assets.alertMessages.closeness.replace("$", distance)
+
+        if(radious < distance < 250 + radious)
+            alert.error(message,assets.updated_alerts)
+        else
+            alert.show(message,assets.updated_alerts)
+
+        getActiveCyclones()
+        
+    })
 
 </script>
 
@@ -95,33 +124,224 @@
     <script>
         const addPanelInfo = () => {
 
+            let alerts = []
+
             latUser = parseFloat('<%- functions.decryptAES(context.location.lat) %>')
             lngUser =  parseFloat('<%- functions.decryptAES(context.location.lng) %>')
 
             if(activeCyclones.length == 0)
                 $("#panelAlert").html(`
-                <br><br><br><br><br><br><br><br><br><br><br>
-                <center>
-                    <h4>${assets.alertMessages.no_alerts}</h4>
-                </center>
-            `)
+                    <br><br><br><br><br><br><br><br><br><br><br>
+                    <center>
+                        <h4>${assets.alertMessages.no_alerts}</h4>
+                    </center>
+                `)
         
             activeCyclones.forEach(element => {
         
                 let lastPoint =  element.realTrajectory[element.realTrajectory.length - 1]
-                let category = getCategoryRadious(lastPoint.windSpeed)[0]
-                let radious = getCategoryRadious(lastPoint.windSpeed)[1]
-        
+                let [category, radious, categoryTxt] = getCategoryRadious(lastPoint.windSpeed)
+                let icon = getIcon(categoryTxt)
+
                 let distance = getDistance(latUser, lngUser, lastPoint.position.lat, lastPoint.position.lng)
-                
-                if(radious<distance<radious+250)
-                    $("#panelAlert").html(`
-                    
-                    `)
+
+                let latlngsReal = []
+
+                element.realTrajectory.forEach(point => {
+                    latlngsReal.push([point.position.lat, point.position.lng, point.windSpeed])
+                })
+
+                let layerRealTrayectory = new L.Hotline(latlngsReal, {
+                    min: 119,
+                    max: 250,
+                    palette: {
+                        0.0: '#00bc79',
+                        0.5: '#887c73',
+                        1.0: '#a9136c'
+                    },
+                    weight: 6,
+                    outlineColor: '#000000',
+                    outlineWidth: 1
+                }).addTo(map_const)
+
+                layerRealTrayectory.on('mouseover', () => { layerRealTrayectory.setStyle({ weight: 4 }) })
         
+                layerRealTrayectory.on('mouseout', () => { layerRealTrayectory.setStyle({ weight: 3 }) })
+
+                layerRealTrayectory.on('click', function (e) {
+
+                    let latClicked = e.latlng.lat
+                    let lngClicked = e.latlng.lng
+                    let distance = 9999999
+                    let toShow = {}
+
+                    element.realTrajectory.forEach(item => {
+                        let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
+                        if(distanceTemp<distance){
+                            distance = distanceTemp
+                            toShow = item
+                        }
+                    }) 
+
+                    let popup = `
+                        <h6 style="color:black;">${assets.units.latitude.label}:  ${Math.round((latClicked) * 100) / 100}</h6>
+                        <h6 style="color:black;">${assets.units.longitude.label}:  ${Math.round((lngClicked) * 100) / 100}</h6>
+
+                        <h6 style="color:black;">${assets.units.windSpeed.label}:  ${((toShow.windSpeed == 0) ? assets.not_registered : Math.round(toShow.windSpeed * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.hurrSpeed.label}:  ${((toShow.hurrSpeed == 0) ? assets.not_registered : Math.round(toShow.hurrSpeed * 100) / 100 + assets.units.hurrSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.temperature.label}:  ${((toShow.temperature == 0) ? assets.not_registered : Math.round(toShow.temperature * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.pressure.label}:  ${((toShow.pressure == 0) ? assets.not_registered : Math.round(((toShow.pressure<100) ? toShow.pressure*100 : toShow.pressure) * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+
+                        <h6 style="color:black;">${assets.date}: ${(new Date(toShow.date)).toLocaleString()}</h6>
+                    `
+
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(popup).openOn(map_const)
+
+                })
+
+                let latlngsPredicted = []
+
+                element.predictedTrajectory.forEach(point => {
+                    latlngsPredicted.push([point.position.lat, point.position.lng, point.windSpeed])
+                })
+
+                let layerPredictedTrayectory = new L.Hotline(latlngsPredicted, {
+                    min: 119,
+                    max: 250,
+                    palette: {
+                        0.0: '#0081b6',
+                        0.5: '#895762',
+                        1.0: '#a41214'
+                    },
+                    weight: 6,
+                    outlineColor: '#000000',
+                    outlineWidth: 1
+                }).addTo(map_const)
+
+                layerPredictedTrayectory.on('mouseover', () => { layerPredictedTrayectory.setStyle({ weight: 4 }) })
+
+                layerPredictedTrayectory.on('mouseout', () => { layerPredictedTrayectory.setStyle({ weight: 3 }) })
+
+                layerPredictedTrayectory.on('click', function (e) {
+
+                    let latClicked = e.latlng.lat
+                    let lngClicked = e.latlng.lng
+                    let distance = 9999999
+                    let toShow = {}
+
+                    element.predictedTrajectory.forEach(item => {
+                        let distanceTemp = getDistance(latClicked,lngClicked,item.position.lat,item.position.lng)
+                        if(distanceTemp<distance){
+                            distance = distanceTemp
+                            toShow = item
+                        }
+                    }) 
+
+                    let popup = `
+                        <h6 style="color:black;">${assets.units.latitude.label}:  ${Math.round((latClicked) * 100) / 100}</h6>
+                        <h6 style="color:black;">${assets.units.longitude.label}:  ${Math.round((lngClicked) * 100) / 100}</h6>
+
+                        <h6 style="color:black;">${assets.units.windSpeed.label}:  ${((toShow.windSpeed == 0) ? assets.not_registered : Math.round(toShow.windSpeed * 100) / 100 + assets.units.windSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.hurrSpeed.label}:  ${((toShow.hurrSpeed == 0) ? assets.not_registered : Math.round(toShow.hurrSpeed * 100) / 100 + assets.units.hurrSpeed.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.temperature.label}:  ${((toShow.temperature == 0) ? assets.not_registered : Math.round(toShow.temperature * 100) / 100 + assets.units.temperature.unit)}</h6>
+                        <h6 style="color:black;">${assets.units.pressure.label}:  ${((toShow.pressure == 0) ? assets.not_registered : Math.round(((toShow.pressure<100) ? toShow.pressure*100 : toShow.pressure) * 100) / 100 + assets.units.pressure.unit)}</h6>
+
+                        <h6 style="color:black;">${assets.date}: ${(new Date(toShow.date)).toLocaleString()}</h6>
+                    `
+
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(popup).openOn(map_const)
+
+                })
+
+                var iconMarker = L.icon({
+                    iconUrl: icon,
+                    iconSize: [30, 30],
+                    popupAnchor: [-3, -76]
+                })
+
+                var marker = L.marker([element.realTrajectory[element.realTrajectory.length-1].position.lat, element.realTrajectory[element.realTrajectory.length-1].position.lng], { icon: iconMarker }).addTo(map_const);
+                
+                marker.on('click', (e) => {
+                    map_const.fitBounds(layerRealTrayectory.getBounds())
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(`<h4 style="color:black;">${element.name}</h4><h6 style="color:black;">${assets.simbology.position}: ${element.realTrajectory[element.realTrajectory.length-1].position.lat}N,  ${element.realTrajectory[element.realTrajectory.length-1].position.lng}W</h6><h6 style="color: black;">${assets.simbology.category}: ${category}</h6>`).openOn(map_const)
+                })
+                
+                if(distance<radious+250){
+
+                    alerts.push({
+                        cyclone: element,
+                        distance,
+                        category,
+                    })
+
+                    L.polyline([
+                        [latUser, lngUser],
+                        [element.realTrajectory[element.realTrajectory.length-1].position.lat, element.realTrajectory[element.realTrajectory.length-1].position.lng]
+                    ], {
+                        color: 'red',
+                        weight: 2,
+                        opacity: 0.7,
+                        dashArray: '4,12,20,12',
+                        lineJoin: 'miter',
+                        lineCap: 'square'
+                    }).addTo(map_const)
+
+                }
+                    
+
+                L.marker([latUser, lngUser], { icon: L.icon({
+                    iconUrl: "/images/location.png",
+                    iconSize: [30, 30],
+                    popupAnchor: [-3, -76]
+                }) }).addTo(map_const).on('click', (e) => {
+                    L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).setContent(`<h6 style="color:black;">${assets.you}</h6>`).openOn(map_const)
+                })
+
             })
+
+            if(alerts.length != 0){
+
+                alert.show(assets.check_alerts,assets.simbology.alerts_close)
+
+                let html = `<br><br><br><div style="align-items: center; vertical-align: middle; overflow-y: auto; overflow-x: hidden; width: 24em; margin-left: 4em;">
+                                <center><h3>${assets.simbology.alerts_close.toUpperCase()}</h3></center><br>`
+
+                alerts.forEach(element => {
+                    html += `<div class="card p-2" style="color: black;">
+                                <div class="row">
+                                    <div class="col">
+                                        ${assets.simbology.name}: ${element.cyclone.name}    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        ${assets.simbology.category}: ${element.category}    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        ${assets.units.distance.label}: ${Math.round(element.distance*100)/100} ${assets.units.distance.unit}    
+                                    </div>
+                                </div>
+                            </div>`
+                    if(element!=alerts[alerts.length - 1])
+                        html += `<hr style="background-color: white;">`      
+                })  
+
+                html += `</div>`
+
+                $("#panelAlert").html(html)
+            }
+            else 
+                $("#panelAlert").html(`
+                        <br><br><br><br><br><br><br><br><br><br><br>
+                        <center>
+                            <h4>${assets.no_alerts_close}</h4>
+                        </center>
+                    `)
         }
     </script>
 <% } %>
 
 </html>
+<% } %>

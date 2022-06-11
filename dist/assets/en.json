@@ -8,7 +8,9 @@
         "update_info":          "Update information",
         "verify":               "Verification",
         "recoverPassword":      "Recover password",
-        "records":              "Hurricaine records"
+        "records":              "Hurricaine records",
+        "users":                "Users",
+        "config":               "Settings"
     },
     "inputs":{
         "email":                "Email",
@@ -25,7 +27,32 @@
         "year":                 "Year",
         "cyclone":              "Hurricaine",
         "trajectory":           "Trajectory",
-        "graph":                "Graph"
+        "graph":                "Graph",
+        "page":                 "Page",
+        "status": {
+            "label":            "Status",
+            "type": [
+                                "Not verified",
+                                "Verified"
+            ]
+        },
+        "register": {
+            "label":            "Register type",
+            "type": [
+                                "Local",
+                                "Facebook",
+                                "Google"
+            ]
+        },
+        "user_type": {
+            "label":            "User type",
+            "type":  [
+                                "Normal",
+                                "Scientist",
+                                "Administrator"
+            ]
+        },
+        "persons":              "Persons"
     },
     "buttons": {
         "login" :               "Log in",
@@ -46,30 +73,43 @@
         "resend_email":         "Resend verification email",
         "send_recover":         "Enviar correo de recuperación",
         "convert_scientist":    "Be a Scientist",
-        "search":               "Search"
+        "search":               "Search",
+        "cyclones":             "Cyclones",
+        "config_server":        "Cyclon Settings",
+        "users":                "Users",
+        "get":                  "Get",
+        "delete":               "Delete",
+        "upgrade":              "Upgrade",
+        "activateIsolines":     "Isolines",
+        "activateGrid":         "Graticule",
+        "activateAnimations":   "Animations"
     },
     "units": {
         "windSpeed": {
-            "label": "Wind",
-            "unit": "km/h"
+            "label":            "Wind",
+            "unit":             "km/h"
         },
         "hurrSpeed": {
-            "label": "Velocity",
-            "unit": "km/h"
+            "label":            "Velocity",
+            "unit":             "km/h"
         },
         "temperature": {
-            "label": "Temperature",
-            "unit": "°C"
+            "label":            "Temperature",
+            "unit":             "°C"
         },
         "pressure": {
-            "label": "Pressure",
-            "unit": "mB"
+            "label":            "Pressure",
+            "unit":             "mB"
         },
         "latitude":{
-            "label": "Latitude"
+            "label":            "Latitude"
         },
         "longitude":{
-            "label": "Longitude"
+            "label":            "Longitude"
+        },
+        "distance": {
+            "label":            "Distance",
+            "unit":             "km"
         }
     },
     "simbology":{
@@ -81,16 +121,38 @@
         "hurricane":            "Hurricaine",
         "remanent":             "Remanent",
         "title":                "Sibology",
-        "subtitle":             "Check current weather phenomenals"
+        "subtitle":             "Check current weather phenomenals",
+        "graphs":               "Graphs",
+        "noaa_files":           "NOAA Information",
+        "map":                  "Map",
+        "tab":                  "Tabs",
+        "category":             "Category",
+        "position":             "Position",
+        "name":                 "Name",
+        "alerts_close":         "Alerts close on you",
+        "appearance":           "Appearance",
+        "lastUpdate":           "Last update",
+        "maxWind":              "Maximum wind speed",
+        "minPressure":          "Minimum pressure"
     },
     "alertMessages":{
         "DT":                   "Tropical Depression",
-        "ST":                   "Tropical Storm",
+        "TT":                   "Tropical Storm",
         "H1":                   "Hurricaine Category 1",
         "H2":                   "Hurricaine Category 2",
         "H3":                   "Hurricaine Category 3",
         "H4":                   "Hurricaine Category 4",
         "H5":                   "Hurricaine Category 5",
+        "_DT":                  "the tropical depression $",
+        "_TT":                  "the tropical storm $",
+        "_H1":                  "the hurricaine $ category 1",
+        "_H2":                  "the hurricaine $ category 2",
+        "_H3":                  "the hurricaine $ category 3",
+        "_H4":                  "the hurricaine $ category 4",
+        "_H5":                  "the hurricaine $ category 5",
+        "update":               "Updated data for",
+        "detected":             "Be detected",
+        "closeness":            "located to $ km from you.",          
         "no_alerts":            "There is not alerts"
     },
     "features":{
@@ -149,6 +211,8 @@
     "LOGIN_AGAIN":              "Log in again",
     "UPDATE_SUCCESS":           "The data has been successfully modified!",
     "UPDATED_LOCATION":         "Location updated successfully!",
+    "DELETED_SUCCESSFULLY":     "Deleted successfully!",
+    "UPGRADED_SUCCESSFULLY":    "User has become administrator",
     "RESENDED_VEMAIL":          "Email resended successfully!",
     "TOKEN_EXPIRED":            "Authentication token has expired, resend the request again",
     "recover_acepted":          "A recover email has been sent to your account",
@@ -174,5 +238,10 @@
     "scientistInfo":            "An investigating user has more privileges than a normal account. You can see hurricane records, statistical data, etc.",
     "not_registered":           "Not registered",
     "date":                     "Date",
-    "parameters":               "Search parameters"
+    "parameters":               "Search parameters",
+    "EMAIL_SENDED":             "Email sended",
+    "no_alerts_close":          "There is not alerts close on you",
+    "check_alerts":             "Check the alerts close on you",
+    "you":                      "You",
+    "account_verified":         "Account verified!"
 }

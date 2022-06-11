@@ -10,11 +10,11 @@
     <title> <%= title %> </title>
 
     <meta property="og:site_name" content="Cyclon" />
-	<meta property="og:site" content="http://cyclon.com.mx/"/>
+	<meta property="og:site" content="https://mlbeta.cyclon.mx/"/>
 	<meta property="og:title" content="<%= title %>"/>
 	<meta property="og:description" content="Main page" />
 	<meta property="og:image" content="/images/favicon.ico"/>
-	<meta property="og:url" content="http://cyclon.com.mx/"/>
+	<meta property="og:url" content="https://mlbeta.cyclon.mx/"/>
 	<meta property="og:type" content="article" />
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
@@ -76,10 +76,12 @@
 <script src="/js/lib/morphext.min.js"></script>
 <script src="/js/lib/validator.min.js"></script>
 <script src="/js/lib/scripts.js"></script>
+<script src="/js/lib/socket.io.js"></script>
 <script src="/js/lib/vue.js"></script>
 <script src="/js/lib/client.js"></script>
 <script src="/js/lib/platform.js" async defer></script>
 <script src="/js/lib/base64.min.js"></script>
+<script src="/js/lib/cycloneUtils.js"></script>
 <script src="/js/regex.js"></script>
 <script src="/js/index.js"></script>
 <script src="/js/alertManager.js"></script>
@@ -93,18 +95,17 @@
 
     const addPanelInfo = false
 
-    document.getElementById("loginButton").setAttribute("data-toggle","modal");
-    document.getElementById("loginButton").setAttribute("data-target","#loginModal");
-    document.getElementById("registerButton").setAttribute("data-toggle","modal");
-    document.getElementById("registerButton").setAttribute("data-target","#registerModal");
-    document.getElementById("contactButton").setAttribute("href","#contact");
-    document.getElementById("homeButton").setAttribute("href","#header");
-    document.getElementById("homeImageButton").setAttribute("href","#header");
-    document.getElementById("privacyButton").setAttribute("href","/privacy");
-    document.getElementById("termsButton").setAttribute("href","/terms");
+    document.getElementById("loginButton").setAttribute("data-toggle","modal")
+    document.getElementById("loginButton").setAttribute("data-target","#loginModal")
+    document.getElementById("registerButton").setAttribute("data-toggle","modal")
+    document.getElementById("registerButton").setAttribute("data-target","#registerModal")
+    document.getElementById("contactButton").setAttribute("href","#contact")
+    document.getElementById("homeButton").setAttribute("href","#header")
+    document.getElementById("homeImageButton").setAttribute("href","#header")
+    document.getElementById("privacyButton").setAttribute("href","/privacy")
+    document.getElementById("termsButton").setAttribute("href","/terms")
 
-
-    $(document).ready(()=>{
+    $(document).ready( async ()=>{
         var searchParams = new URLSearchParams(window.location.search);
         if(searchParams.get("action")=="register"){
             $('#registro').modal('show');
@@ -112,7 +113,52 @@
         if(searchParams.get("action")=="login"){
             $('#loginModal').modal('show');
         }
-    });
+
+        await getActiveCyclones()
+
+        let interval = setInterval(() => {
+            if(map_const != undefined){
+                drawCyclones()
+                clearInterval(interval)
+            }
+        }, 500)
+
+    })
+
+    if("geolocation" in navigator)
+        navigator.geolocation.getCurrentPosition((position) => {
+    })
+
+    const socket = io("/")
+
+    socket.on("/alert", async (data) => {
+
+        data = data.data
+
+        let distance =  getDistance(latUser, lngUser, data.data.lastPoint.position.lat, data.data.lastPoint.position.lng)
+        let radious = getCategoryRadiousByCAT(data.data.category)
+        let message = ''
+        
+        if(data.update)
+            message = assets.alertMessages.update + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + "."
+        else
+            message = assets.alertMessages.detected + " " + getCategoryMessage(data.data.category).replace("$",data.data.name) + "."
+
+        if(radious < distance < 250 + radious)
+            alert.error(message,assets.updated_alerts)
+        else
+            alert.show(message,assets.updated_alerts)
+
+        await getActiveCyclones()
+
+        let interval = setInterval(() => {
+            if(map_const != undefined){
+                drawCyclones()
+                clearInterval(interval)
+            }
+        }, 500)
+        
+    })
 
 </script>
 
