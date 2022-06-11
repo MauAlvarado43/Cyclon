@@ -86,8 +86,11 @@
     const socket = io("/")
 
     socket.on("/alert", (data) => {
-        let distance =  getDistance(latUser, lngUser, data.data.location.lat, data.data.location.lng)
-        let radious = getCategoryRadiousByCAT(data.data.category)
+
+        data = data.data
+
+        let distance =  getDistance(latUser, lngUser, data.data.lastPoint.position.lat, data.data.lastPoint.position.lng)
+        let radious = Math.round(getCategoryRadiousByCAT(data.data.category) * 100) / 100
         let message = ''
         
         if(data.update)
@@ -300,11 +303,12 @@
 
                 alert.show(assets.check_alerts,assets.simbology.alerts_close)
 
-                let html = `<br><br><br><div style="align-items: center; vertical-align: middle;">
-                                <h3>${assets.simbology.alerts_close.toUpperCase()}</h3>`
+                let html = `<br><br><br><div style="align-items: center; vertical-align: middle; overflow-y: auto; overflow-x: hidden; width: 24em; margin-left: 4em;">
+                                <center><h3>${assets.simbology.alerts_close.toUpperCase()}</h3></center><br>`
 
                 alerts.forEach(element => {
-                    html += `<div class="row">
+                    html += `<div class="card p-2" style="color: black;">
+                                <div class="row">
                                     <div class="col">
                                         ${assets.simbology.name}: ${element.cyclone.name}    
                                     </div>
@@ -319,7 +323,7 @@
                                         ${assets.units.distance.label}: ${Math.round(element.distance*100)/100} ${assets.units.distance.unit}    
                                     </div>
                                 </div>
-                                `
+                            </div>`
                     if(element!=alerts[alerts.length - 1])
                         html += `<hr style="background-color: white;">`      
                 })  

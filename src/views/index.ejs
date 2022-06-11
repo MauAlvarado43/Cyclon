@@ -131,8 +131,11 @@
 
     const socket = io("/")
 
-    socket.on("/alert", (data) => {
-        let distance =  getDistance(latUser, lngUser, data.data.location.lat, data.data.location.lng)
+    socket.on("/alert", async (data) => {
+
+        data = data.data
+
+        let distance =  getDistance(latUser, lngUser, data.data.lastPoint.position.lat, data.data.lastPoint.position.lng)
         let radious = getCategoryRadiousByCAT(data.data.category)
         let message = ''
         
@@ -146,7 +149,14 @@
         else
             alert.show(message,assets.updated_alerts)
 
-        getActiveCyclones()
+        await getActiveCyclones()
+
+        let interval = setInterval(() => {
+            if(map_const != undefined){
+                drawCyclones()
+                clearInterval(interval)
+            }
+        }, 500)
         
     })
 
