@@ -202,7 +202,7 @@ const app = new Vue({
                                             ${assets.simbology.maxWind}:
                                         </td>       
                                         <td style="text-align: left; padding-left: 5px;">
-                                            ${maxWind} ${assets.units.windSpeed.unit}
+                                            ${Math.round(maxWind * 100) / 100} ${assets.units.windSpeed.unit}
                                         </td>  
                                     </tr>
                                     <tr>

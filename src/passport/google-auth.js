@@ -6,10 +6,10 @@ import geoip from 'geoip-lite'
 import { errorLog } from '../utils/logger'
 
 passport.use('google-auth',new GoogleStrategy({
-        clientID: '527371050470-3p8l2gkuubnf79dr7j2tr2g5cknepv8b.apps.googleusercontent.com',
-        clientSecret: '--JD-kizC2X9oJsvgdmWZWbq',
-        callbackURL: process.env.URL + '/auth/google/callback',
-        passReqToCallback: true
+    clientID: '527371050470-3p8l2gkuubnf79dr7j2tr2g5cknepv8b.apps.googleusercontent.com',
+    clientSecret: '--JD-kizC2X9oJsvgdmWZWbq',
+    callbackURL: process.env.URL + '/auth/google/callback',
+    passReqToCallback: true
 }, async (req, accessToken, refreshToken, profile, done) => {
 
         User.find({email: encryptAES(profile.emails[0].value)}, async (err,docs) => {

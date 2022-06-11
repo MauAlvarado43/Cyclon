@@ -9,7 +9,7 @@
     "node": "12.x"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js",
+    "dev": "nodemon --exec babel-node src/server.js --presets=@babel/env",
     "start": "node bin/production",
     "build": "npm run clean && mkdir dist && babel src -s -d dist && cp -R src/views dist/ && cp -R src/assets dist/ && cp -R src/utils/templates dist/utils && cp -R src/public dist && cp src/config/schema.gql dist/config && node dist/utils/minify.js",
     "clean": "rm -rf dist/",
@@ -69,7 +69,9 @@
     "winston-json-formatter": "^0.10.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
